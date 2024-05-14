@@ -24,11 +24,11 @@ const getTask = async (req, res) => {
 
 //create a new task
 const createTask = async (req, res) => {
-    const {name, description, dueDate, status} = req.body;
+    const {name, description, dueDate,assignedTo, status} = req.body;
 
     // add doc to db
     try{
-        const task = await Tasks.create({name, description, dueDate, status});
+        const task = await Tasks.create({name, description, dueDate, assignedTo, status});
         res.status(200).json(task);
      }catch(err){
         res.status(400).json({err: err.message});

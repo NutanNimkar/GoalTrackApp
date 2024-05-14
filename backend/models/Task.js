@@ -9,7 +9,7 @@ const taskSchema = new mongoose.Schema({
         now.setHours(23, 59, 59, 999);
         return now;
       }},
-    // assignedTo: { type:mongoose.Schema.Types.ObjectId, ref: 'User' },
+    assignedTo: { type:mongoose.Schema.Types.ObjectId, ref: 'User' },
     status: { type: Boolean, default: false },
     
 })

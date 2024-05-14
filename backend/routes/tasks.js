@@ -1,9 +1,9 @@
-const expres = require('express');
+const express = require('express');
 const Task = require('../models/Task');
 const {createTask, getAllTasks, getTask, updateTask, deleteTask} = require('../controllers/taskController');
 
 // using express route to create routes
-const router = expres.Router();
+const router = express.Router();
 
 //gets all the tasks
 router.get('/', getAllTasks);

@@ -4,6 +4,9 @@ require("dotenv").config();
 const app = express();
 const mongoose = require("mongoose");
 const tasksRoutes = require("./routes/tasks");
+const userRoutes = require("./routes/user");
+// const authRoutes = require("./routes/auth");
+const groupRoutes = require("./routes/groups");
 
 //middleware
 app.use(express.json());
@@ -14,6 +17,9 @@ app.use((req, res, next)=>{
 })
 
 app.use('/api/tasks',tasksRoutes);
+app.use('/api/users',userRoutes);
+// app.use('/api/auth',authRoutes);
+app.use('/api/groups',groupRoutes);
 
 mongoose
 .connect(process.env.MONG_URI)
@@ -24,6 +30,3 @@ mongoose
 .catch((err) => {
   console.log(err);
 });
-
-//listen for requests
-// app.listen(process.env.PORT, () => console.log(`Server started on port ${process.env.PORT}!!`));
