@@ -83,6 +83,9 @@ const getUsersTasks = async (req, res) => {
 
         // Find all tasks assigned to the user
         const tasks = await Task.find({ assignedTo: id });
+        
+        // finds all the daily tasks assigned to the user
+        // const tasks = await Task.find({ assignedTo: id, dueDate: { $gte: new Date().setHours(0, 0, 0, 0), $lt: new Date().setHours(23, 59, 59, 999) } });
 
         // If no tasks found, return 404
         if (!tasks || tasks.length === 0) {

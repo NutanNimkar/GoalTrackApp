@@ -1,0 +1,30 @@
+.vertical-navbar {
+    background-color: #333;
+    width: 200px; /* Adjust width as needed */
+    height: 100%; /* Adjust height as needed */
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    z-index: 1000; /* Ensure navbar is above other content */
+}
+.vertical-navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vertical-navbar li {
+    border-bottom: 1px solid #555; /* Add borders between list items */
+}
+
+.vertical-navbar li a {
+    display: block;
+    color: #fff;
+    padding: 15px 20px;
+    text-decoration: none;
+}
+
+.vertical-navbar li a:hover {
+    background-color: #555;
+}
