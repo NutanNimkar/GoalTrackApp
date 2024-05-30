@@ -1,0 +1,33 @@
+
+/* Tile.css */
+.tile {
+    position: relative; 
+    left: 250px;
+    background-color: #f9f9f9;
+    border: 2px dotted grey;
+    border-radius: 5px;
+    padding: 100px 40px 100px 40px;
+    margin-bottom: 20px;
+    display: inline-block;
+    flex: 1; /* Distribute available space evenly among tiles */
+    margin-left: 50px; /* Add spacing between tiles */ 
+    max-height: calc(33.33% - 10px); /* Adjust tile height based on desired number of tiles per row */
+    max-width: calc(33.33% - 10px); /* Adjust tile width based on desired number of tiles per row */
+
+}
+
+.tile:last-child {
+    margin-right: 0; /* Remove right margin from the last tile in each row */
+}
+
+.tile h2 {
+    color: #333;
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.tile p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 0;
+}
