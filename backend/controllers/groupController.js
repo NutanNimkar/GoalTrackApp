@@ -7,6 +7,17 @@ const getAllGroups = async (req, res) => {
     res.status(200).json(groups);
 }
 
+const getGroupMembers = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({err: 'No such group'})
+    }
+    const members = await Group.findById(id).populate('members');
+    if(!members){
+        return res.status(404).json({msg: 'Group not found'});
+    }
+    res.status(200).json(members);
+}
 // get a single group
 const getGroup = async (req, res) => {
     const { id } = req.params;
@@ -21,10 +32,10 @@ const getGroup = async (req, res) => {
 }
 //create a new group
 const createGroup = async (req, res) => {
-    const {name, description, members} = req.body;
+    const {name, description, members, punishment} = req.body;
     // add doc to db
     try{
-        const group = await Group.create({name, description, members});
+        const group = await Group.create({name, description, members, punishment});
         res.status(200).json(group);
      }catch(err){
         res.status(400).json({err: err.message});
@@ -60,5 +71,6 @@ module.exports = {
     getGroup,
     createGroup,
     updateGroup,
-    deleteGroup 
+    deleteGroup,
+    getGroupMembers
 }
