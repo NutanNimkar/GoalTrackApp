@@ -6,8 +6,7 @@ const TaskModal = ({ show, handleClose, handleSave, task, users }) => {
     name: '',
     description: '',
     dueDate: '',
-    assignedTo: '',
-    status: false,
+    assignedTo: ''
   });
 
   useEffect(() => {
@@ -18,32 +17,13 @@ const TaskModal = ({ show, handleClose, handleSave, task, users }) => {
         name: '',
         description: '',
         dueDate: '',
-        assignedTo: '',
-        status: false,
+        assignedTo: ''
       });
     }
   }, [task]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setTaskData({ ...taskData, [name]: value });
-  };
-
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setTaskData({ ...taskData, [name]: checked });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     handleSave(taskData);
-    setTaskData({
-      name: '',
-      description: '',
-      dueDate: '',
-      assignedTo: '',
-      status: false,
-    });
   };
 
   return (
@@ -52,67 +32,54 @@ const TaskModal = ({ show, handleClose, handleSave, task, users }) => {
         <Modal.Title>{task ? 'Edit Task' : 'Add Task'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={onSubmit}>
-          <Form.Group controlId="taskName">
+        <Form>
+          <Form.Group controlId="formTaskName">
             <Form.Label>Task Name</Form.Label>
             <Form.Control
               type="text"
               name="name"
               value={taskData.name}
-              onChange={handleInputChange}
-              placeholder="Enter task name"
+              onChange={(e) => setTaskData((prevState) => ({...prevState, name: e.target.value}))}
             />
           </Form.Group>
-          <Form.Group controlId="taskDescription">
-            <Form.Label>Task Description</Form.Label>
+          <Form.Group controlId="formTaskDescription">
+            <Form.Label>Description</Form.Label>
             <Form.Control
               type="text"
               name="description"
               value={taskData.description}
-              onChange={handleInputChange}
-              placeholder="Enter task description"
+              onChange={(e) => setTaskData((prevState) => ({...prevState, description: e.target.value}))}
             />
           </Form.Group>
-          <Form.Group controlId="taskDueDate">
+          <Form.Group controlId="formTaskDueDate">
             <Form.Label>Due Date</Form.Label>
             <Form.Control
-              type="date"
+              type="datetime-local"
               name="dueDate"
               value={taskData.dueDate}
-              onChange={handleInputChange}
+              onChange={(e) => setTaskData((prevState) => ({...prevState, dueDate: e.target.value}))}
             />
           </Form.Group>
-          <Form.Group controlId="taskAssignedTo">
+          <Form.Group controlId="formTaskAssignedTo">
             <Form.Label>Assign To</Form.Label>
             <Form.Control
               as="select"
               name="assignedTo"
               value={taskData.assignedTo}
-              onChange={handleInputChange}
+              onChange={(e) => setTaskData((prevState) => ({...prevState, assignedTo: e.target.value}))}
             >
-              <option value="">Select User</option>
-              {users.map((user) => (
-                <option key={user._id} value={user._id}>
-                  {user.username}
-                </option>
+              <option value="">Select a user</option>
+              {users.map(user => (
+                <option key={user._id} value={user._id}>{user.username}</option>
               ))}
             </Form.Control>
           </Form.Group>
-          <Form.Group controlId="taskStatus">
-            <Form.Label>Status</Form.Label>
-            <Form.Check
-              type="checkbox"
-              name="status"
-              label="Completed"
-              checked={taskData.status}
-              onChange={handleCheckboxChange}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            {task ? 'Save Changes' : 'Add Task'}
-          </Button>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>Close</Button>
+        <Button variant="primary" onClick={handleSubmit}>Save changes</Button>
+      </Modal.Footer>
     </Modal>
   );
 };

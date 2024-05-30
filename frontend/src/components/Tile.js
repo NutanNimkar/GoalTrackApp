@@ -1,4 +1,5 @@
 import React from 'react';
+
 import './Tile.css'; // Import your CSS file
 
 class Tile extends React.Component {
@@ -7,6 +8,7 @@ class Tile extends React.Component {
       <div className="tile">
         <h2>{this.props.title}</h2>
         <p>{this.props.description}</p>
+        <img alt='Missing'>{this.props.image}</img>
       </div>
     );
   }

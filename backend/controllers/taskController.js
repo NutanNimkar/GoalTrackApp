@@ -46,6 +46,7 @@ const createTask = async (req, res) => {
         if(!task){
             return res.status(404).json({msg: 'Task not found'});
         }
+        res.status(200).json(task);
     }
 
 
@@ -62,10 +63,24 @@ const deleteTask = async (req, res) => {
     res.status(200).json({id: task._id});
 }
 
+const updateTaskStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const task = await Tasks.findOneAndUpdate({_id: id},{status}, {new: true});
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({err: 'No such task'})
+    }
+    if(!task){
+        return res.status(404).json({msg: 'Task not found'});
+    }
+    res.status(200).json(task);
+}
 module.exports = {
     createTask,
     getAllTasks,
     getTask,
     updateTask,
-    deleteTask 
+    deleteTask,
+    updateTaskStatus
 }
