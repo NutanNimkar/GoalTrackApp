@@ -28,7 +28,7 @@ return (
     <ul className='ListContent'>
       <li className='ListHome'><img src={Home} className='Homepic' alt='Home'/><a href="/">Home</a></li>
       <li><img src = {List} className='Listpic'alt='List'/><a href="/task">Task Details</a></li>
-      <li ><img src = {Group} className='Grouppic' alt='Group'/><a href="/group">Groups</a></li>
+      <li ><img src = {Group} className='Grouppic' alt='Group'/><a href="/groups">Groups</a></li>
       <li><img src={Friends} className='Friendspic' alt='Friends'/><a href="/friends">Friends</a></li>
     </ul>
   <div className='Breakline2'>

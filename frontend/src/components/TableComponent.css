@@ -1,0 +1,61 @@
+/* TableComponent.css */
+
+.custom-table {
+    background-color: #1c1c1c;
+    color: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #333333;
+    width: 100%;
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 12px;
+    border: 1px solid #333333;
+    text-align: left;
+  }
+  
+  .custom-table th {
+    background-color: #333333;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  .custom-table tbody tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-table tbody tr:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .custom-table .btn {
+    margin-right: 5px;
+    border-radius: 4px;
+  }
+  
+  .custom-table .btn-info {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+  }
+  
+  .custom-table .btn-danger {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+  }
+  
+  .custom-table .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  .custom-table .btn-info:hover,
+  .custom-table .btn-danger:hover,
+  .custom-table .btn-secondary:hover {
+    opacity: 0.8;
+  }
+  
