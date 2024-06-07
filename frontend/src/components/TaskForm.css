@@ -1,0 +1,68 @@
+/* TaskForm.css */
+
+/* Overall Layout */
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Modal Styles */
+  .modal-content {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+  }
+  
+  .modal-header, .modal-footer {
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  .modal-header .close {
+    color: #ffffff;
+  }
+  
+  /* Form Styles */
+  .form-label {
+    color: #000000;
+  }
+  
+  .form-control {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+  }
+  
+  .form-control:focus {
+    border-color: #000000;
+    box-shadow: none;
+  }
+  
+  .form-control::placeholder {
+    color: #aaaaaa;
+  }
+  
+  /* Button Styles */
+  .btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #444444;
+    border-color: #444444;
+  }
+  
+  .btn-secondary {
+    background-color: #444444;
+    border-color: #444444;
+    color: #ffffff;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #000000;
+    border-color: #000000;
+  }
+  

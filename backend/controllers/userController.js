@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Task = require('../models/Task');
+const Group = require('../models/Group');
 const mongoose = require('mongoose');
 
 // get all Users
@@ -63,20 +64,32 @@ const getUsersGroups = async (req, res) => {
         return res.status(404).json({err: 'No such user'})
     }
     try{
-    const user = await User.findById(id).populate('groups');
-    if(!user){
-        return res.status(404).json({msg: 'User not found'});
-    }
-    }catch(err){
-        console.log(err);
-        res.status(400).json({err: err.message});
-    }
+        const user = await User.findById(id);
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({ err: 'No such user' });
+        }
+    // const user = await User.findById(id).populate('groups');
+        const groups = await Group.find({members: id});
+
+        if (!groups || groups.length === 0) {
+            return res.status(404).json({ msg: 'No groups found for the user' });
+        }
+        user.groups = groups;
+
+        return res.status(200).json(user);
+        if(!groups){
+            return res.status(404).json({msg: 'User not found'});
+        }
+        }catch(err){
+            console.log(err);
+            return res.status(400).json({err: err.message});
+        }
 }
 const getUsersTasks = async (req, res) => {
     const { id } = req.params;
 
     try {
-    
+        const user = await User.findById(id);
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({ err: 'No such user' });
         }
@@ -84,16 +97,13 @@ const getUsersTasks = async (req, res) => {
         // Find all tasks assigned to the user
         const tasks = await Task.find({ assignedTo: id });
         
-        // finds all the daily tasks assigned to the user
-        // const tasks = await Task.find({ assignedTo: id, dueDate: { $gte: new Date().setHours(0, 0, 0, 0), $lt: new Date().setHours(23, 59, 59, 999) } });
-
         // If no tasks found, return 404
         if (!tasks || tasks.length === 0) {
             return res.status(404).json({ msg: 'No tasks found for the user' });
         }
 
         // Populate tasks into the User object
-        const user = await User.findById(id);
+        // const user = await User.findById(id).populate('tasks').populate('groups');
         user.tasks = tasks;
 
         // Return the user object with populated tasks
