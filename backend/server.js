@@ -6,7 +6,7 @@ const app = express();
 const mongoose = require("mongoose");
 const tasksRoutes = require("./routes/tasks");
 const userRoutes = require("./routes/user");
-// const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
 const groupRoutes = require("./routes/groups");
 
 //middleware
@@ -20,7 +20,7 @@ app.use((req, res, next)=>{
 
 app.use('/api/tasks',tasksRoutes);
 app.use('/api/users',userRoutes);
-// app.use('/api/auth',authRoutes);
+app.use('/api/auth',authRoutes);
 app.use('/api/groups',groupRoutes);
 
 mongoose
