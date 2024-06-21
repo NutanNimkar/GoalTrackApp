@@ -58,20 +58,6 @@ const TaskForm = ({ task, users, onSave }) => {
           {...register('dueDate')}
         />
       </Form.Group>
-      <Form.Group controlId="formTaskAssignedTo">
-        <Form.Label>Assign To</Form.Label>
-        <Form.Control
-          as="select"
-          {...register('assignedTo', { required: true })}
-        >
-          <option value="">Select a user</option>
-          {users.map((user) => (
-            <option key={user._id} value={user._id}>
-              {user.username}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
       <Button variant="primary" type="submit">
         Save Changes
       </Button>

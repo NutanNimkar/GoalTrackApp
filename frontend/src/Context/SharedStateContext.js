@@ -10,31 +10,34 @@ const SharedStateProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState('');
-  const userId = '6643963a530dec5de2c0797e'; 
+  const userId = '6675c3f1a07a5bbf79e2bed2'; 
+  // 6643963a530dec5de2c0797e
   const groupId = '6656350aa68a902e3fdf9675';
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchGroupAndTasks();
   }, []);
 
   const fetchGroupAndTasks = () => {
-    axios.get(`/api/groups/${groupId}/members`)
-      .then(response => setGroup(response.data))
-      .catch(error => console.error('Error fetching group:', error));
-
-    axios.get('/api/users')
-      .then(response => setUsers(response.data))
-      .catch(error => console.error('Error fetching users:', error));
-
-    axios.get(`/api/users/${userId}/tasks`)
-      .then(response => setDailyTasks(response.data.tasks))
-      .catch(error => console.error('Error fetching daily tasks:', error));
+    axios.all([
+      axios.get(`/api/groups/${groupId}/members`),
+      axios.get('/api/users'),
+      axios.get(`/api/users/${userId}/tasks`)
+    ])
+    .then(axios.spread((groupResponse, usersResponse, tasksResponse) => {
+      setGroup(groupResponse.data);
+      setUsers(usersResponse.data);
+      setDailyTasks(tasksResponse.data.tasks);
+    }))
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
   };
 
   const handleSaveTask = (task) => {
-    console.log("here");
+    const taskWithUser = { ...task, assignedTo: userId };
     if (task._id) {
-      axios.put(`/api/tasks/${task._id}`, task)
+      axios.put(`/api/tasks/${task._id}`, taskWithUser)
         .then(response => {
           setDailyTasks(prevDailyTasks => 
             prevDailyTasks.map(t => t._id === task._id ? response.data : t)
@@ -47,7 +50,7 @@ const SharedStateProvider = ({ children }) => {
         .catch(error => console.error('Error updating task:', error));
 
     } else {
-      axios.post('/api/tasks', task)
+      axios.post('/api/tasks', taskWithUser)
         .then(response => {
           setDailyTasks(prevDailyTasks => [...prevDailyTasks, response.data]);
           setShowModal(false);
