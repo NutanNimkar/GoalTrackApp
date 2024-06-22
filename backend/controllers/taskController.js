@@ -77,19 +77,29 @@ const updateTaskStatus = async (req, res) => {
     res.status(200).json(task);
 }
 
-const refreshDueDate = async (req, res) => {
-    const { id } = req.params;
+const updateDueDate = async (req, res) => {
     const { dueDate } = req.body;
-    const task = await Tasks.findOneAndUpdate({_id: id},{dueDate}, {new: true})
-    
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({err: 'No such task'})
+
+    if (!dueDate || isNaN(new Date(dueDate).getTime())) {
+        return res.status(400).json({ message: 'Invalid due date' });
     }
-    if(!task){
-        return res.status(404).json({msg: 'Task not found'});
+    try {
+        const tasks = await Task.find({});
+        await Promise.all(tasks.map(async (task) => {
+            task.dueDate = new Date(dueDate);
+            await task.save();
+        }).catch(err => {
+            return res.status(400).json({ err: err.message });
+        }));
+
+        res.status(200).json({ message: 'Due dates updated successfully' });
+    } catch (err) {
+        console.error('Error updating due dates:', err);
+        res.status(500).json({ message: 'Error updating due dates', error: err.message });
     }
-    res.status(200).json(task);
-}
+};
+
+
 module.exports = {
     createTask,
     getAllTasks,
@@ -97,5 +107,5 @@ module.exports = {
     updateTask,
     deleteTask,
     updateTaskStatus,
-    refreshDueDate
+    updateDueDate
 }
