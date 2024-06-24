@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, FormText } from 'react-bootstrap';
 import TableComponent from '../components/TableComponent';
 import VerticalNavigation from '../components/VerticalNavigation';
 import { SharedStateContext } from '../Context/SharedStateContext';
@@ -8,7 +8,7 @@ import './Groups.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Groups = () => {
-  const { group, users, selectedUserId, setSelectedUserId, addUserToGroup, calculateTaskProgress } = useContext(SharedStateContext);
+  const { group, users, selectedUserId, setSelectedUserId, addUserToGroup, calculateTaskProgress, handleGroupName, addNewGroup, groupName } = useContext(SharedStateContext);
 
   const groupColumns = [
     { label: '#', renderCell: (user, index) => index + 1 },
@@ -51,6 +51,17 @@ const Groups = () => {
                       </Form.Control>
                     </Form.Group>
                     <Button variant="primary" className="mt-3" onClick={addUserToGroup}>Add User</Button>
+                  </Form>
+                  <Form onSubmit = {handleGroupName}>
+                    <Form.Group controlId="formUserSelect" className="mt-3">
+                      <Form.Label style={{ color: '#ffffff' }}>Create Group</Form.Label>
+                      <br/>
+                        <label style={{color: '#ffffff'}}> Enter the Group Name
+                          <input type="text" name="groupName"/>
+                        </label>
+                        <Button variant="primary" className="mt-3" type="submit">Create Group</Button>
+                    </Form.Group>
+                    
                   </Form>
                 </div>
               </div>
