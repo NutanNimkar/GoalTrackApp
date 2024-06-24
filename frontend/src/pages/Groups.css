@@ -1,0 +1,20 @@
+/* Groups.css */
+
+.group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .group-table {
+    background-color: #1c1c1c;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .group-table h2 {
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  

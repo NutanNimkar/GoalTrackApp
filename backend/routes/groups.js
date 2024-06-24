@@ -1,6 +1,6 @@
 const express = require('express');
 const Group = require('../models/Group');
-const {createGroup, getAllGroups, getGroup, updateGroup, deleteGroup} = require('../controllers/groupController');
+const {createGroup, getAllGroups, getGroup, updateGroup, deleteGroup, getGroupMembers, addGroupMember} = require('../controllers/groupController');
 
 const router = express.Router();
 
@@ -18,6 +18,10 @@ router.put('/:id',updateGroup);
 
 //deletes a group
 router.delete('/:id', deleteGroup);
+
+router.get('/:id/members', getGroupMembers)
+
+router.put('/:id/add-member', addGroupMember)
 
 // tasks associated with a group
 // router.get('/:id/tasks', ());
