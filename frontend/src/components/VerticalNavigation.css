@@ -1,121 +1,283 @@
-.vertical-navbar {
-    background-color: #333;
-    width: 250px; /* Adjust width as needed */
-    height: 100%; /* Adjust height as needed */
-    position: fixed;
-    left: 0;
+:root{
+
+--darkGreen: #5c8d89;
+--green: #74b49b;
+--lightGreen: #a7d7c5;
+--veryLightGreen: #f4f9f4;
+--darkGrey: #828282;
+--white: #ffffff;
+--lightGrey: #f2f2f2;
+font-family :"Andada Pro", serif;
+
+}
+
+
+
+
+
+
+body {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    font-family: -"Andada Pro", serif;
+    background-color: var(--veryLightGreen);
+    text-transform: capitalize;
+}
+
+h1 {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.VerticalNavigation {
+    background-color:var(--white);
+    position: absolute;
     top: 0;
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-    z-index: 1000; /* Ensure navbar is above other content */
-}
-.vertical-navbar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
+    left: 0;
+    padding:2rem 3rem;
+    width: 18rem;
+    height: 100vh;
+    transition: 0.5s all;
+    float: left;
 
-.vertical-navbar li {
-    border-bottom: 1px solid #555; /* Add borders between list items */
-}
-
-.vertical-navbar li a {
-    display: block;
-    color: #fff;
-    padding: 15px 20px;
-    text-decoration: none;
-}
-
-.vertical-navbar li a:hover {
-    background-color: #555;
-}
-
-.vertical-navbar {
-
-    .Logocontainer{
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #555;
-        h1.title{
-            font-size: 31px;
-            color: orange;
-            padding: 10px 0 0 0;
-        }
-        img.Logo{
-            width:auto;
-            height: 4rem;
-            padding: 10px 0 10px 0;
-        }
-
-    }
-    .Profilecontainer{
-        align-items: center;
-        justify-content: center;
-        display: flex;
-        padding:10px 5px 0 5px;
-        color: white;
-        background-color: slategrey;
-    img.UserProfile{
-        width:auto;
-        height: 2rem;
-        padding: 0 5px 5px 0;
-    }
-    h3.Username{
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        color: white;
-        padding: 20px 5px 5px 5px;
-    }
-
-}
-
-}
-
-.vertical-navbar{
-
-    .Breakline1{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: black;
-        border: #333;
-        border-width: 5px;
-        font-size:15px;
-        color: white;
-        padding: 10px 0 0 0;
-    }
-    .Breakline2{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: black;
-        border: #333;
-        border-width: 5px;
-        font-size:15px;
-        color: white;
-        padding: 10px 0 0 0;
-
-    }
-}
-
-.vertical-navbar{
-
-    li{
+    .logoContainer {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        flex-direction: row;
-        width:100%;
-        border-radius: 1px;
+        position: absolute;
+        padding-bottom: 3rem;
 
-        img{
-            padding: 0 10px 0 10px;
-            width: auto;
-            height: 2rem;
+        h2.title {
+            font-size: 31.42px;
+            color: var(--green);
+            padding: 0 0 0 1rem;
+        }
+    }
+
+    .burgerContainer {
+        content: "";
+        background-color: var(--green);
+        position: absolute;
+        right: calc(-35px / 2);
+        top: calc(7rem / 1.15);
+        width: 33px;
+        height: 33px;
+        border-radius: 2rem;
+        z-index: 1;
+    
+
+        .burgerTrigger {
+            content: "";
+            width: 35px;
+            height: 35px;
+            background-color: red;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 0;
+            position: relative;
         }
 
+        .burgerMenu {
+            content: "";
+            background-color: var(--green);
+            position: relative;
+            z-index: 1;
+            width: 20px;
+            height: 3px;
+            border-radius: 2rem;
+            bottom: calc(39px / 2);
+            left: 0.45rem;
+            transition: 0.5s all;
+           
+        }
+
+        .burgerMenu::after {
+            content: "";
+            background-color:var(--white);
+            position: absolute;
+            width: 20px;
+            height: 3px;
+            border-radius: 2rem;
+            top: 0.4rem;
+            transform: translateY(-0.4rem) rotate(45deg);
+            transition: 0.5s all;
+        }
+
+        .burgerMenu::before {
+            content: "";
+            background-color:var(--white);
+            position: absolute;
+            width: 20px;
+            height: 3px;
+            border-radius: 2rem;
+            top: -0.4rem;
+            transform: translateY(0.4rem) rotate(-45deg);
+            transition: 0.5s all;
+            
+        
+        }
     }
-   
+
+  /*   .burgerContainer::after {
+        content: "";
+        position: absolute;
+        right: 35px;
+        top: (35px / 2);
+        z-index: 0;
+        width: calc(6rem + 15rem);
+        background-color: var(--lightGreen);
+        height: 2px;
+        transition: 0.5s all;
+        padding-top: 2rem;
+        transform: translateX(8rem);
+    } */
+
+    /* .profileContainer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 3rem 0 0 0;
+
+        img {
+            width: auto;
+            height: 3rem;
+        }
+
+        .profileContents {
+            padding: 0 0 0 1rem;
+
+            p.name {
+                padding: 0;
+                margin: 0;
+                font-size: 16.7px;
+                color: var(--darkGreen);
+                text-transform: capitalize;
+                font-weight: bold;
+            }
+
+            p {
+                padding: 0;
+                margin: 0;
+                font-size: 13.9px;
+                color: var(--darkGreen);
+                text-transform: lowercase;
+            }
+        }
+    }
+ */
+    .contentsContainer {
+        margin: 2rem 0 0 0;
+        padding-top: 5rem ;
+        padding-right: 3rem;
+
+        ul {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            
+
+            li {
+                display: flex;
+                align-items: left;
+                justify-content: flex-start;
+                flex-direction: row;
+                margin: 0.75rem 0;
+                padding: 0.75rem 0;
+                width: 100%;
+                border-radius: 1rem;
+                cursor: pointer;
+
+                img {
+                 /*    padding: 0 1rem 0 0.5rem; */
+                }
+
+                a {
+                    text-decoration: none;
+                    color: var(--darkGreen);
+                    font-size: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin: 0 0 0 0.5rem;
+                }
+            }
+
+            li.active {
+                background-color: var(--veryLightGreen);
+
+                a {
+                    color: var(--green);
+                }
+            }
+
+            li:hover {
+                background-color: var(--lightGreen);
+                transition: 0.25s;
+            }
+        }
+    }
+}
+.ulimage{
+
+    height: 2rem;
+    margin: auto 5px;
+    float: left;
+}
+.ulimagehome{
+
+    height: 4rem;
+}
+.logo{
+    height: 3rem;
+}
+.contentsContainer:last-child {
+    margin-top: auto;
+  }
+.VerticalNavigation.active {
+    width: 8rem;
+    transition: 0.5s all;
+
+    .logoContainer.active {
+        h2.title {
+            opacity: 0;
+        }
+    }
+
+    .burgerContainer.active {
+        transition: 0.5s all;
+        .burgerMenu {
+            background-color:var(--white);
+            transition: 0.5s all;
+        }
+
+        .burgerMenu::before {
+            transform: translateY(0rem) rotate(0deg);
+            transition: 0.5s all;
+        }
+
+        .burgerMenu::after {
+            transform: translateY(0rem)  rotate(0deg);
+            transition: 0.5s all;
+        }
+    }
+
+    .profileContainer {
+        .profileContents {
+            opacity: 0;
+        }
+    }
+
+    .contentsContainer {
+        a {
+            opacity: 0;
+        }
+    }
 }
