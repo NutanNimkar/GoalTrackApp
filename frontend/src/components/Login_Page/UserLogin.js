@@ -26,19 +26,20 @@ const UserLogin = ()=> {
         </div>
        
               <form className='UserInput' onSubmit={handleSubmit}>
-                   
+                   <div className='EmailInput'>
                     <img src = {EmailIcon} alt='Email'/>
-                    <input type='email' onChange={(e)=> setEmail(e.target.value)} value={email}/>
-
+                    <input type='email' placeholder='Email' onChange={(e)=> setEmail(e.target.value)} value={email}/>
+                  </div>
+                  <div className='PasswordInput'>
                     <img src = {LockIcon} alt='Password'/>
                     <input type='password'placeholder='Password'onChange={(e)=> setPassword(e.target.value)} value={password}/>
-                
+                </div>
             <button disabled = {isLoading} className='Submit'>Login </button>
             {error && <div className='error'>{error}</div>}
        
         </form>
         <div className='ForgotPass'>Forgot Password? <span>Click Here</span></div>
-        <div className='ForgotPass'>Create New Account <span>Click Here</span></div>
+        <div className='CreateAccount'>Create New Account <span>Click Here</span></div>
     </div>
        
   )
