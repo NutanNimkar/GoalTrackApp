@@ -1,5 +1,5 @@
 import React from 'react'
-import VerticalNavigation from '../components/VerticalNavigation'
+import VerticalNavigation from '../components/VerticalNavigation.jsx'
 import Tile from '../components/Tile'
 import PageHeader from '../components/PageHeader'
 import "./Home.css"
