@@ -52,17 +52,7 @@ const Groups = () => {
                     </Form.Group>
                     <Button variant="primary" className="mt-3" onClick={addUserToGroup}>Add User</Button>
                   </Form>
-                  <Form onSubmit = {handleGroupName}>
-                    <Form.Group controlId="formUserSelect" className="mt-3">
-                      <Form.Label style={{ color: '#ffffff' }}>Create Group</Form.Label>
-                      <br/>
-                        <label style={{color: '#ffffff'}}> Enter the Group Name
-                          <input type="text" name="groupName"/>
-                        </label>
-                        <Button variant="primary" className="mt-3" type="submit">Create Group</Button>
-                    </Form.Group>
-                    
-                  </Form>
+                  
                 </div>
               </div>
             </Col>

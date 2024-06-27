@@ -10,8 +10,7 @@ const SharedStateProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState('');
-  const [groupName, setGroupName] = useState('');
-  const [error, setError] = useState(null);
+  
   const userId = '6643963a530dec5de2c0797e'; 
   const groupId = '6656350aa68a902e3fdf9675';
 
@@ -108,35 +107,6 @@ const SharedStateProvider = ({ children }) => {
     return `${completedTasks.length}/${userTasks.length}`;
   };
 
-  const handleGroupName = async (e) => {
-    e.preventDefault()
-
-    const groupName = e.groupName
-
-    const response = await fetch('/api/groups', {
-      method: 'PUT',
-      body: JSON.stringify(groupName),
-      header: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const json = await response.json()
-
-    if (!response.ok) {
-      setError(json.error)
-    }
-    if (response.ok) {
-      setError(null)
-      setGroupName('')
-      console.log('new group created', json)
-      console.log(e.groupName)
-    }
-  }
-
-  const addNewGroup = (groupName) => {
-
-  }
-
   return (
     <SharedStateContext.Provider value={{
       users,
@@ -153,9 +123,7 @@ const SharedStateProvider = ({ children }) => {
       deleteTask,
       toggleTaskStatus,
       addUserToGroup,
-      calculateTaskProgress,
-      addNewGroup,
-      handleGroupName
+      calculateTaskProgress
     }}>
       {children}
     </SharedStateContext.Provider>
