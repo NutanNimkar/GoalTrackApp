@@ -4,10 +4,30 @@ const Group = require('../models/Group');
 const mongoose = require('mongoose');
 
 // get all Users
-
 const getAllUsers = async (req, res) => {
-    const users = await User.find({}).sort({createdAt: -1});//sort by most recent
-    res.status(200).json(users);
+    try {
+        const users = await User.find({}).sort({ createdAt: -1 });
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ msg: 'No users found' });
+        }
+
+        const usersWithDetails = await Promise.all(users.map(async user => {
+            const groups = await Group.find({ members: user._id });
+            const tasks = await Task.find({ assignedTo: user._id });
+            
+            return {
+                ...user.toObject(),
+                groups,
+                tasks
+            };
+        }));
+
+        res.status(200).json(usersWithDetails);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ err: err.message });
+    }
 }
 
 // get a single User
@@ -65,21 +85,20 @@ const getUsersGroups = async (req, res) => {
     }
     try{
         const user = await User.findById(id);
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(404).json({ err: 'No such user' });
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
         }
-    // const user = await User.findById(id).populate('groups');
         const groups = await Group.find({members: id});
+
+        if(!groups){
+            return res.status(404).json({msg: 'User not found'});
+        }
 
         if (!groups || groups.length === 0) {
             return res.status(404).json({ msg: 'No groups found for the user' });
         }
         user.groups = groups;
-
         return res.status(200).json(user);
-        if(!groups){
-            return res.status(404).json({msg: 'User not found'});
-        }
         }catch(err){
             console.log(err);
             return res.status(400).json({err: err.message});
