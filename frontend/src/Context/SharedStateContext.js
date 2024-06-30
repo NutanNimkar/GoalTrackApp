@@ -10,12 +10,16 @@ const SharedStateProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState('');
+  const [groups, setGroups] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
   
   const userId = '6643963a530dec5de2c0797e'; 
   const groupId = '6656350aa68a902e3fdf9675';
 
   useEffect(() => {
     fetchGroupAndTasks();
+    getGroups();
+    getMembers();
   }, []);
 
   const fetchGroupAndTasks = () => {
@@ -124,6 +128,25 @@ const SharedStateProvider = ({ children }) => {
     return `${completedTasks.length}/${userTasks.length}`;
   };
 
+  // debugging
+  const getGroups = () => {
+    axios.get(`/api/groups/${groupId}`)
+    .then(response => {
+        setGroups(response.data.name)
+        console.log(response.data)
+    })
+    .catch(error => console.error('Error fetching groups:', error))
+  }
+  const getMembers = () => {
+    axios.get(`/api/groups/${groupId}/members`)
+    .then(response => {
+        setGroupMembers(response.data.members)
+        // console.log(response.data.members)
+    })
+    .catch(error => console.error('Error fetching group:', error));
+  }
+
+  // console.log( users)
   return (
     <SharedStateContext.Provider
       value={{
@@ -134,6 +157,8 @@ const SharedStateProvider = ({ children }) => {
         showModal,
         currentTask,
         selectedUserId,
+        groups,
+        groupMembers,
         setSelectedUserId,
         setShowModal,
         setDailyTasks,
@@ -144,6 +169,8 @@ const SharedStateProvider = ({ children }) => {
         toggleTaskStatus,
         addUserToGroup,
         calculateTaskProgress,
+        setGroups,
+        setGroupMembers
       }}
     >
       {children}

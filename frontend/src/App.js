@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import TaskDetails from './pages/TaskDetails';
 import Groups from './pages/Groups';
 import { SharedStateProvider } from './Context/SharedStateContext';
+import GroupsPage from './pages/GroupHomePage';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/task" element={<TaskDetails />} />
-          <Route path='/groups' element={<Groups />} />
+          <Route path='/groups' element={<GroupsPage />} />
         </Routes>
       </div>
       </BrowserRouter>

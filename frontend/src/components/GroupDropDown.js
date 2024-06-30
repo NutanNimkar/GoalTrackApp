@@ -11,7 +11,7 @@ function GroupDropDown(){
                     <Accordion.Header>{groups}</Accordion.Header>
                     <Accordion.Body>
                         {groupMembers.map((member, index) => (
-                            <ul key={index}>{member.username}</ul>
+                            <ul key={index}>{member?.username}</ul>
                         ))}
                     </Accordion.Body>
                 </Accordion.Item>
