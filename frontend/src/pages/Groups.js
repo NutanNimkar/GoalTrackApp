@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Form, Button, FormText } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import TableComponent from '../components/TableComponent';
 import VerticalNavigation from '../components/VerticalNavigation';
 import { SharedStateContext } from '../Context/SharedStateContext';
@@ -8,7 +8,7 @@ import './Groups.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Groups = () => {
-  const { group, users, selectedUserId, setSelectedUserId, addUserToGroup, calculateTaskProgress, handleGroupName, addNewGroup, groupName } = useContext(SharedStateContext);
+  const { group, users, selectedUserId, setSelectedUserId, addUserToGroup, calculateTaskProgress } = useContext(SharedStateContext);
 
   const groupColumns = [
     { label: '#', renderCell: (user, index) => index + 1 },
