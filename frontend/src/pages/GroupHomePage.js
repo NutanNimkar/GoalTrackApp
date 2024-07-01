@@ -8,7 +8,7 @@ import Tile from '../components/Tile';
 
 const GroupsPage = () => {
 
-    const {groups} = useContext(SharedStateContext)
+    const {groups, groupIDS2} = useContext(SharedStateContext)
 
     return (
         <Container fluid className="container-fluid vh-100">
@@ -21,7 +21,7 @@ const GroupsPage = () => {
                     <div className='GroupsDropDown'>
                         <SharedStateProvider>
                             {groups.map((group, groupIndex) => (
-                                <GroupDropDown groupName={group} key={groupIndex} groupID = {group._id}/>
+                                <GroupDropDown groupName={group} key={groupIndex} groupID = {groupIDS2}/>
                             ))}
 
                         </SharedStateProvider>

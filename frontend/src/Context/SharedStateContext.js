@@ -15,7 +15,7 @@ const SharedStateProvider = ({ children }) => {
   //debugging
   const [specificGroup, setSpecificGroup] = useState([]);
   const [groupIDS, setGroupIDS] = useState([]);
-  const [groupIDS2, setGroupIDS2] = useState([])
+
   
   const userId = '6643963a530dec5de2c0797e'; 
   const groupId = '6656350aa68a902e3fdf9675';
@@ -146,8 +146,8 @@ const SharedStateProvider = ({ children }) => {
   const getGroupIDs = () => {
     axios.get(`/api/groups`)
     .then(response => {
-        setGroupIDS(prevGroupIDS => [...response.data]);
-        console.log(response.data)
+        setGroupIDS(response.data);
+        
     } 
   )
     .catch(error => console.error('Error fetching Group IDS', error))

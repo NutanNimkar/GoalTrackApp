@@ -3,7 +3,7 @@ import React from 'react'
 
 function GroupDropDown({groupName, groupID}){
     
-    console.log(groupID)
+    // console.log(groupID)
     
 
     return(
