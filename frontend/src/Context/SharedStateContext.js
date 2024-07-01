@@ -11,6 +11,11 @@ const SharedStateProvider = ({ children }) => {
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState('');
   const [groups, setGroups] = useState([]);
+
+  //debugging
+  const [specificGroup, setSpecificGroup] = useState([]);
+  const [groupIDS, setGroupIDS] = useState([]);
+  const [groupIDS2, setGroupIDS2] = useState([])
   
   const userId = '6643963a530dec5de2c0797e'; 
   const groupId = '6656350aa68a902e3fdf9675';
@@ -18,6 +23,8 @@ const SharedStateProvider = ({ children }) => {
   useEffect(() => {
     fetchGroupAndTasks();
     getGroups();
+    getGroupIDs();
+    // getSpecificGroup();
   }, []);
 
   const fetchGroupAndTasks = () => {
@@ -126,7 +133,6 @@ const SharedStateProvider = ({ children }) => {
     return `${completedTasks.length}/${userTasks.length}`;
   };
 
-  // debugging
   const getGroups = () => {
     axios.get(`/api/groups/`)
     .then(response => {
@@ -136,6 +142,33 @@ const SharedStateProvider = ({ children }) => {
     .catch(error => console.error('Error fetching groups:', error))
   }
   
+  // debugging 
+  const getGroupIDs = () => {
+    axios.get(`/api/groups`)
+    .then(response => {
+        setGroupIDS(prevGroupIDS => [...response.data]);
+        
+    } 
+  )
+    .catch(error => console.error('Error fetching Group IDS', error))
+  }
+
+  
+  const getSpecificGroup = () => {
+    axios.get(`/api/groups/${groupIDS}/members`)
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(error => console.error('Error fetching specific groups:', error))
+  }
+
+  // console.log(groupIDS)
+
+  
+  groupIDS.map(group => (
+    setGroupIDS2(prevGroupId => [group._id, ...prevGroupId])
+  ))
+  console.log(groupIDS2)
   // console.log( users)
   return (
     <SharedStateContext.Provider

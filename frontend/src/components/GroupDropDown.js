@@ -1,8 +1,10 @@
 import { Accordion, Button } from "react-bootstrap";
-import React, {useContext} from 'react'
-import { SharedStateContext } from "../Context/SharedStateContext";
+import React from 'react'
 
-function GroupDropDown({groupName}){
+function GroupDropDown({groupName, groupID}){
+    
+    // console.log(groupID)
+    
     return(
         <Accordion>
                 <Accordion.Item eventKey="1">
