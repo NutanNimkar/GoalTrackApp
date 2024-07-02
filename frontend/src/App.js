@@ -5,11 +5,13 @@ import TaskDetails from './pages/TaskDetails';
 import Groups from './pages/Groups';
 import { SharedStateProvider } from './Context/SharedStateContext';
 import GroupsPage from './pages/GroupHomePage';
+import { GroupsPageProvider } from './Context/GroupsPageContext';
 
 function App() {
   return (
     <div className="App">
       <SharedStateProvider>
+      <GroupsPageProvider>
       <BrowserRouter>
       <div className="pages">
         <Routes>
@@ -19,6 +21,7 @@ function App() {
         </Routes>
       </div>
       </BrowserRouter>
+      </GroupsPageProvider>
       </SharedStateProvider>
     </div>
   );

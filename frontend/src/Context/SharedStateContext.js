@@ -10,20 +10,12 @@ const SharedStateProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState('');
-  const [groups, setGroups] = useState([]);
 
-  //debugging
-  const [specificGroup, setSpecificGroup] = useState([]);
-  const [groupIDS, setGroupIDS] = useState([]);
-  const [specGroup, setSpecGroup] = useState([]);
-  
   const userId = '6643963a530dec5de2c0797e'; 
   const groupId = '6656350aa68a902e3fdf9675';
 
   useEffect(() => {
     // fetchGroupAndTasks();
-    getGroups();
-    getGroupIDs();
     // getSpecificGroup();
   }, []);
 
@@ -132,50 +124,6 @@ const SharedStateProvider = ({ children }) => {
     }
     return `${completedTasks.length}/${userTasks.length}`;
   };
-
-  const getGroups = () => {
-    axios.get(`/api/groups/`)
-    .then(response => {
-        setGroups(response.data)
-        // console.log(response.data)
-    })
-    .catch(error => console.error('Error fetching groups:', error))
-  }
-  
-  
-  // debugging 
-  const getGroupIDs = () => {
-    axios.get(`/api/groups`)
-    .then(response => {
-      const ids = response.data.map(grp => grp._id)
-        setGroupIDS(ids)
-        // console.log(ids)
-    } 
-  )
-    .catch(error => console.error('Error fetching Group IDS', error))
-  }
-  console.log(groupIDS)
-  // console.log(specGroup)
-  const groupMemberRequests = groupIDS.map(id => 
-    axios.get(`/api/groups/${id}/members`)
-    .then(response => {
-      console.log(`Members of group ${id}: `, response.data.members);
-      // return response.data
-    })
-    .catch(error => {
-      console.error(`Error fetching members of group ${id}: `, error);
-      throw error;
-    })
-  );
-
-  Promise.all(groupMemberRequests)
-  .then(results => {
-    console.log('All requests completed successfully');
-  })
-  .catch(error => {
-    console.error('Error in one or more requests', error);
-  });
-
   // console.log( users)
   return (
     <SharedStateContext.Provider
@@ -187,7 +135,6 @@ const SharedStateProvider = ({ children }) => {
         showModal,
         currentTask,
         selectedUserId,
-        groups,
         setSelectedUserId,
         setShowModal,
         setDailyTasks,
@@ -197,8 +144,7 @@ const SharedStateProvider = ({ children }) => {
         deleteTask,
         toggleTaskStatus,
         addUserToGroup,
-        calculateTaskProgress,
-        setGroups
+        calculateTaskProgress
       }}
     >
       {children}

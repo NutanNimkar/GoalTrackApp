@@ -2,14 +2,14 @@ import React, { useContext } from 'react';
 import VerticalNavigation from '../components/VerticalNavigation';
 import { Container, Row, Col } from 'react-bootstrap';
 import GroupDropDown from '../components/GroupDropDown';
-import { SharedStateContext, SharedStateProvider } from '../Context/SharedStateContext';
+import { GroupsPageContext, GroupsPageProvider } from '../Context/GroupsPageContext';
 import Tile from '../components/Tile';
 
 
 const GroupsPage = () => {
 
-    const {groups, groupIDS2} = useContext(SharedStateContext)
-
+    const {groups} = useContext(GroupsPageContext)
+    const {memberNames} = useContext(GroupsPageContext)
     return (
         <Container fluid className="container-fluid vh-100">
             <Row className="h-100">
@@ -19,12 +19,12 @@ const GroupsPage = () => {
                 <Col md={10} className="p-4">
                     <h1 style={{textAlign: 'center'}}>Groups</h1>
                     <div className='GroupsDropDown'>
-                        <SharedStateProvider>
+                        <GroupsPageProvider>
                             {groups.map((group, groupIndex) => (
-                                <GroupDropDown groupName={group} key={groupIndex} groupID = {groupIDS2}/>
-                            ))}
+                                    <GroupDropDown groupName={group} key={groupIndex} memberNames={memberNames.map(name => name.map(name => name))} memberIndex={memberNames.map(index => index.map(index => index))}/>                                )
+                            )}
 
-                        </SharedStateProvider>
+                        </GroupsPageProvider>
                         
                     </div>
                 </Col>
