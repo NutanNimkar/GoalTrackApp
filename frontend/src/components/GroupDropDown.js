@@ -1,21 +1,33 @@
 import { Accordion, Button} from "react-bootstrap";
-import React, { useContext } from 'react'
-import {GroupsPageContext, GroupsPageProvider } from '../Context/GroupsPageContext'
-function GroupDropDown({groupName, memberNames, memberIndex}){
+import React from 'react';
+// import {CIcon} from '@coreui/icons-react'
+import {cisPlusCircle} from '@coreui/icons';
+
+function GroupDropDown({groupName, memberNames}){
     
     // console.log(groupID)
-    console.log(memberIndex, memberNames)
 
     return(
         <Accordion>
                 <Accordion.Item eventKey="1">
-                    <Accordion.Header>{groupName.name}</Accordion.Header>                
+                    <Accordion.Header>{groupName}</Accordion.Header>                
                     <Accordion.Body>
-                        {
-                            memberNames.map((member, index) => (
-                                <Button key={index}>{member}</Button>
-                            ))
-                        }
+                        <div>
+                            {
+                                memberNames.map(member => (
+                                        <div class="d-grid gap-2">
+                                            <Button key={member} variant="light" size="lg" className="d-grid gap-2">{member}</Button>
+                                            <br/>
+                                        </div>
+                                        
+                                    )
+                                )
+                                
+                            }
+                            {/* <Button variant="secondary" size="lg" className="d-grid gap-2">
+                                <CIcon icon={cisPlusCircle}/>
+                            </Button> */}
+                        </div>
                         
                     </Accordion.Body>
                 </Accordion.Item>

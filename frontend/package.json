@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.2.1",
     "@emotion/react": "^11.11.4",
     "@table-library/react-table-library": "^4.1.7",
     "@testing-library/jest-dom": "^5.17.0",

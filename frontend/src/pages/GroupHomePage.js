@@ -9,7 +9,7 @@ import Tile from '../components/Tile';
 const GroupsPage = () => {
 
     const {groups} = useContext(GroupsPageContext)
-    const {memberNames} = useContext(GroupsPageContext)
+    console.log(groups)
     return (
         <Container fluid className="container-fluid vh-100">
             <Row className="h-100">
@@ -20,19 +20,20 @@ const GroupsPage = () => {
                     <h1 style={{textAlign: 'center'}}>Groups</h1>
                     <div className='GroupsDropDown'>
                         <GroupsPageProvider>
-                            {groups.map((group, groupIndex) => (
-                                    <GroupDropDown groupName={group} key={groupIndex} memberNames={memberNames.map(name => name.map(name => name))} memberIndex={memberNames.map(index => index.map(index => index))}/>                                )
+                            {Object.keys(groups).map(groupName => (
+                                    <GroupDropDown groupName={groupName} key={groupName} memberNames={groups[groupName]} />)
                             )}
 
                         </GroupsPageProvider>
                         
                     </div>
-                </Col>
-                <Col className='h-100'>
-                    <Tile title="Create Group" description="Create a new group and invite other users"/>
-                    <Tile title="Join Group" description="Join an existing group with a group code"/>
+                    <Col className='h-100'>
+                        <Tile title="Create Group" description="Create a new group and invite other users"/>
+                        <Tile title="Join Group" description="Join an existing group with a group code"/>
                     
+                    </Col>
                 </Col>
+                
             </Row>
             
         </Container>
