@@ -15,13 +15,13 @@ const SharedStateProvider = ({ children }) => {
   //debugging
   const [specificGroup, setSpecificGroup] = useState([]);
   const [groupIDS, setGroupIDS] = useState([]);
-
+  const [specGroup, setSpecGroup] = useState([]);
   
   const userId = '6643963a530dec5de2c0797e'; 
   const groupId = '6656350aa68a902e3fdf9675';
 
   useEffect(() => {
-    fetchGroupAndTasks();
+    // fetchGroupAndTasks();
     getGroups();
     getGroupIDs();
     // getSpecificGroup();
@@ -142,25 +142,39 @@ const SharedStateProvider = ({ children }) => {
     .catch(error => console.error('Error fetching groups:', error))
   }
   
+  
   // debugging 
   const getGroupIDs = () => {
     axios.get(`/api/groups`)
     .then(response => {
-        setGroupIDS(response.data);
-        
+      const ids = response.data.map(grp => grp._id)
+        setGroupIDS(ids)
+        // console.log(ids)
     } 
   )
     .catch(error => console.error('Error fetching Group IDS', error))
   }
-
-  
-  const getSpecificGroup = () => {
-    axios.get(`/api/groups/${groupIDS}/members`)
+  console.log(groupIDS)
+  // console.log(specGroup)
+  const groupMemberRequests = groupIDS.map(id => 
+    axios.get(`/api/groups/${id}/members`)
     .then(response => {
-      console.log(response.data)
+      console.log(`Members of group ${id}: `, response.data.members);
+      // return response.data
     })
-    .catch(error => console.error('Error fetching specific groups:', error))
-  }
+    .catch(error => {
+      console.error(`Error fetching members of group ${id}: `, error);
+      throw error;
+    })
+  );
+
+  Promise.all(groupMemberRequests)
+  .then(results => {
+    console.log('All requests completed successfully');
+  })
+  .catch(error => {
+    console.error('Error in one or more requests', error);
+  });
 
   // console.log( users)
   return (

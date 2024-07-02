@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import VerticalNavigation from '../components/VerticalNavigation';
 import { Container, Row, Col } from 'react-bootstrap';
 import GroupDropDown from '../components/GroupDropDown';
