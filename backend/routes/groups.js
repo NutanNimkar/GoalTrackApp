@@ -18,9 +18,9 @@ router.put('/:id',updateGroup);
 
 //deletes a group
 router.delete('/:id', deleteGroup);
-
+//{group-id}/members
 router.get('/:id/members', getGroupMembers)
-
+//{group-id}/add-members
 router.put('/:id/add-member', addGroupMember)
 
 // tasks associated with a group

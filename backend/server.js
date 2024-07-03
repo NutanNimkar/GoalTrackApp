@@ -18,31 +18,48 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", userRoutes);
 // app.use('/api/auth',authRoutes);
 app.use("/api/groups", groupRoutes);
 
-cron.schedule("0 0 * * *", async () => {
+const updateTaskStatusandTotalMissed = async () => {
   try {
-    const users = await User.find({}); // Fetch all users from the database
-    users.forEach(async (user) => {
-      await axios.put(
-        `http://localhost:5000/api/tasks/reset-status/${user._id}`,
+    const tasks = await Task.find({ status: false });
+
+    // Update missed count for each task
+    for (const task of tasks) {
+      task.totalMissedCount += 1;
+      await task.save();
+    }
+
+    // Fetch all users from the database
+    const users = await User.find({});
+
+    // Reset task statuses for all users
+    const promises = users.map(user =>
+      axios.put(
+        `http://localhost:4060/api/tasks/reset-status/${user._id}`,
         {},
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
-      );
-    });
-    console.log("Task statuses reset successfully for all users");
+      )
+    );
+
+    await Promise.all(promises);
+
+    console.log("Task statuses reset successfully for all users and total missed were updated");
   } catch (error) {
-    console.error("Error resetting task statuses:", error);
+    console.error("Error updating task statuses:", error);
   }
+};
+
+cron.schedule("0 0 * * *", async () => {
+  await updateTaskStatusandTotalMissed();
 });
 mongoose
   .connect(process.env.MONG_URI)

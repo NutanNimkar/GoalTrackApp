@@ -66,6 +66,7 @@ const TaskDetails = () => {
         </Button>
       )
     },
+    { label: 'Total Missed', renderCell: (task) => task.totalMissedCount },
     {
       label: 'Actions',
       renderCell: (task) => (
