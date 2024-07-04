@@ -21,7 +21,12 @@ const GroupsPage = () => {
                     <div className='GroupsDropDown'>
                         <GroupsPageProvider>
                             {Object.keys(groups).map(groupName => (
-                                    <GroupDropDown groupName={groupName} key={groupName} memberNames={groups[groupName]} />)
+                                <div>
+                                    <GroupDropDown groupName={groupName} key={groupName} memberNames={groups[groupName]} />
+                                    <br/>
+                                </div>
+                                        
+                            )
                             )}
 
                         </GroupsPageProvider>
