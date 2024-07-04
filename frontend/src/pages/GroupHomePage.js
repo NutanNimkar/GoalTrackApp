@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
 import VerticalNavigation from '../components/VerticalNavigation';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import GroupDropDown from '../components/GroupDropDown';
 import { GroupsPageContext, GroupsPageProvider } from '../Context/GroupsPageContext';
 import Tile from '../components/Tile';
+import CreateGroupModal from '../components/CreateGroupModal';
 
 
 const GroupsPage = () => {
 
-    const {groups} = useContext(GroupsPageContext)
+    const {groups, handleSaveGroup, currentGroups, memberNames, showModal, setShowModal, handleAddGroup} = useContext(GroupsPageContext)
     console.log(groups)
     return (
         <Container fluid className="container-fluid vh-100">
@@ -33,14 +34,21 @@ const GroupsPage = () => {
                         
                     </div>
                     <Col className='h-100'>
-                        <Tile title="Create Group" description="Create a new group and invite other users"/>
-                        <Tile title="Join Group" description="Join an existing group with a group code"/>
+                    
+                    <Tile title="Create Group" description="Create a new group and invite other users"/>
+                    <Tile title="Join Group" description="Join an existing group with a group code"/>
                     
                     </Col>
                 </Col>
-                
+                <Button variant='success' onClick={handleAddGroup}>Create Group</Button>
             </Row>
-            
+            <CreateGroupModal
+                show={showModal}
+                handleClose={() => setShowModal(false)}
+                handleSave={handleSaveGroup}
+                groups={currentGroups}
+                members={memberNames}
+            />
         </Container>
     )
 }

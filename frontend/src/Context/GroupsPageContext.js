@@ -7,11 +7,28 @@ const GroupsPageProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
   const [groupIDS, setGroupIDS] = useState([]);
   const [memberNames, setMemberNames] = useState([]);
+  const [showModal, setShowModal] = useState(false)
+  const [currentGroup, setCurrentGroup] = useState(null);
 
   useEffect(() => {
     getGroupIDs();
   }, []);
- 
+
+  const handleSaveGroup = (group) => {
+    console.log("here");
+    axios.post(`/api/groups`, group)
+    .then(response => {
+      setGroups(response.data)
+      setShowModal(false);
+    })
+    .catch((error) => console.error("Error creating a new group", error))
+  }
+  
+  const handleAddGroup = () => {
+    setCurrentGroup(null);
+    setShowModal(true);
+  }
+
   const getGroupIDs = () => {
     axios.get(`/api/groups`)
       .then(response => {
@@ -55,8 +72,13 @@ const GroupsPageProvider = ({ children }) => {
         groups,
         groupIDS,
         memberNames, // Provide memberNames in the context
+        showModal,
+        currentGroup,
         setGroups,
         setGroupIDS,
+        setShowModal,
+        handleAddGroup,
+        handleSaveGroup
       }}
     >
       {children}

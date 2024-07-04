@@ -15,7 +15,7 @@ const SharedStateProvider = ({ children }) => {
   const groupId = '6656350aa68a902e3fdf9675';
 
   useEffect(() => {
-    // fetchGroupAndTasks();
+    fetchGroupAndTasks();
     // getSpecificGroup();
   }, []);
 

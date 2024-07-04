@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-
+import CreateGroupForm from '../components/createGroupForm';
 
 const CreateGroupModal = ({show, handleClose, handleSave, group, members}) => {
     const onSave = (data) => {
@@ -19,8 +19,15 @@ const CreateGroupModal = ({show, handleClose, handleSave, group, members}) => {
                 <Modal.Title>Create Group</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TaskForm />
+                <CreateGroupForm group={group} members={members} onSave={onSave}/>
             </Modal.Body>
+            <Modal.Footer>
+                <Button variant='secondary' onClick={handleClose}>
+                    Close
+                </Button>
+            </Modal.Footer>
         </Modal>
-    )
-}
+    );
+};
+
+export default CreateGroupModal;
