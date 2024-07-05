@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { SharedStateContext } from '../Context/SharedStateContext';
 
 const CreateGroupForm = ({group, onSave}) => {
-    const {users, setSelectedUserId, selectedUserId} = useContext(SharedStateContext)
+    const {users} = useContext(SharedStateContext)
     const {register, handleSubmit, setValue, reset} = useForm({
         defaultValues: {
             name: '',
@@ -57,8 +57,8 @@ const CreateGroupForm = ({group, onSave}) => {
                 <Form.Label>Group Members</Form.Label>
                 <Form.Control
                     as="select"
-                    value = {selectedUserId}
-                    onChange={(e) => setSelectedUserId(e.target.value)}
+                    {...register('members', {required: true})}
+                    
                 >
                     <option value="">Select a member</option>
                     {users.map((member) => (

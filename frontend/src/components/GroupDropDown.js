@@ -5,7 +5,9 @@ import {cisPlusCircle} from '@coreui/icons';
 
 function GroupDropDown({groupName, memberNames}){
     
-    // console.log(groupID)
+    if(!Array.isArray(memberNames)) {
+        memberNames = [];
+    }
 
     return(
         <Accordion>
@@ -14,8 +16,8 @@ function GroupDropDown({groupName, memberNames}){
                     <Accordion.Body>
                         <div>
                             {
-                                memberNames.map(member => (
-                                        <div class="d-grid gap-2">
+                                memberNames.map((member, index) => (
+                                        <div className="d-grid gap-2" key={index}>
                                             <Button key={member} variant="light" size="lg" className="d-grid gap-2">{member}</Button>
                                             <br/>
                                         </div>

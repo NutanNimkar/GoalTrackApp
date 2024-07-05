@@ -6,8 +6,7 @@ const GroupsPageContext = createContext();
 const GroupsPageProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
   const [groupIDS, setGroupIDS] = useState([]);
-  const [memberNames, setMemberNames] = useState([]);
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const [currentGroup, setCurrentGroup] = useState(null);
 
   useEffect(() => {
@@ -15,15 +14,19 @@ const GroupsPageProvider = ({ children }) => {
   }, []);
 
   const handleSaveGroup = (group) => {
-    console.log("here");
     axios.post(`/api/groups`, group)
-    .then(response => {
-      setGroups(response.data)
-      setShowModal(false);
-    })
-    .catch((error) => console.error("Error creating a new group", error))
+      .then(response => {
+        const newGroup = response.data;
+        setGroups(prevGroups => ({
+          ...prevGroups,
+          [newGroup.name]: newGroup.members || []
+        }));
+        setGroupIDS(prevIDs => [...prevIDs, newGroup._id]);
+        setShowModal(false);
+      })
+      .catch((error) => console.error("Error creating a new group", error));
   }
-  
+
   const handleAddGroup = () => {
     setCurrentGroup(null);
     setShowModal(true);
@@ -34,7 +37,6 @@ const GroupsPageProvider = ({ children }) => {
       .then(response => {
         const ids = response.data.map(grp => grp._id);
         setGroupIDS(ids);
-        // console.log(ids)
       })
       .catch(error => console.error('Error fetching Group IDS', error));
   };
@@ -49,13 +51,11 @@ const GroupsPageProvider = ({ children }) => {
             members: response.data.members.map(member => member.username)
           };
         }));
-        const groupsMap = memberRequests.reduce((acc, {groupName, members}) => {
+        const groupsMap = memberRequests.reduce((acc, { groupName, members }) => {
           acc[groupName] = members;
           return acc;
-        }, {})
-        // setMemberNames([...memberRequests]);
+        }, {});
         setGroups(groupsMap);
-        // console.log(groups, memberNames)
       } catch (error) {
         console.error('Error in one or more requests', error);
       }
@@ -71,7 +71,6 @@ const GroupsPageProvider = ({ children }) => {
       value={{
         groups,
         groupIDS,
-        memberNames, // Provide memberNames in the context
         showModal,
         currentGroup,
         setGroups,
