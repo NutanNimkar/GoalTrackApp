@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import CreateGroupForm from '../components/createGroupForm';
 
-const CreateGroupModal = ({ show, handleClose, handleSave, group, members }) => {
+const CreateGroupModal = ({ show, handleClose, handleSave, group }) => {
   const onSave = (data) => {
     const newGroup = {
       ...group,
