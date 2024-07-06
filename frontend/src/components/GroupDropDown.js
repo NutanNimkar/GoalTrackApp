@@ -1,7 +1,6 @@
 import { Accordion, Button} from "react-bootstrap";
 import React from 'react';
-// import {CIcon} from '@coreui/icons-react'
-import {cisPlusCircle} from '@coreui/icons';
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 function GroupDropDown({groupName, memberNames}){
     
@@ -18,7 +17,7 @@ function GroupDropDown({groupName, memberNames}){
                             {
                                 memberNames.map((member, index) => (
                                         <div className="d-grid gap-2" key={index}>
-                                            <Button key={member} variant="light" size="lg" className="d-grid gap-2">{member}</Button>
+                                            <Button key={member} variant="light" size="lg">{member}</Button>
                                             <br/>
                                         </div>
                                         
@@ -26,9 +25,12 @@ function GroupDropDown({groupName, memberNames}){
                                 )
                                 
                             }
-                            {/* <Button variant="secondary" size="lg" className="d-grid gap-2">
-                                <CIcon icon={cisPlusCircle}/>
-                            </Button> */}
+                            <div className="d-grid gap-2">
+                                <Button variant="secondary" size="lg">
+                                    <AiOutlinePlusCircle style={{display: 'inline-flex', alignItems: 'center', marginRight: 50 }}/>
+                                </Button>
+                            </div>
+                            
                         </div>
                         
                     </Accordion.Body>
