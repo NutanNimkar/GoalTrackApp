@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import AddMemberToGroup from "./AddGroupMemberForm";
 
-const AddGroupMemberModal = ({show, handleClose, handleSave, group, members}) => {
+const AddGroupMemberModal = ({selectedGroup, show, handleClose, handleSave, group, members}) => {
     const onSave = (data) => {
         const updateGroup = {
             ...group,
@@ -10,13 +10,15 @@ const AddGroupMemberModal = ({show, handleClose, handleSave, group, members}) =>
         };
         handleSave(updateGroup);
     };
-
+    
     return (
         <Modal show = {show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Member to {group}</Modal.Title>
+                <Modal.Title>Add Member to {selectedGroup}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body
+                style={{overflowY: 'auto', maxHeight: '75vh'}}
+            >
                 <AddMemberToGroup group = {group} members = {members} onSave={onSave}/>
             </Modal.Body>
             <Modal.Footer>

@@ -9,6 +9,7 @@ const GroupsPageProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentGroup, setCurrentGroup] = useState(null);
   const [showMemberModal, setShowMemberModal] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState("");
 
   useEffect(() => {
     getGroupIDs();
@@ -28,12 +29,21 @@ const GroupsPageProvider = ({ children }) => {
       .catch((error) => console.error("Error creating a new group", error));
   }
 
+  const addMember = (groupName) => {
+    axios.put(`api/groups/${groupName}`)
+    .then(response => {
+      setGroups(response.data)
+      setShowMemberModal(false);
+    })
+    .catch(error => console.log("Error adding new member to specified group", error))
+  }
   const handleAddGroup = () => {
     setCurrentGroup(null);
     setShowModal(true);
   }
 
-  const handleAddMember = () => {
+  const handleAddMember = (group) => {
+    setSelectedGroup(group);
     setShowMemberModal(true);
   }
 
@@ -79,13 +89,16 @@ const GroupsPageProvider = ({ children }) => {
         showModal,
         currentGroup,
         showMemberModal,
+        selectedGroup,
         setGroups,
         setGroupIDS,
         setShowModal,
         handleAddGroup,
         handleSaveGroup,
         setShowMemberModal,
-        handleAddMember
+        handleAddMember,
+        setSelectedGroup,
+        addMember
       }}
     >
       {children}

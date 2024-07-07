@@ -16,7 +16,6 @@ const SharedStateProvider = ({ children }) => {
 
   useEffect(() => {
     fetchGroupAndTasks();
-    // getSpecificGroup();
   }, []);
 
   const fetchGroupAndTasks = () => {

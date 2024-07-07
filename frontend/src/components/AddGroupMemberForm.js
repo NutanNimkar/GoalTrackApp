@@ -2,8 +2,10 @@ import React, {useContext, useEffect} from 'react';
 import { Form, Button, FormGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 import {useForm} from 'react-hook-form';
 import { GroupsPageContext } from '../Context/GroupsPageContext';
+import { SharedStateContext } from '../Context/SharedStateContext';
 
 const AddMemberToGroup = ({group, members, onSave}) => {
+    const {users} = useContext(SharedStateContext)
     const {register, handleSubmit, setValue, reset} = useForm({
         defaultValues: {
             name: '',
@@ -28,6 +30,8 @@ const AddMemberToGroup = ({group, members, onSave}) => {
         onSave(data);
     }
 
+    console.log(members)
+
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId='addGroupMemberSelection'>
@@ -35,21 +39,16 @@ const AddMemberToGroup = ({group, members, onSave}) => {
                 <Form.Control
                     as='select'
                     {...register('members', {required: true})}
+                    style={{overflowY: 'auto', maxHeight: '200px'}}
                 >
-                    <DropdownButton
-                        id='member-addtion-select'
-                        variant='secondary'
-                        title='Select a member'
-                        data-bs-theme='dark'
-                    >
                         {
-                            members.map((member, index) => (
-                                <Dropdown.Item key={index}>{member}</Dropdown.Item>
+                            users.map((member) => (
+                                <option key={member._id} value={member._id}>{member.username}</option>
                             ))
                         }
-                    </DropdownButton>
                 </Form.Control>
             </Form.Group>
+            <Button variant='success' type='submit'>Add Member</Button>
         </Form>
     );
 }

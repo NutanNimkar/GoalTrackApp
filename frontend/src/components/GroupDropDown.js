@@ -4,9 +4,9 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { GroupsPageContext } from "../Context/GroupsPageContext";
 import AddGroupMemberModal from "./AddGroupMemberModal";
 
-function GroupDropDown({groupName, memberNames}){
+function GroupDropDown({groupName, memberNames, groups}){
     
-    const {handleAddMember, setShowMemberModal, showMemberModal} = useContext(GroupsPageContext);
+    const {addMember, handleAddMember, setShowMemberModal, showMemberModal, selectedGroup} = useContext(GroupsPageContext);
     if(!Array.isArray(memberNames)) {
         memberNames = [];
     }
@@ -22,15 +22,7 @@ function GroupDropDown({groupName, memberNames}){
                                         <div className="d-grid gap-2" key={index}>
                                             <Button key={member} variant="light" size="lg">{member}</Button>
                                             <br/>
-                                            {console.log(groupName)}
-
-                                            <AddGroupMemberModal
-                                                show={showMemberModal}
-                                                handleClose={() => setShowMemberModal(false)}
-                                                handleSave={handleAddMember}
-                                                group={groupName}
-                                                members={memberNames}
-                                            />
+                                            
                                         </div>
                                         
                                         
@@ -39,9 +31,18 @@ function GroupDropDown({groupName, memberNames}){
                                 )
                                 
                             }
-                            <Button variant="secondary" size="lg" onClick={handleAddMember}>
+                            <Button variant="secondary" size="lg" onClick={() => handleAddMember(groupName)}>
                                 <AiOutlinePlusCircle style={{display: 'inline-flex', alignItems: 'center', marginRight: 50 }}/>
                             </Button>
+                            
+                            <AddGroupMemberModal
+                                selectedGroup = {selectedGroup}
+                                show={showMemberModal}
+                                handleClose={() => setShowMemberModal(false)}
+                                handleSave={() => addMember(selectedGroup)}
+                                group={groups}
+                                members={memberNames}
+                            />
                         </div>
                         
                     </Accordion.Body>
