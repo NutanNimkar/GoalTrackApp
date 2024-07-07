@@ -20,7 +20,7 @@ const GroupsPage = () => {
           <div className='GroupsDropDown'>
             {Object.keys(groups).map(groupName => (
               <div key={groupName}>
-                <GroupDropDown groupName={groupName} memberNames={groups[groupName]} />
+                <GroupDropDown groupName={groupName} memberNames={groups[groupName]} groups={groups}/>
                 <br />
               </div>
             ))}

@@ -8,6 +8,7 @@ const GroupsPageProvider = ({ children }) => {
   const [groupIDS, setGroupIDS] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentGroup, setCurrentGroup] = useState(null);
+  const [showMemberModal, setShowMemberModal] = useState(false);
 
   useEffect(() => {
     getGroupIDs();
@@ -30,6 +31,10 @@ const GroupsPageProvider = ({ children }) => {
   const handleAddGroup = () => {
     setCurrentGroup(null);
     setShowModal(true);
+  }
+
+  const handleAddMember = () => {
+    setShowMemberModal(true);
   }
 
   const getGroupIDs = () => {
@@ -73,11 +78,14 @@ const GroupsPageProvider = ({ children }) => {
         groupIDS,
         showModal,
         currentGroup,
+        showMemberModal,
         setGroups,
         setGroupIDS,
         setShowModal,
         handleAddGroup,
-        handleSaveGroup
+        handleSaveGroup,
+        setShowMemberModal,
+        handleAddMember
       }}
     >
       {children}

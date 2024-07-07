@@ -34,7 +34,7 @@ const CreateGroupForm = ({group, onSave}) => {
     const onSubmit = (data) => {
         onSave(data);
     }
-    console.log(group)
+    
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="createFormGroupName">
