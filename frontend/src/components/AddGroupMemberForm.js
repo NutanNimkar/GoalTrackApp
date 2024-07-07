@@ -1,7 +1,6 @@
 import React, {useContext, useEffect} from 'react';
-import { Form, Button, FormGroup, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import {useForm} from 'react-hook-form';
-import { GroupsPageContext } from '../Context/GroupsPageContext';
 import { SharedStateContext } from '../Context/SharedStateContext';
 
 const AddMemberToGroup = ({group, members, onSave}) => {

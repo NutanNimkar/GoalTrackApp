@@ -6,7 +6,6 @@ import { SharedStateContext } from '../Context/SharedStateContext';
 import { Container, Row, Col } from 'react-bootstrap';
 import './Groups.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import GroupForm from '../components/GroupForm'
 
 const Groups = () => {
   const { group, users, selectedUserId, setSelectedUserId, addUserToGroup, calculateTaskProgress } = useContext(SharedStateContext);
@@ -53,7 +52,6 @@ const Groups = () => {
                     </Form.Group>
                     <Button variant="primary" className="mt-3" onClick={addUserToGroup}>Add User</Button>
                   </Form>
-                  <GroupForm/>
                 </div>
               </div>
             </Col>
