@@ -2,11 +2,11 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import AddMemberToGroup from "./AddGroupMemberForm";
 
-const AddGroupMemberModal = ({selectedGroup, show, handleClose, handleSave, group, members}) => {
+const AddGroupMemberModal = ({selectedGroup, show, handleClose, handleSave, group}) => {
     const onSave = (data) => {
         const updateGroup = {
-            ...group,
-            ...data
+            ...data,
+            members: data.members ? [data.members] : []
         };
         handleSave(updateGroup);
     };
@@ -19,7 +19,7 @@ const AddGroupMemberModal = ({selectedGroup, show, handleClose, handleSave, grou
             <Modal.Body
                 style={{overflowY: 'auto', maxHeight: '75vh'}}
             >
-                <AddMemberToGroup group = {group} members = {members} onSave={onSave}/>
+                <AddMemberToGroup group = {group} onSave={onSave}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="danger" onClick={handleClose}>

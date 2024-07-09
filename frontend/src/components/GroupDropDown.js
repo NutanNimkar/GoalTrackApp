@@ -41,7 +41,6 @@ function GroupDropDown({groupName, memberNames, groups}){
                                 handleClose={() => setShowMemberModal(false)}
                                 handleSave={() => addMember(selectedGroup)}
                                 group={groups}
-                                members={memberNames}
                             />
                         </div>
                         

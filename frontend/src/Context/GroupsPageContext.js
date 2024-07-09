@@ -10,6 +10,8 @@ const GroupsPageProvider = ({ children }) => {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("");
+  const [relevantID, setRelevantID] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
 
   useEffect(() => {
     getGroupIDs();
@@ -30,12 +32,28 @@ const GroupsPageProvider = ({ children }) => {
   }
 
   const addMember = (groupName) => {
-    axios.put(`api/groups/${groupName}`)
-    .then(response => {
-      setGroups(response.data)
-      setShowMemberModal(false);
-    })
-    .catch(error => console.log("Error adding new member to specified group", error))
+    axios.get(`/api/groups`)
+      .then(response => {
+        const ids = response.data.map(grp => grp._id);
+        const foundID = ids.find(id => groupName);
+        axios.put(`api/groups/${foundID}`)
+        .then(response => {
+          setGroups(prevGroups => ({
+            ...prevGroups,
+            [response.data.members] : response.data || []
+          }))
+          console.log(groups)
+          // setGroupMembers(prevGroupMembers => ({
+          //   ...prevGroupMembers,
+          //   ...response.data
+          // }))
+          setShowMemberModal(false);
+        })
+        .catch(error => console.log("Error fetching relevant ID ", error))
+        console.log(foundID);
+      })
+      .catch(error => console.error('Error adding new member to specified group', error));
+    
   }
   const handleAddGroup = () => {
     setCurrentGroup(null);
@@ -80,6 +98,7 @@ const GroupsPageProvider = ({ children }) => {
       fetchMemberRequests();
     }
   }, [groupIDS]);
+  
 
   return (
     <GroupsPageContext.Provider

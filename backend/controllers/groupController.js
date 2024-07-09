@@ -49,9 +49,10 @@ const createGroup = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({err: 'No such task'})
         }
-        if(!task){
-            return res.status(404).json({msg: 'Task not found'});
-        }
+        // if(!task){
+        //     return res.status(404).json({msg: 'Task not found'});
+        // }
+        res.status(200).json(group)
     }
 // delete a group
 const deleteGroup = async (req, res) => {

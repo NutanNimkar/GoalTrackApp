@@ -76,6 +76,7 @@ const CreateGroupForm = ({group, onSave}) => {
                     {...register('punishment', {required: true})}
                 />
             </Form.Group>
+            <br/>
             <Button variant='success' type="submit">
                 Create Group
             </Button>
