@@ -8,6 +8,8 @@ const userRoutes = require("./routes/user");
 const groupRoutes = require("./routes/groups");
 const cron = require("node-cron");
 const axios = require("axios");
+const Task = require("./models/Task");
+const User = require("./models/User");
 
 //middleware
 app.use(express.json());
@@ -27,11 +29,16 @@ app.use("/api/groups", groupRoutes);
 const updateTaskStatusandTotalMissed = async () => {
   try {
     const tasks = await Task.find({ status: false });
+    
+    if (tasks.length === 0) {
+      console.log("No tasks with status 'false' found.");
+    }
 
     // Update missed count for each task
     for (const task of tasks) {
       task.totalMissedCount += 1;
       await task.save();
+      console.log(`Updated task ${task._id}: totalMissedCount is now ${task.totalMissedCount}`);
     }
 
     // Fetch all users from the database
