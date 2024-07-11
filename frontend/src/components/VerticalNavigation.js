@@ -1,44 +1,66 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { useLocation } from 'react-router-dom'
 import './VerticalNavigation.css'
-import Logo from "../Images/Logo.png"
-import Group from "../Images/Group.png"
-import Home from "../Images/home.png"
-import User from "../Images/user.png"
-import Friends from "../Images/networking.png"
-import List from "../Images/list.png"
-import Settings from "../Images/settings.png"
-import LogOut from "../Images/exit.png"
+import Logo from "../Images/Logo-v2.PNG"
+import Group from "../Images/users-group-rounded-svgrepo-com.svg"
+import Home from "../Images/home-alt-3-svgrepo-com.svg"
+import Friends from "../Images/network-1-svgrepo-com.svg"
+import Logout from "../Images/log-out-04-svgrepo-com.svg"
+import {useLogOut} from "../hooks/useLogOut"
+
 
 const VerticalNavigation = () => {
-return (
-   
-    <nav className="vertical-navbar">
 
-    <div className='Logocontainer'>
-      <img src={Logo} className = "Logo" alt='Logo'/>
-      <h1 className='title'>GOALSEEK</h1>
+  const { logout } = useLogOut()
+  const location =useLocation();
+  const [closeMenu, setCloseMenu] = useState(false);
+
+  const handleCloseMenu = () => {
+      setCloseMenu(!closeMenu);
+  };
+
+  const handleClick = () => {
+   logout ()
+
+
+  }
+
+return (
+  <div className={closeMenu === false ? "vertical-navbar" : "vertical-navbar active"}>
+
+
+
+    <div
+              className={
+                  closeMenu === false
+                      ? "Logocontainer"
+                      : "Logocontainer active"
+              }>
+               <img src={Logo} className = "Logo" alt='Logo'
+                onClick={() => {
+                handleCloseMenu();
+                }} />
+               <h1 className='title'>GOALSEEK</h1>
     </div>
-<div className='Profilecontainer'>
-  <img src ={User} className='UserProfile' alt ='User Profile'/>
-  <h5 className = 'Username'>Username</h5>
-</div>
-  <div className='Breakline1'>
-  <h6 className ="Activities">ACTIVITIES</h6>
+
+
+    <div
+       className={
+       closeMenu === false
+            ? "contentsContainer"
+             : "contentsContainer active"
+       }>
+
+            <ul className='ListContent'>
+              <li className='ListHome'><img src={Home} className='Homepic' alt='Home'/><a href="/">HOME</a></li>
+              <li ><img src = {Group} className='Grouppic' alt='Group'/><a href="/groups">GROUPS</a></li>
+              <li><img src={Friends} className='Friendspic' alt='Friends'/><a href="/friends">FRIENDS</a></li>
+              <li className='LogoutContainer'onClick={handleClick}><img src ={Logout} className='Logopic' alt='Logout'></img><a>LOGOUT</a></li>
+            </ul>
+    
+      
+      </div>
   </div>
-    <ul className='ListContent'>
-      <li className='ListHome'><img src={Home} className='Homepic' alt='Home'/><a href="/">Home</a></li>
-      <li><img src = {List} className='Listpic'alt='List'/><a href="/task">Task Details</a></li>
-      <li ><img src = {Group} className='Grouppic' alt='Group'/><a href="/groups">Groups</a></li>
-      <li><img src={Friends} className='Friendspic' alt='Friends'/><a href="/friends">Friends</a></li>
-    </ul>
-  <div className='Breakline2'>
-    <h6 className='settings'>USER PREFERENCES</h6>
-  </div>
-  <ul>
-      <li><img src ={Settings} className='Settingspic' alt='Settings'/><a href="/Settings">Settings</a></li>
-      <li><img src ={LogOut} className='Logoutpic' alt='LogOut'/><a href="/SignOut">Sign Out</a></li>
-    </ul>
-  </nav>
 )
 }
 

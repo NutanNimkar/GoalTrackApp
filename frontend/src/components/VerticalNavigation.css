@@ -1,33 +1,69 @@
 .vertical-navbar {
-    background-color: #333;
-    width: 250px; /* Adjust width as needed */
+    background-color: #3B3A3A;
+    width: 275px; /* Adjust width as needed */
     height: 100%; /* Adjust height as needed */
     position: fixed;
     left: 0;
     top: 0;
     overflow-y: auto; /* Enable vertical scrolling if needed */
     z-index: 1000; /* Ensure navbar is above other content */
+    transition: 0.5s all;
+    
 }
+
+.vertical-navbar.active{
+
+    width: 80px;
+    transition: 0.5s all;
+
+}
+
+.Logocontainer.active{
+
+    h1.title {
+        opacity: 0;
+        transition: 0.5s all;
+    }
+
+    img{
+
+        margin-left: 175px;
+        transition: 0.5s all;
+    }
+   
+}
+
+.contentsContainer.active{
+
+    li{
+
+        padding-right: 5px;
+    }
+   
+   li:hover{
+    background-image: linear-gradient(to left, #767D75, #A9AB98);
+    height: 60%;
+    width: 60%;
+    opacity: 0.7;
+   }
+}
+
+
 .vertical-navbar ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.vertical-navbar li {
-    border-bottom: 1px solid #555; /* Add borders between list items */
-}
 
 .vertical-navbar li a {
     display: block;
-    color: #fff;
+    color:#BCC5C8;
     padding: 15px 20px;
     text-decoration: none;
 }
 
-.vertical-navbar li a:hover {
-    background-color: #555;
-}
+
 
 .vertical-navbar {
 
@@ -36,69 +72,28 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #555;
+        background-color:  #4B4B4B;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        padding: 10px 0 10px 0;
+
         h1.title{
             font-size: 31px;
-            color: orange;
+            color: #B3E6A9;
             padding: 10px 0 0 0;
+            letter-spacing: 2.5px;
         }
         img.Logo{
             width:auto;
-            height: 4rem;
-            padding: 10px 0 10px 0;
+            height: 4.5rem;
+            padding: 10px 10px 10px 10px;
+            cursor: pointer;
         }
 
     }
-    .Profilecontainer{
-        align-items: center;
-        justify-content: center;
-        display: flex;
-        padding:10px 5px 0 5px;
-        color: white;
-        background-color: slategrey;
-    img.UserProfile{
-        width:auto;
-        height: 2rem;
-        padding: 0 5px 5px 0;
-    }
-    h3.Username{
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        color: white;
-        padding: 20px 5px 5px 5px;
-    }
 
 }
 
-}
 
-.vertical-navbar{
-
-    .Breakline1{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: black;
-        border: #333;
-        border-width: 5px;
-        font-size:15px;
-        color: white;
-        padding: 10px 0 0 0;
-    }
-    .Breakline2{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: black;
-        border: #333;
-        border-width: 5px;
-        font-size:15px;
-        color: white;
-        padding: 10px 0 0 0;
-
-    }
-}
 
 .vertical-navbar{
 
@@ -107,15 +102,34 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        width:100%;
-        border-radius: 1px;
+        width:80%;
+        border-radius: 10px;
+        margin-left: 20px;
+        margin-top: 30px;
 
         img{
             padding: 0 10px 0 10px;
             width: auto;
-            height: 2rem;
+            height: 1.5rem;
         }
 
     }
    
+}
+
+li:hover
+{
+background-image: linear-gradient(to left, #767D75, #A9AB98);
+height: 80%;
+width: 80%;
+opacity: 0.7;
+
+}
+
+.LogoutContainer{
+
+    height: 80%;
+    color:#BCC5C8;
+
+
 }
