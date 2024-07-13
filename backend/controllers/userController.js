@@ -104,6 +104,7 @@ const getUsersGroups = async (req, res) => {
             return res.status(400).json({err: err.message});
         }
 }
+
 const getUsersTasks = async (req, res) => {
     const { id } = req.params;
 
