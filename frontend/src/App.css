@@ -6,6 +6,7 @@
 body{
 margin: 0;
 padding: 0;
+<<<<<<< HEAD
 
 }
 
@@ -56,4 +57,11 @@ place-items: center;
 flex: 70%;
 display: grid;
 place-items: center;
+=======
+}
+
+.App{
+
+    background: #201E1E;
+>>>>>>> 3ecf143 (correcting git issues)
 }

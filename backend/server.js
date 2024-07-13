@@ -4,7 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const tasksRoutes = require("./routes/tasks");
 const userRoutes = require("./routes/user");
-// const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
 const groupRoutes = require("./routes/groups");
 const cron = require("node-cron");
 const axios = require("axios");
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", userRoutes);
-// app.use('/api/auth',authRoutes);
+app.use('/api/auth',authRoutes);
 app.use("/api/groups", groupRoutes);
 
 cron.schedule("0 0 * * *", async () => {
