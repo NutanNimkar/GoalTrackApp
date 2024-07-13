@@ -7,6 +7,7 @@ import Home from "../Images/home-alt-3-svgrepo-com.svg";
 import Logout from "../Images/log-out-04-svgrepo-com.svg";
 import { useLogOut } from "../hooks/useLogOut";
 
+
 const VerticalNavigation = () => {
   const { logout } = useLogOut();
   const [closeMenu, setCloseMenu] = useState(false);

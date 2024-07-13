@@ -1,10 +1,10 @@
 .vertical-navbar {
     background-color: #3B3A3A;
-    width: 275px;
+    width: auto;
     /* Adjust width as needed */
     height: 100%;
     /* Adjust height as needed */
-    position: fixed;
+    position: relative;
     left: 0;
     top: 0;
     overflow-y: auto;
@@ -33,18 +33,14 @@
 }
 
 .Logocontainer.active {
-
     h1.title {
         opacity: 0;
         transition: 0.5s all;
     }
-
     img {
-
         margin-left: 175px;
         transition: 0.5s all;
     }
-
 }
 
 .contentsContainer.active {
@@ -82,7 +78,6 @@
 .vertical-navbar {
 
     .Logocontainer {
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -96,7 +91,6 @@
             padding: 10px 0 0 0;
             letter-spacing: 2.5px;
         }
-
         img.Logo {
             width: auto;
             height: 4.5rem;
