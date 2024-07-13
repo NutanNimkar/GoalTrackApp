@@ -7,9 +7,6 @@ import TaskDetails from './pages/TaskDetails';
 import Groups from './pages/Groups';
 import UserSignUp from './pages/SignUp';
 import Login from './pages/Login';
-import { AuthContextProvider } from './Context/AuthContext';
-// import Friends from './pages/Friends';
-
 
 function App() {
   const { user } = useAuthContext()
@@ -22,12 +19,11 @@ function App() {
       <BrowserRouter>
       <div className="pages">
         <Routes>
-          <Route path="/" element= {user ? <Home /> : <Navigate to ="/login"/>} />
-          <Route path="/task" element={user ? <TaskDetails /> : <Navigate to ="/login"/>} />
-          <Route path='/groups' element={user ? <Groups /> : <Navigate to ="/login"/>} />
-          <Route path="/signup" element={!user ? <UserSignUp/> : <Navigate to="/" />} />
-          <Route path="/login" element={ !user ? <Login/> : <Navigate to="/" />} />
-          {/* <Route path="/friends" element={<Friends/>} /> */}
+          <Route path="/" element= {user ? <Home /> : <Login />} />
+          <Route path="/task" element={user ? <TaskDetails /> : <Login />} />
+          <Route path='/groups' element={user ? <Groups /> : <Login />} /> 
+          <Route path="/signup" element={user ? <UserSignUp/> : <Navigate to="/" />} />
+          <Route path="/login" element={user ? <Login/> : <Navigate to="/login" />} />
         </Routes>
       </div>
       </BrowserRouter>

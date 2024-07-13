@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import VerticalNavigation from '../components/VerticalNavigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -11,43 +11,47 @@ import axios from 'axios';
 
 const TaskDetails = () => {
   const { users, dailyTasks, setDailyTasks, handleEditTask, deleteTask, showModal, currentTask, toggleTaskStatus, handleSaveTask, setShowModal, handleAddTask, userId } = useContext(SharedStateContext);
-  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
 
-  const fetchTasks = () => {
-    axios.get(`/api/users/${userId}/tasks`)
-      .then(response => {
-        setDailyTasks(response.data.tasks);
-        setLastReset(response.data.lastReset);
-      })
-      .catch(error => {
-        console.error('Error fetching tasks:', error);
-      });
+  const fetchTasks = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(`/api/users/${userId}/tasks`);
+      setDailyTasks(response.data.tasks);
+      setLastReset(response.data.lastReset);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      setError('Error fetching tasks. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
-  
 
-  useEffect(() => {
-    fetchTasks();
-  }, [userId]);
-
-  useEffect(() => {
-    const resetTaskStatus = async () => {
-      try {
-        const response = await axios.put(`/api/tasks/reset-status/${userId}`);
-        if (response.data.tasks.length > 0) {
-          setDailyTasks(response.data.tasks);
-          setLastReset(response.data.lastReset); // Update the last reset date
-          console.log('Task statuses reset successfully for user');
-        }
-      } catch (error) {
-        console.error('Error resetting task statuses:', error);
+  const resetTaskStatus = async () => {
+    try {
+      const response = await axios.put(`/api/tasks/reset-status/${userId}`);
+      if (response.data.tasks.length > 0) {
+        setDailyTasks(response.data.tasks);
+        setLastReset(response.data.lastReset); // Update the last reset date
+        console.log('Task statuses reset successfully for user');
       }
+    } catch (error) {
+      console.error('Error resetting task statuses:', error);
+      setError('Error resetting task statuses. Please try again later.');
+    }
+  };
+
+  useEffect(() => {
+    const initializeTasks = async () => {
+      await fetchTasks();
+      await resetTaskStatus();
     };
 
-    // Check if task status needs to be reset once on component mount
-    resetTaskStatus();
+    initializeTasks();
   }, [userId]);
-
 
   const taskColumns = [
     { label: '#', renderCell: (_, index) => index + 1 },
@@ -89,14 +93,20 @@ const TaskDetails = () => {
         </Col>
         <Col md={10} className="p-4">
           <h1>My Daily Tasks</h1>
-          <TableComponent
-            columns={taskColumns}
-            data={dailyTasks}
-            onEdit={handleEditTask}
-            onDelete={deleteTask}
-            onToggleStatus={toggleTaskStatus}
-          />
-          <Button variant="success" onClick={handleAddTask}>Add Task</Button>
+          {loading && <p>Loading tasks...</p>}
+          {error && <p className="text-danger">{error}</p>}
+          {!loading && !error && (
+            <>
+              <TableComponent
+                columns={taskColumns}
+                data={dailyTasks}
+                onEdit={handleEditTask}
+                onDelete={deleteTask}
+                onToggleStatus={toggleTaskStatus}
+              />
+              <Button variant="success" onClick={handleAddTask}>Add Task</Button>
+            </>
+          )}
         </Col>
       </Row>
       <TaskModal
