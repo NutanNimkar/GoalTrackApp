@@ -1,19 +1,34 @@
-import React, { useContext, useEffect, useState } from 'react';
-import VerticalNavigation from '../components/VerticalNavigation';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import TableComponent from '../components/TableComponent';
-import TaskModal from '../components/TaskModal';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import './TaskDetails.css';
-import { SharedStateContext } from '../Context/SharedStateContext';
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from "react";
+import VerticalNavigation from "../components/VerticalNavigation";
+import UploadEvidenceModal from "../components/UploadEvidenceModal";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import TableComponent from "../components/TableComponent";
+import TaskModal from "../components/TaskModal";
+import { FaEdit, FaTrash, FaFile } from "react-icons/fa";
+import "./TaskDetails.css";
+import { SharedStateContext } from "../Context/SharedStateContext";
+import axios from "axios";
 
 const TaskDetails = () => {
-  const { users, dailyTasks, setDailyTasks, handleEditTask, deleteTask, showModal, currentTask, toggleTaskStatus, handleSaveTask, setShowModal, handleAddTask, userId } = useContext(SharedStateContext);
+  const {
+    users,
+    dailyTasks,
+    setDailyTasks,
+    handleEditTask,
+    deleteTask,
+    showModal,
+    currentTask,
+    toggleTaskStatus,
+    handleSaveTask,
+    setShowModal,
+    handleAddTask,
+    userId,
+  } = useContext(SharedStateContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
+  const [showEvidenceModal, setShowEvidenceModal] = useState(false);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -23,8 +38,8 @@ const TaskDetails = () => {
       setDailyTasks(response.data.tasks);
       setLastReset(response.data.lastReset);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
-      setError('Error fetching tasks. Please try again later.');
+      console.error("Error fetching tasks:", error);
+      setError("Error fetching tasks. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -36,11 +51,11 @@ const TaskDetails = () => {
       if (response.data.tasks.length > 0) {
         setDailyTasks(response.data.tasks);
         setLastReset(response.data.lastReset); // Update the last reset date
-        console.log('Task statuses reset successfully for user');
+        console.log("Task statuses reset successfully for user");
       }
     } catch (error) {
-      console.error('Error resetting task statuses:', error);
-      setError('Error resetting task statuses. Please try again later.');
+      console.error("Error resetting task statuses:", error);
+      setError("Error resetting task statuses. Please try again later.");
     }
   };
 
@@ -54,13 +69,17 @@ const TaskDetails = () => {
   }, [userId]);
 
   const taskColumns = [
-    { label: '#', renderCell: (_, index) => index + 1 },
-    { label: 'Task', renderCell: (task) => task.name },
-    { label: 'Description', renderCell: (task) => task.description },
+    { label: "#", renderCell: (_, index) => index + 1 },
+    { label: "Task", renderCell: (task) => task.name },
+    { label: "Description", renderCell: (task) => task.description },
     // { label: 'Due Date', renderCell: (task) => new Date(task.dueDate).toLocaleString() },
-    { label: 'Last Reset Date', renderCell: () => lastReset ? new Date(lastReset).toLocaleString() : 'N/A' },
     {
-      label: 'Status',
+      label: "Last Reset Date",
+      renderCell: () =>
+        lastReset ? new Date(lastReset).toLocaleString() : "N/A",
+    },
+    {
+      label: "Status",
       renderCell: (task) => (
         <Button
           variant={task.status ? "success" : "secondary"}
@@ -68,10 +87,10 @@ const TaskDetails = () => {
         >
           {task.status ? "Completed" : "Pending"}
         </Button>
-      )
+      ),
     },
     {
-      label: 'Actions',
+      label: "Actions",
       renderCell: (task) => (
         <>
           <Button variant="link" onClick={() => handleEditTask(task)}>
@@ -81,8 +100,8 @@ const TaskDetails = () => {
             <FaTrash />
           </Button>
         </>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -104,7 +123,12 @@ const TaskDetails = () => {
                 onDelete={deleteTask}
                 onToggleStatus={toggleTaskStatus}
               />
-              <Button variant="success" onClick={handleAddTask}>Add Task</Button>
+              <Button variant="success" onClick={handleAddTask}>
+                Add Task
+              </Button>
+              <Button variant="success" onClick={() => setShowEvidenceModal(true)}>
+              {/* <FaFile /> */} Upload Evidence
+              </Button>
             </>
           )}
         </Col>
@@ -115,6 +139,11 @@ const TaskDetails = () => {
         handleSave={handleSaveTask}
         task={currentTask}
         users={users}
+      />
+      <UploadEvidenceModal
+        show={showEvidenceModal}
+        handleClose={() => setShowEvidenceModal(false)}
+        userId={userId}
       />
     </Container>
   );
