@@ -49,9 +49,11 @@ const TaskDetails = () => {
   const resetTaskStatus = async () => {
     try {
       const response = await axiosInstance.put(`/api/tasks/reset-status/${userId}`);
-      if (response.data.tasks.length > 0) {
+      if (response.data.tasks.length > 0 && response.status === 200) {
         setDailyTasks(response.data.tasks);
-        setLastReset(response.data.lastReset); // Update the last reset date
+        setLastReset(response.data.lastReset);
+      }else{
+        setError(response.data.message);
       }
     } catch (error) {
       console.error("Error resetting task statuses:", error);

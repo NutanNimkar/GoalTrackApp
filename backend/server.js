@@ -12,14 +12,11 @@ const requireAuth = require("./middleware/requireAuth");
 
 //middleware
 app.use(express.json());
-// app.use(cors());
-
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/auth', authRoutes);
 app.use("/api/tasks", requireAuth, tasksRoutes);
