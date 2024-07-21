@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 
 // get all Tasks
 const getAllTasks = async (req, res) => {
-  const tasks = await Tasks.find({}).sort({ createdAt: -1 }); //sort by most recent
+  const assignedTo = req.user._id;
+  const tasks = await Tasks.find({assignedTo}).sort({ createdAt: -1 }); //sort by most recent
   res.status(200).json(tasks);
 };
 
@@ -25,8 +26,6 @@ const getTask = async (req, res) => {
 //create a new task
 const createTask = async (req, res) => {
   const { name, description, dueDate, assignedTo, status } = req.body;
-
-  // add doc to db
   try {
     const task = await Tasks.create({
       name,
@@ -141,7 +140,6 @@ const resetTaskStatusForUser = async (req, res) => {
     }
 
     await Tasks.updateMany({ assignedTo: userId }, { status: false });
-    console.log();
     const updatedTasks = await Tasks.find({ assignedTo: userId });
 
     // Update the last reset time

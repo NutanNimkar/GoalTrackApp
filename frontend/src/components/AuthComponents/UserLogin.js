@@ -36,10 +36,9 @@ const UserLogin = ()=> {
                   <div className='PasswordInput'>
                     <img src = {LockIcon} className='PasswordIcon' alt='Password'/>
                     <input type='password'placeholder='Password'onChange={(e)=> setPassword(e.target.value)} value={password}/>
-                </div>
+                  </div>
             <button disabled = {isLoading} className='Submit'>CONTINUE </button>
             {error && <div className='error'>{error}</div>}
-       
         </form>
         <div className='ForgotPass'>Forgot Password? <span >Click Here</span></div>
         <div className='CreateAccount'>Create New Account <span>Click Here</span></div>

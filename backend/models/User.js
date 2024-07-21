@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     url: { type: String, required: true },
     description: { type: String },
     uploadedAt: { type: Date, default: Date.now }
-  }]
+  }],
+  lastReset: { type: Date },
 });
 
 userSchema.statics.login = async function (email, password) {

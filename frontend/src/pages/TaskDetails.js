@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import VerticalNavigation from "../components/VerticalNavigation";
-import UploadEvidenceModal from "../components/UploadEvidenceModal";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { SharedStateContext } from "../Context/SharedStateContext";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import createAxiosInstance from "../axiosInstance";
 import TableComponent from "../components/TableComponent";
 import TaskModal from "../components/TaskModal";
-import { FaEdit, FaTrash, FaFile } from "react-icons/fa";
+import VerticalNavigation from "../components/VerticalNavigation";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./TaskDetails.css";
-import { SharedStateContext } from "../Context/SharedStateContext";
-import axios from "axios";
 
 const TaskDetails = () => {
   const {
@@ -28,18 +28,19 @@ const TaskDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
-  const [showEvidenceModal, setShowEvidenceModal] = useState(false);
+  const { user } = useAuthContext();
+  const axiosInstance = createAxiosInstance(user?.token);
 
   const fetchTasks = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`/api/users/${userId}/tasks`);
+      const response = await axiosInstance.get(`/api/users/${userId}/tasks`);
       setDailyTasks(response.data.tasks);
       setLastReset(response.data.lastReset);
     } catch (error) {
       console.error("Error fetching tasks:", error);
-      setError("Error fetching tasks. Please try again later.");
+      setError("There are no tasks for this user, please add some.");
     } finally {
       setLoading(false);
     }
@@ -47,11 +48,12 @@ const TaskDetails = () => {
 
   const resetTaskStatus = async () => {
     try {
-      const response = await axios.put(`/api/tasks/reset-status/${userId}`);
-      if (response.data.tasks.length > 0) {
+      const response = await axiosInstance.put(`/api/tasks/reset-status/${userId}`);
+      if (response.data.tasks.length > 0 && response.status === 200) {
         setDailyTasks(response.data.tasks);
-        setLastReset(response.data.lastReset); // Update the last reset date
-        console.log("Task statuses reset successfully for user");
+        setLastReset(response.data.lastReset);
+      }else{
+        setError(response.data.message);
       }
     } catch (error) {
       console.error("Error resetting task statuses:", error);
@@ -61,8 +63,16 @@ const TaskDetails = () => {
 
   useEffect(() => {
     const initializeTasks = async () => {
-      await fetchTasks();
-      await resetTaskStatus();
+      if (!user) {
+        setError("You must be logged in");
+        return;
+      }
+      try {
+        await fetchTasks();
+        await resetTaskStatus();
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     initializeTasks();
@@ -72,19 +82,14 @@ const TaskDetails = () => {
     { label: "#", renderCell: (_, index) => index + 1 },
     { label: "Task", renderCell: (task) => task.name },
     { label: "Description", renderCell: (task) => task.description },
-    // { label: 'Due Date', renderCell: (task) => new Date(task.dueDate).toLocaleString() },
     {
       label: "Last Reset Date",
-      renderCell: () =>
-        lastReset ? new Date(lastReset).toLocaleString() : "N/A",
+      renderCell: () => lastReset ? new Date(lastReset).toLocaleString() : "N/A",
     },
     {
       label: "Status",
       renderCell: (task) => (
-        <Button
-          variant={task.status ? "success" : "secondary"}
-          onClick={() => toggleTaskStatus(task)}
-        >
+        <Button variant={task.status ? "success" : "secondary"} onClick={() => toggleTaskStatus(task)}>
           {task.status ? "Completed" : "Pending"}
         </Button>
       ),
@@ -111,26 +116,33 @@ const TaskDetails = () => {
           <VerticalNavigation />
         </Col>
         <Col md={10} className="p-4">
-          <h1>My Daily Tasks</h1>
-          {loading && <p>Loading tasks...</p>}
-          {error && <p className="text-danger">{error}</p>}
-          {!loading && !error && (
-            <>
-              <TableComponent
-                columns={taskColumns}
-                data={dailyTasks}
-                onEdit={handleEditTask}
-                onDelete={deleteTask}
-                onToggleStatus={toggleTaskStatus}
-              />
-              <Button variant="success" onClick={handleAddTask}>
-                Add Task
-              </Button>
-              <Button variant="success" onClick={() => setShowEvidenceModal(true)}>
-              {/* <FaFile /> */} Upload Evidence
-              </Button>
-            </>
-          )}
+          <div className="content-area">
+            <h1 style={{ color: "#ffffff" }}>My Daily Tasks</h1>
+            {loading && <p style={{ color: "#ffffff" }}>Loading tasks...</p>}
+            {error && (
+              <p className="text-danger">
+                {error}{" "}
+              </p>
+            )}
+            {!loading && !error && (
+              <>
+                {dailyTasks.length > 0 ? (
+                  <TableComponent
+                    columns={taskColumns}
+                    data={dailyTasks}
+                    onEdit={handleEditTask}
+                    onDelete={deleteTask}
+                    onToggleStatus={toggleTaskStatus}
+                  />
+                ) : (
+                  <p>No tasks found.</p>
+                )}
+              </>
+            )}
+          </div>
+          <Button variant="success" className="add-task-button" onClick={handleAddTask}>
+            Add Task
+          </Button>
         </Col>
       </Row>
       <TaskModal

@@ -3,7 +3,6 @@ import './VerticalNavigation.css';
 import Logo from "../Images/Logo-v2.PNG";
 import Group from "../Images/users-group-rounded-svgrepo-com.svg";
 import Home from "../Images/home-alt-3-svgrepo-com.svg";
-// import Friends from "../Images/network-1-svgrepo-com.svg";
 import Logout from "../Images/log-out-04-svgrepo-com.svg";
 import { useLogOut } from "../hooks/useLogOut";
 

@@ -10,6 +10,7 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+const requireAuth = require("./middleware/requireAuth");
 
 //middleware
 app.use(express.json());
@@ -18,10 +19,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/tasks", tasksRoutes);
-app.use("/api/users", userRoutes);
-app.use('/api/auth',authRoutes);
-app.use("/api/groups", groupRoutes);
+
+app.use('/api/auth', authRoutes);
+app.use("/api/tasks", requireAuth, tasksRoutes);
+app.use("/api/users", requireAuth, userRoutes);
+app.use("/api/groups", requireAuth, groupRoutes);
 
 cron.schedule("0 0 * * *", async () => {
   try {
