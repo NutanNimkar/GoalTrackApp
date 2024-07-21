@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
-import axios from "axios";
-
+import { useAuthContext } from "../hooks/useAuthContext";
+import createAxiosInstance from "../axiosInstance";
 const SharedStateContext = createContext();
 
 const SharedStateProvider = ({ children }) => {
@@ -10,41 +10,48 @@ const SharedStateProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState("");
+  const { user } = useAuthContext();
   const userId = "6643963a530dec5de2c0797e";
   const groupId = "6656350aa68a902e3fdf9675";
-
+  
+  const axiosInstance = createAxiosInstance(user?.token);
   useEffect(() => {
+    if(user){
     fetchGroupAndTasks();
-  }, []);
+    }
+  }, [user]);
+
+  console.log(user);
 
   const fetchGroupAndTasks = () => {
-    axios
+    if(!user) return;
+    axiosInstance
       .get(`/api/groups/${groupId}/members`)
       .then((response) => setGroup(response.data))
       .catch((error) => console.error("Error fetching group:", error));
 
-    axios
+    axiosInstance
       .get("/api/users")
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users:", error));
 
-    axios
+    axiosInstance
       .get(`/api/users/${userId}/tasks`)
       .then((response) => setDailyTasks(response.data.tasks))
       .catch((error) => console.error("Error fetching daily tasks:", error));
   };
 
   const handleSaveTask = (task) => {
-    console.log("here");
+    if(!user) return;
     if (task._id) {
-      axios
+      axiosInstance
         .put(`/api/tasks/${task._id}`, task)
         .then((response) => {
           setDailyTasks((prevDailyTasks) =>
             prevDailyTasks.map((t) => (t._id === task._id ? response.data : t))
           );
           setShowModal(false);
-          axios
+          axiosInstance
             .get(`/api/users/${userId}/tasks`)
             .then((response) => setDailyTasks(response.data.tasks))
             .catch((error) =>
@@ -53,7 +60,7 @@ const SharedStateProvider = ({ children }) => {
         })
         .catch((error) => console.error("Error updating task:", error));
     } else {
-      axios
+      axiosInstance
         .post("/api/tasks", task)
         .then((response) => {
           setDailyTasks((prevDailyTasks) => [...prevDailyTasks, response.data]);
@@ -74,7 +81,8 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const deleteTask = (taskId) => {
-    axios
+    if(!user) return;
+    axiosInstance
       .delete(`/api/tasks/${taskId}`)
       .then(() => {
         setDailyTasks((prevDailyTasks) =>
@@ -85,8 +93,9 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const toggleTaskStatus = (task) => {
+    if(!user) return;
     const updatedStatus = !task.status;
-    axios
+    axiosInstance
       .put(`/api/tasks/${task._id}/status`, { status: updatedStatus })
       .then((response) => {
         setDailyTasks((prevDailyTasks) =>
@@ -99,7 +108,8 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const addUserToGroup = () => {
-    axios
+    if(!user) return;
+    axiosInstance
       .put(`/api/groups/${groupId}/add-member`, { userId: selectedUserId })
       .then((response) => {
         setGroup(response.data);
@@ -109,6 +119,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const calculateTaskProgress = (userId) => {
+    if(!user) return;
     const userTasks = dailyTasks.filter((task) => task.assignedTo === userId);
     const completedTasks = userTasks.filter((task) => task.status === true);
     if (

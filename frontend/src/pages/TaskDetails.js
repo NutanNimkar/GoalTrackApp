@@ -1,25 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
-import VerticalNavigation from '../components/VerticalNavigation';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { SharedStateContext } from '../Context/SharedStateContext';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import createAxiosInstance from '../axiosInstance';
 import TableComponent from '../components/TableComponent';
 import TaskModal from '../components/TaskModal';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import VerticalNavigation from '../components/VerticalNavigation';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './TaskDetails.css';
-import { SharedStateContext } from '../Context/SharedStateContext';
-import axios from 'axios';
 
 const TaskDetails = () => {
   const { users, dailyTasks, setDailyTasks, handleEditTask, deleteTask, showModal, currentTask, toggleTaskStatus, handleSaveTask, setShowModal, handleAddTask, userId } = useContext(SharedStateContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
+  const { user } = useAuthContext();
+  const axiosInstance = createAxiosInstance(user?.token);
 
   const fetchTasks = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`/api/users/${userId}/tasks`);
+      const response = await axiosInstance.get(`/api/users/${userId}/tasks`);
       setDailyTasks(response.data.tasks);
       setLastReset(response.data.lastReset);
     } catch (error) {
@@ -32,7 +35,7 @@ const TaskDetails = () => {
 
   const resetTaskStatus = async () => {
     try {
-      const response = await axios.put(`/api/tasks/reset-status/${userId}`);
+      const response = await axiosInstance.put(`/api/tasks/reset-status/${userId}`);
       if (response.data.tasks.length > 0) {
         setDailyTasks(response.data.tasks);
         setLastReset(response.data.lastReset); // Update the last reset date
