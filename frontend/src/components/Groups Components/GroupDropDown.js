@@ -1,7 +1,7 @@
 import { Accordion, Button} from "react-bootstrap";
 import React, {useContext} from 'react';
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { GroupsPageContext } from "../Context/GroupsPageContext";
+import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import AddGroupMemberModal from "./AddGroupMemberModal";
 
 function GroupDropDown({groupName, memberNames, groups}){
@@ -23,15 +23,12 @@ function GroupDropDown({groupName, memberNames, groups}){
                                             <Button key={member} variant="light" size="lg">{member}</Button>
                                             <br/>
                                             
-                                        </div>
-                                        
-                                        
-                                    
+                                        </div>                                        
                                     )
                                 )
                                 
                             }
-                            <Button variant="secondary" size="lg" onClick={() => handleAddMember(groupName)}>
+                            <Button variant="secondary" size="lg" onClick={() => handleAddMember(groupName)} style={{display:"flex", justifyContent: "center", alignItems: "center"}}>
                                 <AiOutlinePlusCircle style={{display: 'inline-flex', alignItems: 'center', marginRight: 50 }}/>
                             </Button>
                             
@@ -39,7 +36,7 @@ function GroupDropDown({groupName, memberNames, groups}){
                                 selectedGroup = {selectedGroup}
                                 show={showMemberModal}
                                 handleClose={() => setShowMemberModal(false)}
-                                handleSave={() => addMember(selectedGroup)}
+                                handleSave={(userId) => addMember(selectedGroup, userId)}
                                 group={groups}
                             />
                         </div>

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import VerticalNavigation from '../components/VerticalNavigation';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import GroupDropDown from '../components/GroupDropDown';
+import GroupDropDown from '../components/Groups Components/GroupDropDown';
 import { GroupsPageContext } from '../Context/GroupsPageContext';
 import Tile from '../components/Tile';
-import CreateGroupModal from '../components/CreateGroupModal';
+import CreateGroupModal from '../components/Groups Components/CreateGroupModal';
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } = useContext(GroupsPageContext);
@@ -27,7 +27,7 @@ const GroupsPage = () => {
           </div>
           <Col className='h-100'>
             <Tile title="Create Group" description="Create a new group and invite other users" />
-            <Tile title="Join Group" description="Join an existing group with a group code" />
+            {/* <Tile title="Join Group" description="Join an existing group with a group code" />  to be discussed on functionality */}
           </Col>
         </Col>
         <Button variant='success' onClick={handleAddGroup}>Create Group</Button>

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { SharedStateContext } from '../Context/SharedStateContext';
+import { SharedStateContext } from '../../Context/SharedStateContext';
 
 const CreateGroupForm = ({group, onSave}) => {
     const {users} = useContext(SharedStateContext)

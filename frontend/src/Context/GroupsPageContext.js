@@ -10,12 +10,25 @@ const GroupsPageProvider = ({ children }) => {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("");
-  const [relevantID, setRelevantID] = useState([]);
-  const [groupMembers, setGroupMembers] = useState([]);
 
   useEffect(() => {
     getGroupIDs();
+    fetchGroups();
   }, []);
+
+  const fetchGroups = async () => {
+    try{
+      const response = await axios.get('/api/groups');
+      const groupsData = response.data.reduce((acc, group) => {
+        acc[group.name] = group.members.map(member => member.username)
+        return acc;
+      }, {});
+      setGroups(groupsData);
+    }
+    catch (error) {
+      console.error('Error fetching groups', error);
+    }
+  };
 
   const handleSaveGroup = (group) => {
     axios.post(`/api/groups`, group)
@@ -31,29 +44,24 @@ const GroupsPageProvider = ({ children }) => {
       .catch((error) => console.error("Error creating a new group", error));
   }
 
-  const addMember = (groupName) => {
+  const addMember = (groupName, userId) => {
     axios.get(`/api/groups`)
       .then(response => {
-        const ids = response.data.map(grp => grp._id);
-        const foundID = ids.find(id => groupName);
-        axios.put(`api/groups/${foundID}`)
-        .then(response => {
-          setGroups(prevGroups => ({
-            ...prevGroups,
-            [response.data.members] : response.data || []
-          }))
-          console.log(groups)
-          // setGroupMembers(prevGroupMembers => ({
-          //   ...prevGroupMembers,
-          //   ...response.data
-          // }))
-          setShowMemberModal(false);
-        })
-        .catch(error => console.log("Error fetching relevant ID ", error))
-        console.log(foundID);
+        const group = response.data.find(grp => grp.name === groupName);
+        if (group) {
+          const groupId = group._id;
+          axios.put(`/api/groups/${groupId}/add-member`, { userId })
+            .then((response) => {
+              setGroupIDS(prevIDs => [...prevIDs, response.data._id])
+              fetchGroups();
+              setShowMemberModal(false);
+            })
+            .catch(error => console.error('Error adding member to group', error));
+        } else {
+          console.error('No such group');
+        }
       })
-      .catch(error => console.error('Error adding new member to specified group', error));
-    
+      .catch(error => console.error('Error fetching groups', error));    
   }
   const handleAddGroup = () => {
     setCurrentGroup(null);
@@ -94,9 +102,10 @@ const GroupsPageProvider = ({ children }) => {
       }
     };
 
-    if (groupIDS.length > 0) {
-      fetchMemberRequests();
-    }
+    fetchMemberRequests()
+    // if (groupIDS.length > 0) {
+    //   fetchMemberRequests();
+    // }
   }, [groupIDS]);
   
 

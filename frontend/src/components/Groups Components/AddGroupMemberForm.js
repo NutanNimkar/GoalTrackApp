@@ -1,26 +1,23 @@
 import React, {useContext, useEffect} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import {useForm} from 'react-hook-form';
-import { SharedStateContext } from '../Context/SharedStateContext';
+import { SharedStateContext } from '../../Context/SharedStateContext';
 
 const AddMemberToGroup = ({group, onSave}) => {
     const {users} = useContext(SharedStateContext)
     const {register, handleSubmit, setValue, reset} = useForm({
         defaultValues: {
-            members: '',
-            task: ''
+            members: ''
         }
     });
 
     useEffect(() => {
         if (group) {
             setValue('members', group.members);
-            setValue('task', group.task)
         }
         else {
             reset({
-                members: '',
-                task: ''
+                members: ''
             });
         }
     }, [group, setValue, reset])
@@ -45,16 +42,6 @@ const AddMemberToGroup = ({group, onSave}) => {
                         }
                 </Form.Control>
             </Form.Group>
-            {/* <Form.Group controlId='addGroupMemberTask'>
-                <Form.Label>Add Task for member</Form.Label>
-                <Form.Control
-                    type='text'
-                    placeholder='Give this member a task, he cannot be lazy :)'
-                    {...register('task')}
-                >
-
-                </Form.Control>
-            </Form.Group> */}
             <br/>
             <Button variant='success' type='submit'>Add Member</Button>
         </Form>

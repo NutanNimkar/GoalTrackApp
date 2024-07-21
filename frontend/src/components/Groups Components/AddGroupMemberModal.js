@@ -8,7 +8,7 @@ const AddGroupMemberModal = ({selectedGroup, show, handleClose, handleSave, grou
             ...data,
             members: data.members ? [data.members] : []
         };
-        handleSave(updateGroup);
+        handleSave(updateGroup.members[0]);
     };
     
     return (
