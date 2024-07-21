@@ -11,7 +11,7 @@ const SharedStateProvider = ({ children }) => {
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState("");
   const { user } = useAuthContext();
-  const userId = "6643963a530dec5de2c0797e";
+  const userId = user?.id;
   const groupId = "6656350aa68a902e3fdf9675";
   
   const axiosInstance = createAxiosInstance(user?.token);
@@ -21,7 +21,6 @@ const SharedStateProvider = ({ children }) => {
     }
   }, [user]);
 
-  console.log(user);
 
   const fetchGroupAndTasks = () => {
     if(!user) return;
