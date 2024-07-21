@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
-//profilePicture: { type: String },
+  lastReset: { type: Date },
 });
 
 userSchema.statics.login = async function (email, password) {
