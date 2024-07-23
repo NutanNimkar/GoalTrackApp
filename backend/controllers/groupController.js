@@ -88,6 +88,28 @@ const addGroupMember = async (req, res) => {
     res.status(200).json(group);
 }
 
+const removeGroupMember = async (req, res) =>{
+    const { id } = req.params;
+    const { userId } = req.body;
+    const group = await Group.findById(id);
+    if(!group){
+        return res.status(404).json({msg: 'Group not found'});
+    }
+    if(!group.members.includes(userId)){
+        return res.status(400).json({msg: 'User not in group'});
+    }
+    if(!mongoose.Types.ObjectId.isValid(userId)){
+        return res.status(404).json({err: 'No such user'})
+    }   
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({err: 'No such group'})
+    }
+    const index = group.members.indexOf(userId);
+    group.members.splice(index, 1);
+    await group.save();
+    res.status(200).json(group);
+}
+
 module.exports = {
     getAllGroups,
     getGroup,
@@ -95,5 +117,6 @@ module.exports = {
     updateGroup,
     deleteGroup,
     getGroupMembers,
-    addGroupMember
+    addGroupMember,
+    removeGroupMember
 }
