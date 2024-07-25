@@ -4,26 +4,24 @@ const app = express();
 const mongoose = require("mongoose");
 const tasksRoutes = require("./routes/tasks");
 const userRoutes = require("./routes/user");
-// const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
 const groupRoutes = require("./routes/groups");
 const cron = require("node-cron");
 const axios = require("axios");
+const requireAuth = require("./middleware/requireAuth");
 
 //middleware
 app.use(express.json());
-// app.use(cors());
-
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use("/api/tasks", tasksRoutes);
-app.use("/api/users", userRoutes);
-// app.use('/api/auth',authRoutes);
-app.use("/api/groups", groupRoutes);
+app.use('/api/auth', authRoutes);
+app.use("/api/tasks", requireAuth, tasksRoutes);
+app.use("/api/users", requireAuth, userRoutes);
+app.use("/api/groups", requireAuth, groupRoutes);
 
 cron.schedule("0 0 * * *", async () => {
   try {

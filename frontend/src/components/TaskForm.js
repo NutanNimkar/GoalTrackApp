@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import './TaskForm.css';
-
+import { useAuthContext } from '../hooks/useAuthContext';
 const TaskForm = ({ task, users, onSave }) => {
   const { register, handleSubmit, setValue, reset } = useForm({
     defaultValues: {
@@ -12,6 +12,9 @@ const TaskForm = ({ task, users, onSave }) => {
       assignedTo: ''
     }
   });
+
+  const { user } = useAuthContext();
+  const userId = user?.id;
 
   useEffect(() => {
     if (task) {
@@ -24,12 +27,13 @@ const TaskForm = ({ task, users, onSave }) => {
         name: '',
         description: '',
         dueDate: '',
-        assignedTo: ''
+        assignedTo: userId
       });
     }
-  }, [task, setValue, reset]);
+  }, [task, setValue, reset, userId]);
 
   const onSubmit = (data) => {
+    data.assignedTo = userId;
     onSave(data);
   };
   
@@ -58,7 +62,7 @@ const TaskForm = ({ task, users, onSave }) => {
           {...register('dueDate')}
         />
       </Form.Group>
-      <Form.Group controlId="formTaskAssignedTo">
+      {/* <Form.Group controlId="formTaskAssignedTo">
         <Form.Label>Assign To</Form.Label>
         <Form.Control
           as="select"
@@ -71,8 +75,8 @@ const TaskForm = ({ task, users, onSave }) => {
             </option>
           ))}
         </Form.Control>
-      </Form.Group>
-      <Button variant="primary" type="submit">
+      </Form.Group> */}
+      <Button variant="primary" type="submit" className='mt-3'>
         Save Changes
       </Button>
     </Form>

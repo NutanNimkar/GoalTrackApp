@@ -1,6 +1,6 @@
 import React from 'react'
-import VerticalNavigation from '../components/VerticalNavigation'
 import PageHeader from '../components/PageHeader'
+import VerticalNavigation from '../components/VerticalNavigation';
 
 
 const Home = () => {
@@ -8,9 +8,9 @@ const Home = () => {
     <div>
       <PageHeader />
       <VerticalNavigation />
-      
       <div className='App'>
       </div>
     </div>
 
-)}; export default Home
+  )
+}; export default Home
