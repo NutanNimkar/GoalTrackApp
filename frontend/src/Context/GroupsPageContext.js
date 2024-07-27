@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useAuthContext } from "../hooks/useAuthContext";
+import createAxiosInstance from "../axiosInstance";
 
 const GroupsPageContext = createContext();
 
@@ -10,15 +12,24 @@ const GroupsPageProvider = ({ children }) => {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const {user} = useAuthContext();
+  const axiosInstance = createAxiosInstance(user?.token);
 
+  console.log(user)
   useEffect(() => {
-    getGroupIDs();
-    fetchGroups();
-  }, []);
+    if(user){
+      getGroupIDs();
+      fetchGroups();
+    }
+  }, [user]);
 
   const fetchGroups = async () => {
+    setLoading(true);
+    setError(null);
     try{
-      const response = await axios.get('/api/groups');
+      const response = await axiosInstance.get('/api/groups');
       const groupsData = response.data.reduce((acc, group) => {
         acc[group.name] = group.members.map(member => member.username)
         return acc;
@@ -27,11 +38,12 @@ const GroupsPageProvider = ({ children }) => {
     }
     catch (error) {
       console.error('Error fetching groups', error);
+      setError("We were unable to fetch groups at this moment")
     }
   };
 
   const handleSaveGroup = (group) => {
-    axios.post(`/api/groups`, group)
+    axiosInstance.post(`/api/groups`, group)
       .then(response => {
         const newGroup = response.data;
         setGroups(prevGroups => ({
@@ -45,12 +57,12 @@ const GroupsPageProvider = ({ children }) => {
   }
 
   const addMember = (groupName, userId) => {
-    axios.get(`/api/groups`)
+    axiosInstance.get(`/api/groups`)
       .then(response => {
         const group = response.data.find(grp => grp.name === groupName);
         if (group) {
           const groupId = group._id;
-          axios.put(`/api/groups/${groupId}/add-member`, { userId })
+          axiosInstance.put(`/api/groups/${groupId}/add-member`, { userId })
             .then((response) => {
               setGroupIDS(prevIDs => [...prevIDs, response.data._id])
               fetchGroups();
@@ -74,7 +86,7 @@ const GroupsPageProvider = ({ children }) => {
   }
 
   const getGroupIDs = () => {
-    axios.get(`/api/groups`)
+    axiosInstance.get(`/api/groups`)
       .then(response => {
         const ids = response.data.map(grp => grp._id);
         setGroupIDS(ids);
@@ -86,7 +98,7 @@ const GroupsPageProvider = ({ children }) => {
     const fetchMemberRequests = async () => {
       try {
         const memberRequests = await Promise.all(groupIDS.map(async (id) => {
-          const response = await axios.get(`/api/groups/${id}/members`);
+          const response = await axiosInstance.get(`/api/groups/${id}/members`);
           return {
             groupName: response.data.name,
             members: response.data.members.map(member => member.username)

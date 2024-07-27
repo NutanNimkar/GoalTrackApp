@@ -5,10 +5,12 @@ import GroupDropDown from '../components/Groups Components/GroupDropDown';
 import { GroupsPageContext } from '../Context/GroupsPageContext';
 import Tile from '../components/Tile';
 import CreateGroupModal from '../components/Groups Components/CreateGroupModal';
+import { useAuthContext } from '../hooks/useAuthContext';
+import createAxiosInstance from '../axiosInstance';
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } = useContext(GroupsPageContext);
-
+  
   return (
     <Container fluid className="container-fluid vh-100">
       <Row className="h-100">

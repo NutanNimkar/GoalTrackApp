@@ -34,7 +34,7 @@ const VerticalNavigation = () => {
           </li>
           <li>
             <img src={Group} className='Grouppic' alt='Group' />
-            <a href="/task">Task</a>
+            <a href="/task">TASK</a>
           </li>
           <li>
             <img src={Group} className='Grouppic' alt='Group' />
