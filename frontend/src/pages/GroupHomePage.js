@@ -17,8 +17,8 @@ const GroupsPage = () => {
         <Col md={2} className="bg-light p-0">
           <VerticalNavigation />
         </Col>
-        <Col md={10} className="p-4">
-          <h1 style={{ textAlign: 'center' }}>Groups</h1>
+        <Col md={5} className="p-4">
+          <h1 style={{ textAlign: 'center', color: "#ffffff" }}>Groups</h1>
           <div className='GroupsDropDown'>
             {Object.keys(groups).map(groupName => (
               <div key={groupName}>
@@ -27,12 +27,11 @@ const GroupsPage = () => {
               </div>
             ))}
           </div>
-          <Col className='h-100'>
-            <Tile title="Create Group" description="Create a new group and invite other users" />
-            {/* <Tile title="Join Group" description="Join an existing group with a group code" />  to be discussed on functionality */}
-          </Col>
         </Col>
-        <Button variant='success' onClick={handleAddGroup}>Create Group</Button>
+        <Col className='h-5'>
+            <Tile title="Create Group" description="Create a new group and invite other users" onClick = {handleAddGroup}/>            
+        </Col>
+        
       </Row>
       <CreateGroupModal
         show={showModal}
