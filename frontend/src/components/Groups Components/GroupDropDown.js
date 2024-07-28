@@ -3,6 +3,7 @@ import React, {useContext} from 'react';
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import AddGroupMemberModal from "./AddGroupMemberModal";
+import { Link } from "react-router-dom";
 
 function GroupDropDown({groupName, memberNames, groups}){
     
@@ -14,7 +15,10 @@ function GroupDropDown({groupName, memberNames, groups}){
     return(
         <Accordion>
                 <Accordion.Item eventKey="1">
-                    <Accordion.Header>{groupName}</Accordion.Header>                
+                    <Accordion.Header>
+                        Group #1: {groupName}
+                        <Link to={`/groups/${groupName}`}> Go to Group Page</Link>
+                    </Accordion.Header>                
                     <Accordion.Body>
                         <div>
                             {
