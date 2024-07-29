@@ -43,7 +43,7 @@ const VerticalNavigation = () => {
           {/* <li><img src={Friends} className='Friendspic' alt='Friends' /><a href="/friends">FRIENDS</a></li> */}
           <li className='LogoutContainer' onClick={handleLogoutClick}>
             <img src={Logout} className='Logopic' alt='Logout' />
-            <button className='logout-button'>LOGOUT</button>
+            <button className='logout-button'>LOG OUT</button>
           </li>
         </ul>
       </div>

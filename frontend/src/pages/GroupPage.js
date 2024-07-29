@@ -10,8 +10,13 @@ function GroupPage(){
                 <Col md={2} className="bg-dark p-0">
                     <VerticalNavigation/>
                 </Col>
-                <Col md={3} className="p-3">
-                    <h1 style={{ textAlign: 'center', color: "#ffffff" }}>Group - XX: DashBoard</h1>
+                <Col>
+                    <Col md={3} className="p-3">
+                        <h1 style={{ textAlign: 'center', color: "#ffffff" }}>Group - XX: DashBoard</h1>
+                    </Col>
+                    <Col md={3} className="p-3">
+                        <h3> Group Contract </h3>
+                    </Col>
                 </Col>
             </Row>
         </Container>
