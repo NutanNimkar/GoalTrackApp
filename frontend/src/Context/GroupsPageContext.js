@@ -17,7 +17,7 @@ const GroupsPageProvider = ({ children }) => {
   const {user} = useAuthContext();
   const axiosInstance = createAxiosInstance(user?.token);
 
-  console.log(user)
+  
   useEffect(() => {
     if(user){
       getGroupIDs();
@@ -30,10 +30,18 @@ const GroupsPageProvider = ({ children }) => {
     setError(null);
     try{
       const response = await axiosInstance.get('/api/groups');
+      console.log(response.data)
+      const memberIDToName = await axiosInstance.get('')
       const groupsData = response.data.reduce((acc, group) => {
-        acc[group.name] = group.members.map(member => member.username)
+        acc[group.name] = {
+          description: group.description,
+          members: group.members.map(member => member.username),
+          punishment: group.punishment
+        };
+        
         return acc;
       }, {});
+      console.log(groupsData)
       setGroups(groupsData);
     }
     catch (error) {
@@ -115,9 +123,6 @@ const GroupsPageProvider = ({ children }) => {
     };
 
     fetchMemberRequests()
-    // if (groupIDS.length > 0) {
-    //   fetchMemberRequests();
-    // }
   }, [groupIDS]);
   
 

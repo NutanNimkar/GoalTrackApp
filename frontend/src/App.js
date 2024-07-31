@@ -27,7 +27,7 @@ function App() {
                 <Route path="/signup" element={!user ? <UserSignUp /> : <Navigate to="/" />} />
                 <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
                 <Route path="*" element={<Navigate to="/" />} /> {/* Catch-all route */}
-                <Route path="/groups/grouppage" element={user ? <GroupPage/> : <Login/>}/>
+                <Route path="/groups/:id" element={user ? <GroupPage/> : <Login/>}/>
               </Routes>
             </div>
           </BrowserRouter>

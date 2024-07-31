@@ -9,7 +9,7 @@ import CreateGroupModal from '../components/Groups Components/CreateGroupModal';
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } = useContext(GroupsPageContext);
-  
+  console.log(groups)
   return (
     <Container fluid className="container-fluid vh-100">
       <Row className="h-100">
@@ -17,20 +17,28 @@ const GroupsPage = () => {
           <VerticalNavigation />
         </Col>
         <Col md={5} className="p-4">
-          <h1 style={{ textAlign: 'center', color: "#ffffff" }}>Groups</h1>
-          <div className='GroupsDropDown'>
-            {Object.keys(groups).map(groupName => (
-              <div key={groupName}>
-                <GroupDropDown groupName={groupName} memberNames={groups[groupName]} groups={groups}/>
-                <br />
-              </div>
-            ))}
-          </div>
+          <Row>
+            <h1 style={{ textAlign: 'center', color: "#ffffff" }}>Groups</h1>
+          </Row>
+          <Row>
+            <div className='GroupsDropDown'>
+              {Object.keys(groups).map((groupName) => (
+                <div key={groupName}>
+                  <GroupDropDown 
+                    groupName={groupName} 
+                    memberNames={groups[groupName].members} 
+                    groups={groups} 
+                    punishment={groups[groupName].punishment}/>
+                  <br />
+                  {/* {console.log(groups[groupName])} */}
+                </div>
+              ))}
+            </div>
+          </Row>
         </Col>
         <Col className='h-5'>
-            <Tile title="Create Group" description="Create a new group and invite other users" onClick = {handleAddGroup}/>            
+              <Tile title="Create Group" description="Create a new group and invite other users" onClick = {handleAddGroup}/>            
         </Col>
-        
       </Row>
       <CreateGroupModal
         show={showModal}

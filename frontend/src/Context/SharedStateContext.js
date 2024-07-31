@@ -132,7 +132,7 @@ const SharedStateProvider = ({ children }) => {
     }
     return `${completedTasks.length}/${userTasks.length}`;
   };
-  // console.log( users)
+
   return (
     <SharedStateContext.Provider
       value={{

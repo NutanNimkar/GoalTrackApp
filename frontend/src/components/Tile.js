@@ -8,7 +8,6 @@ class Tile extends React.Component {
     return (
       <div className="tile">
         <h2>{this.props.title}</h2>
-        {/* <img alt='Missing'>{this.props.image}</img> */}
         <Button variant='success' onClick={this.props.onClick}>{this.props.description}</Button>
       </div>
     );
