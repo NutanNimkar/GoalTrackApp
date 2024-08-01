@@ -1,5 +1,4 @@
 const express = require('express');
-const Group = require('../models/Group');
 const {createGroup, getAllGroups, getGroup, updateGroup, deleteGroup, getGroupMembers, addGroupMember} = require('../controllers/groupController');
 
 const router = express.Router();
@@ -22,10 +21,5 @@ router.delete('/:id', deleteGroup);
 router.get('/:id/members', getGroupMembers)
 
 router.put('/:id/add-member', addGroupMember)
-
-
-// tasks associated with a group
-// router.get('/:id/tasks', ());
-// group members of a group
 
 module.exports = router

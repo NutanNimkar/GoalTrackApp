@@ -8,11 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
-  evidenceImages: [{
-    url: { type: String, required: true },
-    description: { type: String },
-    uploadedAt: { type: Date, default: Date.now }
-  }],
+  evidenceImages: [{type: mongoose.Schema.Types.ObjectId, ref: 'Image'}],
   lastReset: { type: Date },
 });
 

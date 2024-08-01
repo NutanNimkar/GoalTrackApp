@@ -21,7 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
     "mongoose": "^8.3.4",
-    "multer": "^1.4.5-lts.1",
+    "multer-gridfs-storage": "github:meme8383/multer-gridfs-storage#f82252c",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.4",
     "path": "^0.12.7",
