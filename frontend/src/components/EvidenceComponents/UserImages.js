@@ -1,21 +1,20 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import createAxiosInstance from "../../axiosInstance";
 import { Image, Spinner, Alert } from "react-bootstrap";
 
-const UserImages = ({ userId }) => {
-  const [images, setImages] = useState([]);
+const UserImages = ({ userId, images, setImages }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useAuthContext();
 
-  // Extract token to a separate variable for better dependency tracking
   const userToken = user?.token;
 
-  // Memoize axiosInstance with the extracted userToken
-  const axiosInstance = useMemo(() => createAxiosInstance(userToken), [userToken]);
+  const axiosInstance = useMemo(
+    () => createAxiosInstance(userToken),
+    [userToken]
+  );
 
-  // Use useCallback to memoize the fetchImages function
   const fetchImages = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -25,24 +24,23 @@ const UserImages = ({ userId }) => {
         `/api/users/${userId}/evidence`
       );
 
-      // Extract filenames from the URLs
       const filenames = responseUserImages.data.map((img) =>
         img.url.split("/").pop()
       );
 
       console.log("Extracted filenames:", filenames);
 
-      // Construct the URLs for serving the images
       const imagePromises = filenames.map((filename) =>
         axiosInstance.get(`/api/users/evidence/${filename}`, {
-          responseType: "blob", // To handle the response as a blob
+          responseType: "blob",
         })
       );
       const imageResponses = await Promise.all(imagePromises);
 
-      // Convert blobs to image URLs and store them in state
-      const imageUrls = imageResponses.map((res) => URL.createObjectURL(res.data));
-      console.log(imageUrls)
+      const imageUrls = imageResponses.map((res) =>
+        URL.createObjectURL(res.data)
+      );
+      console.log(imageUrls);
       setImages(imageUrls);
     } catch (err) {
       console.error("Error fetching images:", err);
@@ -50,16 +48,14 @@ const UserImages = ({ userId }) => {
     } finally {
       setLoading(false);
     }
-  }, [axiosInstance, userId]); // Include axiosInstance and userId as dependencies
+  }, [axiosInstance, userId, setImages]);
 
-  // Effect to fetch images on component mount or when userId changes
   useEffect(() => {
     if (userId) {
       fetchImages();
     }
-  }, [userId, fetchImages]); // Only re-run if userId or fetchImages changes
+  }, [userId, fetchImages]);
 
-  console.log(images);
   return (
     <div>
       <h4 style={{ color: "#ffffff" }}>User Images</h4>

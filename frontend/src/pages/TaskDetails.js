@@ -1,6 +1,4 @@
-// TaskDetails.js
-
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { SharedStateContext } from "../Context/SharedStateContext";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -10,7 +8,7 @@ import TableComponent from "../components/TableComponent";
 import TaskModal from "../components/TaskModal";
 import VerticalNavigation from "../components/VerticalNavigation";
 import UploadEvidenceModal from "../components/EvidenceComponents/UploadEvidenceModal";
-import UserImages from "../components/EvidenceComponents/UserImages"; // Import UserImages component
+import UserImages from "../components/EvidenceComponents/UserImages";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./TaskDetails.css";
 
@@ -36,6 +34,7 @@ const TaskDetails = () => {
   const [showEvidenceModal, setShowEvidenceModal] = useState(false);
   const { user } = useAuthContext();
   const axiosInstance = createAxiosInstance(user?.token);
+  const [images, setImages] = useState([]);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -121,6 +120,35 @@ const TaskDetails = () => {
     },
   ];
 
+  const fetchUserImages = async () => {
+    try {
+      const response = await axiosInstance.get(`/api/users/${userId}/evidence`);
+
+      // Extract filenames from the URLs
+      const filenames = response.data.map((img) => img.url.split("/").pop());
+
+      // Construct the URLs for serving the images
+      const imagePromises = filenames.map((filename) =>
+        axiosInstance.get(`/api/users/evidence/${filename}`, {
+          responseType: "blob", // To handle the response as a blob
+        })
+      );
+      const imageResponses = await Promise.all(imagePromises);
+
+      const imageUrls = imageResponses.map((res) =>
+        URL.createObjectURL(res.data)
+      );
+      setImages(imageUrls);
+    } catch (err) {
+      console.error("Error fetching user images:", err);
+      setError("Could not fetch user images. Please try again later.");
+    }
+  };
+
+  const handleUploadSuccess = useCallback(() => {
+    fetchUserImages();
+  }, [axiosInstance, userId]);
+
   return (
     <Container fluid className="vh-100">
       <Row className="h-100">
@@ -163,7 +191,7 @@ const TaskDetails = () => {
               Upload Evidence
             </Button>
           </div>
-          <UserImages userId={userId} />
+          <UserImages userId={userId} images={images} setImages={setImages} />
         </Col>
       </Row>
       <TaskModal
@@ -177,6 +205,7 @@ const TaskDetails = () => {
         show={showEvidenceModal}
         handleClose={() => setShowEvidenceModal(false)}
         userId={userId}
+        onUploadSuccess={handleUploadSuccess}
       />
     </Container>
   );
