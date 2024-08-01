@@ -6,19 +6,19 @@ import AddGroupMemberModal from "./AddGroupMemberModal";
 import { Link } from "react-router-dom";
 
 
-function GroupDropDown({groupName, memberNames, groups, punishment}){
+function GroupDropDown({groupName, memberNames, groups, punishment, description}){
 
     const {addMember, handleAddMember, setShowMemberModal, showMemberModal, selectedGroup} = useContext(GroupsPageContext);
     if(!Array.isArray(memberNames)) {
         memberNames = [];
     }
-    // console.log(memberNames)
+    
     return(
         <Accordion>
                 <Accordion.Item eventKey="1">
                     <Accordion.Header>
                         Group #1: {groupName}
-                        <Link to={{pathname: `/groups/${groupName}`}} state = {{name: groupName, punishment: punishment}} style={{textAlign: "end"}}> Go to Group Page</Link>
+                        <Link to={{pathname: `/groups/${groupName}`}} state = {{name: groupName, punishment: punishment, description: description}} style={{textAlign: "end"}}> Go to Group Page</Link>
                     </Accordion.Header>                
                     <Accordion.Body>
                         <div>

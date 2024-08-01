@@ -9,7 +9,7 @@ import CreateGroupModal from '../components/Groups Components/CreateGroupModal';
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } = useContext(GroupsPageContext);
-  console.log(groups)
+  
   return (
     <Container fluid className="container-fluid vh-100">
       <Row className="h-100">
@@ -28,9 +28,9 @@ const GroupsPage = () => {
                     groupName={groupName} 
                     memberNames={groups[groupName].members} 
                     groups={groups} 
-                    punishment={groups[groupName].punishment}/>
+                    punishment={groups[groupName].punishment}
+                    description={groups[groupName].description}/>
                   <br />
-                  {/* {console.log(groups[groupName])} */}
                 </div>
               ))}
             </div>

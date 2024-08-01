@@ -6,9 +6,8 @@ import { useLocation } from "react-router-dom";
 function GroupPage(){
 
     const location = useLocation();
-    const {name, punishment}= location.state;
-
-    // console.log(name, punishment)
+    const {name, punishment, description} = location.state;
+    
     return (
         <Container fluid className="container-fluid vh-100">
             <Row className="h-100">
@@ -20,12 +19,22 @@ function GroupPage(){
                         <h1 style={{ textAlign: 'center', color: "#ffffff" }}>Group - {name}: DashBoard</h1>
                     </Row>
                     <Row md={10} className="p-3">
-                        <Card bg="dark" text="white" border="success">
-                            <Card.Header as="h5" style={{textAlign: "center"}}>GROUP CONTRACT</Card.Header>
-                            <CardBody>
-                                {punishment}
-                            </CardBody>
-                        </Card>
+                        <Col>
+                            <Card bg="dark" text="white" border="light">
+                                <CardHeader as="h5" style={{textAlign: "center"}}>GROUP DESCRIPTION</CardHeader>
+                                <CardBody>
+                                    {description}
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col>
+                            <Card bg="dark" text="white" border="success">
+                                <Card.Header as="h5" style={{textAlign: "center"}}>GROUP CONTRACT</Card.Header>
+                                <CardBody>
+                                    {punishment}
+                                </CardBody>
+                            </Card>
+                        </Col>
                     </Row>
                     <Row>
                         <Col>

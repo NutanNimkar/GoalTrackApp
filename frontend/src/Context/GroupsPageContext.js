@@ -21,7 +21,6 @@ const GroupsPageProvider = ({ children }) => {
   useEffect(() => {
     if(user){
       getGroupIDs();
-      fetchGroups();
     }
   }, [user]);
 
@@ -109,11 +108,17 @@ const GroupsPageProvider = ({ children }) => {
           const response = await axiosInstance.get(`/api/groups/${id}/members`);
           return {
             groupName: response.data.name,
-            members: response.data.members.map(member => member.username)
+            members: response.data.members.map(member => member.username),
+			punishment: response.data.punishment,
+			description: response.data.description
           };
         }));
-        const groupsMap = memberRequests.reduce((acc, { groupName, members }) => {
-          acc[groupName] = members;
+        const groupsMap = memberRequests.reduce((acc, { groupName, members, punishment, description }) => {
+          acc[groupName] = {
+			members,
+			description,
+			punishment
+		};
           return acc;
         }, {});
         setGroups(groupsMap);
