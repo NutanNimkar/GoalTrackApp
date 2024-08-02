@@ -194,6 +194,12 @@ const getUsersTasks = async (req, res) => {
 // Get evidence images
 const getEvidenceImages = async (req, res) => {
   try {
+    const { id } = req.params;
+    if (!checkIdisValid(id, res)) return;
+
+    if(!checkAuthorization(req, id)) {
+      return res.status(403).json({ msg: 'User not authorized' });
+    }
     const images = await Image.find({});
     res.status(200).json(images);
   } catch (err) {
@@ -233,6 +239,7 @@ const uploadEvidence = async (req, res) => {
       url: `/evidenceImages/${req.file.filename}`,
       description: description,
       uploadedAt: new Date(),
+      user: req._id,
     });
 
     await newImage.save();
