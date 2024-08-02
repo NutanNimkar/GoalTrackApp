@@ -141,6 +141,7 @@ const TaskDetails = () => {
       setImages(imageUrls);
     } catch (err) {
       console.error("Error fetching user images:", err);
+      setImages([]);
       setError("Could not fetch user images. Please try again later.");
     }
   };

@@ -24,6 +24,11 @@ const UserImages = ({ userId, images, setImages }) => {
         `/api/users/${userId}/evidence`
       );
 
+      if (responseUserImages.data.length === 0) {
+        setError("No images found for this user.");
+        return;
+      }
+      
       const filenames = responseUserImages.data.map((img) =>
         img.url.split("/").pop()
       );
