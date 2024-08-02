@@ -23,7 +23,7 @@ const MyTaskDetails = () => {
     handleSaveTask,
     setShowModal,
     handleAddTask,
-    userId,
+    userId
   } = useContext(SharedStateContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -88,7 +88,7 @@ const MyTaskDetails = () => {
         {error && <p className="text-danger">{error} </p>}
         {!loading && !error && (
           <>
-            {dailyTasks.length > 0 ? (
+            {dailyTasks?.length > 0 ? (
               dailyTasks.map((dailyTask, index) => (
                 <TaskCardComponent
                   key={index}
