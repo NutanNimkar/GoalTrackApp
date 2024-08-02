@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
+    "@nextui-org/react": "^2.4.6",
     "@table-library/react-table-library": "^4.1.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

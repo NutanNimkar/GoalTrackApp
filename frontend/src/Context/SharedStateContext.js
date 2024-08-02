@@ -13,17 +13,17 @@ const SharedStateProvider = ({ children }) => {
   const { user } = useAuthContext();
   const userId = user?.id;
   const groupId = "6656350aa68a902e3fdf9675";
-  
+
+  console.log(userId);
   const axiosInstance = createAxiosInstance(user?.token);
   useEffect(() => {
-    if(user){
-    fetchGroupAndTasks();
+    if (user) {
+      fetchGroupAndTasks();
     }
   }, [user]);
 
-
   const fetchGroupAndTasks = () => {
-    if(!user) return;
+    if (!user) return;
     axiosInstance
       .get(`/api/groups/${groupId}/members`)
       .then((response) => setGroup(response.data))
@@ -41,7 +41,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const handleSaveTask = (task) => {
-    if(!user) return;
+    if (!user) return;
     if (task._id) {
       axiosInstance
         .put(`/api/tasks/${task._id}`, task)
@@ -80,7 +80,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const deleteTask = (taskId) => {
-    if(!user) return;
+    if (!user) return;
     axiosInstance
       .delete(`/api/tasks/${taskId}`)
       .then(() => {
@@ -92,7 +92,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const toggleTaskStatus = (task) => {
-    if(!user) return;
+    if (!user) return;
     const updatedStatus = !task.status;
     axiosInstance
       .put(`/api/tasks/${task._id}/status`, { status: updatedStatus })
@@ -107,7 +107,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const addUserToGroup = () => {
-    if(!user) return;
+    if (!user) return;
     axiosInstance
       .put(`/api/groups/${groupId}/add-member`, { userId: selectedUserId })
       .then((response) => {
@@ -118,7 +118,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const calculateTaskProgress = (userId) => {
-    if(!user) return;
+    if (!user) return;
     const userTasks = dailyTasks.filter((task) => task.assignedTo === userId);
     const completedTasks = userTasks.filter((task) => task.status === true);
     if (
@@ -152,7 +152,7 @@ const SharedStateProvider = ({ children }) => {
         deleteTask,
         toggleTaskStatus,
         addUserToGroup,
-        calculateTaskProgress
+        calculateTaskProgress,
       }}
     >
       {children}
