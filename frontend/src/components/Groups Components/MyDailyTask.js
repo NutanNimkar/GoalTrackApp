@@ -23,7 +23,7 @@ const MyTaskDetails = () => {
     handleSaveTask,
     setShowModal,
     handleAddTask,
-    userId
+    userId,
   } = useContext(SharedStateContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -79,7 +79,7 @@ const MyTaskDetails = () => {
 
     initializeTasks();
   }, [userId]);
-  
+
   console.log(dailyTasks);
   return (
     <Container fluid className="vh-20">
