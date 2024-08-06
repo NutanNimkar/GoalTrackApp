@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SharedStateContext } from "../../Context/SharedStateContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import createAxiosInstance from "../../axiosInstance";
 import TaskModal from "../TaskModal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../pages/TaskDetails.css";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import TableComponent from "../TableComponent";
+import { Container } from "react-bootstrap";
 import TaskCardComponent from "../TaskCardComponent";
 
 const MyTaskDetails = () => {
@@ -45,7 +43,7 @@ const MyTaskDetails = () => {
       setLoading(false);
     }
   };
-
+  // is this a test case to see resetTaskStatus and will be replaced with a reference to a 24 hour clock?
   const resetTaskStatus = async () => {
     try {
       const response = await axiosInstance.put(
@@ -80,7 +78,7 @@ const MyTaskDetails = () => {
     initializeTasks();
   }, [userId]);
 
-  console.log(dailyTasks);
+  // console.log(dailyTasks);
   return (
     <Container fluid className="vh-20">
       <div className="content-area">
