@@ -149,7 +149,7 @@ const TaskDetails = () => {
   const handleUploadSuccess = useCallback(() => {
     fetchUserImages();
   }, [axiosInstance, userId]);
-
+  console.log(dailyTasks)
   return (
     <Container fluid className="vh-100">
       <Row className="h-100">

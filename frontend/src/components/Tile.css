@@ -1,6 +1,6 @@
 /* Tile.css */
 .tile {
-    position: relative; 
+    position: static; 
     left: 250px;
     background-color: #f9f9f9;
     border: 2px dotted grey;
