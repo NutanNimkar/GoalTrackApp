@@ -14,7 +14,6 @@ const SharedStateProvider = ({ children }) => {
   const userId = user?.id;
   const groupId = "6656350aa68a902e3fdf9675";
 
-  console.log(userId);
   const axiosInstance = createAxiosInstance(user?.token);
   useEffect(() => {
     if (user) {

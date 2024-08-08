@@ -11,6 +11,7 @@ function GroupDropDown({
   groups,
   punishment,
   description,
+  groupNames,
 }) {
   const {
     addMember,
@@ -23,6 +24,9 @@ function GroupDropDown({
     memberNames = [];
   }
 
+  const groupNumbers = groupNames.entries()
+
+  console.log(groupNumbers)
   return (
     <Accordion>
       <Accordion.Item eventKey="1">
