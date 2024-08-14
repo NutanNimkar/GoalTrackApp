@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
   evidenceImages: [{type: mongoose.Schema.Types.ObjectId, ref: 'Image'}],
   lastReset: { type: Date },
+  resetToken : {type: String},
+  resetTokenExpiry: {type: Date},
 });
 
 userSchema.statics.login = async function (email, password) {
