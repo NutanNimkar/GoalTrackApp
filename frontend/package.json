@@ -4,7 +4,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.4",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/inter": "^5.0.20",
+    "@mui/joy": "^5.0.0-beta.48",
     "@nextui-org/react": "^2.4.6",
     "@table-library/react-table-library": "^4.1.7",
     "@testing-library/jest-dom": "^5.17.0",

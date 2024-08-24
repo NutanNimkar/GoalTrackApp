@@ -4,6 +4,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import AddGroupMemberModal from "./AddGroupMemberModal";
 import { Link } from "react-router-dom";
+import { MdGroups, MdPerson } from "react-icons/md";
 
 function GroupDropDown({
   groupName,
@@ -11,7 +12,6 @@ function GroupDropDown({
   groups,
   punishment,
   description,
-  groupNames,
 }) {
   const {
     addMember,
@@ -24,27 +24,10 @@ function GroupDropDown({
     memberNames = [];
   }
 
-  const groupNumbers = groupNames.entries()
-
-  console.log(groupNumbers)
   return (
     <Accordion>
       <Accordion.Item eventKey="1">
-        <Accordion.Header>
-          Group #1: {groupName}
-          <Link
-            to={{ pathname: `/groups/${groupName}` }}
-            state={{
-              name: groupName,
-              punishment: punishment,
-              description: description,
-            }}
-            style={{ textAlign: "end" }}
-          >
-            {" "}
-            Go to Group Page
-          </Link>
-        </Accordion.Header>
+        <Accordion.Header>Group #1: {groupName}</Accordion.Header>
         <Accordion.Body>
           <div>
             {memberNames.map((member, index) => (
@@ -55,6 +38,37 @@ function GroupDropDown({
                 <br />
               </div>
             ))}
+
+            <Link
+              to={{ pathname: `/groups/${groupName}` }}
+              state={{
+                name: groupName,
+                punishment: punishment,
+                description: description,
+              }}
+              style={{ textAlign: "end" }}
+            >
+              <Button
+                variant="secondary"
+                size="lg"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <MdGroups
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    marginRight: 10,
+                  }}
+                />
+                Group Dashboard
+              </Button>{" "}
+              {/* Go to Group Page */}
+            </Link>
+
             <Button
               variant="secondary"
               size="lg"
@@ -69,9 +83,30 @@ function GroupDropDown({
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  marginRight: 50,
+                  marginLeft: 25,
+                  marginRight: 25,
                 }}
               />
+            </Button>
+
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={() => handleAddMember(groupName)}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <MdPerson
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  marginRight: 10,
+                }}
+              />
+              Personal Dashboard
             </Button>
 
             <AddGroupMemberModal

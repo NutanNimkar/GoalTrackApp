@@ -34,26 +34,42 @@ const getAllGroups = async (req, res) => {
 const getGroupMembers = async (req, res) => {
   const { id } = req.params;
   if (!checkIdisValid(id, res)) return;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "No such group" });
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ err: "No such group" });
+    }
+    const members = await Group.findById(id).populate("members");
+    if (!members) {
+      return res.status(404).json({ msg: "Group members not found" });
+    }
+
+    res.status(200).json(members);
+  } catch (err) {
+    console.error("Error fetching group members: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
   }
-  const members = await Group.findById(id).populate("members");
-  if (!members) {
-    return res.status(404).json({ msg: "Group not found" });
-  }
-  res.status(200).json(members);
 };
 // get a single group
 const getGroup = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "No such group" });
+  if (!checkIdisValid(id, res)) return;
+  if (!checkAuthorization(req, id)) {
+    return res.status(403).json({ msg: "User not authorized" });
   }
-  const group = await Group.findById(id);
-  if (!group) {
-    return res.status(404).json({ msg: "Group not found" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ err: "No such group" });
+    }
+    const group = await Group.findById(id);
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
+    }
+    res.status(200).json(group);
+  } catch (err) {
+    console.error("Error fetching group: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
   }
-  res.status(200).json(group);
 };
 //create a new group
 const createGroup = async (req, res) => {
@@ -75,26 +91,46 @@ const createGroup = async (req, res) => {
 // update a group
 const updateGroup = async (req, res) => {
   const { id } = req.params;
-  const group = await Group.findOneAndUpdate({ _id: id }, { ...req.body });
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "No such task" });
+
+  if (!checkAuthorization(req, id)) {
+    return res.status(403).json({ msg: "User not authorized" });
   }
-  if (!task) {
-    return res.status(404).json({ msg: "Task not found" });
+
+  try {
+    const group = await Group.findOneAndUpdate({ _id: id }, { ...req.body });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ err: "No such task" });
+    }
+    if (!task) {
+      return res.status(404).json({ msg: "Task not found" });
+    }
+    res.status(200).json(group);
+  } catch (err) {
+    console.error("Error updating group: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
   }
-  res.status(200).json(group);
 };
 // delete a group
 const deleteGroup = async (req, res) => {
   const { id } = req.params;
-  const group = await Group.findByIdAndDelete({ _id: id });
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "No such group" });
+
+  if (!checkAuthorization(req, id)) {
+    return res.status(403).json({ msg: "User not authorized" });
   }
-  if (!group) {
-    return res.status(404).json({ msg: "Group not found" });
+
+  try {
+    const group = await Group.findByIdAndDelete({ _id: id });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ err: "No such group" });
+    }
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
+    }
+    res.status(200).json({ id: group._id });
+  } catch (err) {
+    console.error("Error deleting group: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
   }
-  res.status(200).json({ id: group._id });
 };
 
 const addGroupMember = async (req, res) => {
@@ -121,23 +157,33 @@ const addGroupMember = async (req, res) => {
 const removeGroupMember = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
-  const group = await Group.findById(id);
-  if (!group) {
-    return res.status(404).json({ msg: "Group not found" });
+
+  if (!checkAuthorization(req, id)) {
+    return res.status(403).json({ msg: "User not authorized" });
   }
-  if (!group.members.includes(userId)) {
-    return res.status(400).json({ msg: "User not in group" });
+
+  try {
+    const group = await Group.findById(id);
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
+    }
+    if (!group.members.includes(userId)) {
+      return res.status(400).json({ msg: "User not in group" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(404).json({ err: "No such user" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ err: "No such group" });
+    }
+    const index = group.members.indexOf(userId);
+    group.members.splice(index, 1);
+    await group.save();
+    res.status(200).json(group);
+  } catch (err) {
+    console.error("Error removing member from group: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
   }
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    return res.status(404).json({ err: "No such user" });
-  }
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "No such group" });
-  }
-  const index = group.members.indexOf(userId);
-  group.members.splice(index, 1);
-  await group.save();
-  res.status(200).json(group);
 };
 
 module.exports = {

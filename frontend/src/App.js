@@ -4,9 +4,9 @@ import { SharedStateProvider } from "./Context/SharedStateContext";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Home from "./pages/Home";
 import TaskDetails from "./pages/TaskDetails";
-import GroupPage from "./pages/GroupPage";
+import GroupPage from "./pages/Groups Pages/GroupPage";
 
-import GroupsPage from "./pages/GroupHomePage";
+import GroupsPage from "./pages/Groups Pages/GroupHomePage";
 import { GroupsPageProvider } from "./Context/GroupsPageContext";
 import UserSignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -39,7 +39,7 @@ function App() {
                   path="/login"
                   element={!user ? <Login /> : <Navigate to="/" />}
                 />
-                <Route path="*" element={<Navigate to="/" />} />{" "}
+                {/* <Route path="*" element={<Navigate to="/" />} />{" "} */}
                 {/* Catch-all route */}
                 <Route
                   path="/groups/:id"

@@ -1,20 +1,16 @@
 import React, { useContext } from "react";
-import VerticalNavigation from "../components/VerticalNavigation";
+import VerticalNavigation from "../../components/VerticalNavigation";
 import { Container, Row, Col } from "react-bootstrap";
-import GroupDropDown from "../components/Groups Components/GroupDropDown";
-import { GroupsPageContext } from "../Context/GroupsPageContext";
-import Tile from "../components/Tile";
-import CreateGroupModal from "../components/Groups Components/CreateGroupModal";
+import GroupDropDown from "../../components/Groups Components/GroupDropDown";
+import { GroupsPageContext } from "../../Context/GroupsPageContext";
+import Tile from "../../components/Tile";
+import CreateGroupModal from "../../components/Groups Components/CreateGroupModal";
+
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } =
     useContext(GroupsPageContext);
 
-  const groupNames = [];
-  Object.keys(groups).map((groupname) => (
-    groupNames.push(groupname)
-  ))
-  console.log(groupNames)
   return (
     <Container fluid className="container-fluid vh-100">
       <Row className="h-100">
@@ -35,7 +31,6 @@ const GroupsPage = () => {
                     groups={groups}
                     punishment={groups[groupName].punishment}
                     description={groups[groupName].description}
-                    groupNames = {groupNames}
                   />
                   <br />
                 </div>

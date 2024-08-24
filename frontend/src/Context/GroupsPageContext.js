@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
 import { useAuthContext } from "../hooks/useAuthContext";
 import createAxiosInstance from "../axiosInstance";
 
@@ -101,43 +100,42 @@ const GroupsPageProvider = ({ children }) => {
       .then((response) => {
         const ids = response.data.map((grp) => grp._id);
         setGroupIDS(ids);
+        console.log(groupIDS)
       })
       .catch((error) => console.error("Error fetching Group IDS", error));
   };
 
-  useEffect(() => {
-    const fetchMemberRequests = async () => {
-      try {
-        const memberRequests = await Promise.all(
-          groupIDS.map(async (id) => {
-            const response = await axiosInstance.get(
-              `/api/groups/${id}/members`
-            );
-            return {
-              groupName: response.data.name,
-              members: response.data.members.map((member) => member.username),
-              punishment: response.data.punishment,
-              description: response.data.description,
-            };
-          })
-        );
-        const groupsMap = memberRequests.reduce(
-          (acc, { groupName, members, punishment, description }) => {
-            acc[groupName] = {
-              members,
-              description,
-              punishment,
-            };
-            return acc;
-          },
-          {}
-        );
-        setGroups(groupsMap);
-      } catch (error) {
-        console.error("Error in one or more requests", error);
-      }
-    };
+  const fetchMemberRequests = async () => {
+    try {
+      const memberRequests = await Promise.all(
+        groupIDS.map(async (id) => {
+          const response = await axiosInstance.get(`/api/groups/${id}/members`);
+          return {
+            groupName: response.data.name,
+            members: response.data.members.map((member) => member.username),
+            punishment: response.data.punishment,
+            description: response.data.description,
+          };
+        })
+      );
+      const groupsMap = memberRequests.reduce(
+        (acc, { groupName, members, punishment, description }) => {
+          acc[groupName] = {
+            members,
+            description,
+            punishment,
+          };
+          return acc;
+        },
+        {}
+      );
+      setGroups(groupsMap);
+    } catch (error) {
+      console.error("Error in one or more requests", error);
+    }
+  };
 
+  useEffect(() => {
     fetchMemberRequests();
   }, [groupIDS]);
 
