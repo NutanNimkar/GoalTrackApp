@@ -46,7 +46,8 @@ function GroupDropDown({
                 punishment: punishment,
                 description: description,
               }}
-              style={{ textAlign: "end" }}
+              style={{ textAlign: "end", textDecoration: "none"}}
+              
             >
               <Button
                 variant="secondary"
@@ -66,7 +67,7 @@ function GroupDropDown({
                 />
                 Group Dashboard
               </Button>{" "}
-              {/* Go to Group Page */}
+              
             </Link>
 
             <Button

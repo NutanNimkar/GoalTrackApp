@@ -1,20 +1,13 @@
 import React, { useContext } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  // Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Button,
-} from "react-bootstrap";
+import { Container, Row, Col, Stack } from "react-bootstrap";
 import VerticalNavigation from "../../components/VerticalNavigation";
 import { useLocation } from "react-router-dom";
 import MyTaskDetails from "../../components/Groups Components/MyDailyTask";
 import { SharedStateContext } from "../../Context/SharedStateContext";
-import Card from "@mui/joy/Card"
-import Typography from "@mui/joy/Typography"
+import { Card, CardContent } from "@mui/joy";
+import Typography from "@mui/joy/Typography";
+import { Link } from "react-router-dom";
+import { MdOutlinePersonOutline } from "react-icons/md";
 
 function GroupPage() {
   const location = useLocation();
@@ -28,86 +21,135 @@ function GroupPage() {
           <VerticalNavigation />
         </Col>
         <Col>
-          {/* <Row md={10} className="p-3">
-            <h1 style={{ textAlign: "center", color: "#ffffff" }}>
-              Group - {name}: DashBoard
-            </h1>
-          </Row>
           <Row md={10} className="p-3">
-            <Card bg="dark" text="white" border="light">
-              <CardHeader as="h5" style={{ textAlign: "center" }}>
-                GROUP DESCRIPTION
-              </CardHeader>
-              <CardBody>
-                <Col>{description}</Col>
-                <Col>
-                  <Card bg="dark" text="white" border="success">
-                    <Card.Header as="h5" style={{ textAlign: "center" }}>
-                      GROUP CONTRACT
-                    </Card.Header>
-                    <CardBody>{punishment}</CardBody>
-                  </Card>
-                </Col>
-              </CardBody>
-            </Card>
+            <h1 style={{ color: "#ffffff" }}>{name} DashBoard - Group</h1>
           </Row>
           <Row>
-            <Col>
-              <Card bg="dark" text="white" border="info">
-                <CardHeader as="h5" style={{ textAlign: "center" }}>
-                  MY DAILY TASKS
-                </CardHeader>
-                <CardBody>
-                  <MyTaskDetails />
-                </CardBody>
-                <CardFooter>
-                  <Button
-                    variant="success"
-                    className="add-task-button"
-                    onClick={handleAddTask}
+            <div style={{ paddingLeft: 50 }}>
+              <Card
+                sx={{
+                  width: 150,
+                  bgcolor: "#12253D",
+                  display: "flex",
+                  paddingBottom: 3,
+                  alignItems: "center",
+                }}
+                variant="outlined"
+                color="neutral"
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    paddingBottom: 15,
+                    top: 10,
+                  }}
+                >
+                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                    Group Contract
+                  </Typography>
+                </div>
+              </Card>
+            </div>
+            <div style={{ paddingRight: 25, paddingLeft: 25 }}>
+              <Card
+                sx={{
+                  bgcolor: "#022D66",
+                  display: "flex",
+                  top: -10,
+                  paddingBottom: "",
+                }}
+                variant="outlined"
+                color="neutral"
+              >
+                <Stack direction="horizontal" gap={5}>
+                  <Typography style={{ color: "#ffffff" }}>
+                    The group contract is a unanimous task to be performed at
+                    the end of the goal setting session.
+                  </Typography>
+                  <Card
+                    variant="outlined"
+                    sx={{
+                      bgcolor: "#12253D",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
                   >
-                    Add Task
-                  </Button>
-                </CardFooter>
+                    <Typography
+                      level="title-sm"
+                      style={{
+                        display: "flex",
+                        color: "#ffffff",
+                      }}
+                    >
+                      Contract
+                    </Typography>
+                    <CardContent sx={{ color: "#ffffff" }}>
+                      {punishment}
+                    </CardContent>
+                  </Card>
+                  <Card
+                    variant="outlined"
+                    sx={{
+                      bgcolor: "#12253D",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Typography
+                      level="title-sm"
+                      style={{
+                        display: "flex",
+                        color: "#ffffff",
+                        alignItems: "center",
+                      }}
+                    >
+                      Deadline
+                    </Typography>
+                    <CardContent
+                      level="title-lg"
+                      style={{
+                        display: "flex",
+                        color: "#B6CCE7",
+                        alignItems: "center",
+                      }}
+                    >
+                      May 12, 2024
+                    </CardContent>
+                  </Card>
+                </Stack>
               </Card>
-            </Col>
-            <Col>
-              <Row>
-                <Card bg="dark" text="white" border="success">
-                  <CardHeader as="h5" style={{ textAlign: "center" }}>
-                    MY STREAK
-                  </CardHeader>
-                  <CardBody>Number of completed days</CardBody>
-                </Card>
-              </Row>
-
-              <Row>
-                <Card bg="dark" text="white" border="danger">
-                  <CardHeader as="h5" style={{ textAlign: "center" }}>
-                    MY MISSED
-                  </CardHeader>
-                  <CardBody>Number of missed days</CardBody>
-                </Card>
-              </Row>
-            </Col>
-            <Col>
-              <Card bg="dark" text="white" border="info">
-                <CardHeader as="h5" style={{ textAlign: "center" }}>
-                  GROUP PROGRESS
-                </CardHeader>
-                <CardBody>
-                  bar graphs of users in groups with completed and missed days
-                </CardBody>
-              </Card>
-            </Col>
-          </Row> */}
+            </div>
+          </Row>
           <Row>
-            <Card sx={{width: 320}} variant="soft" color="neutral">
-              <div>
-                <Typography level='title-lg'>Group Contract</Typography>
-              </div>
-            </Card>
-
+            <div style={{ paddingRight: 25, paddingLeft: 25 }}>
+              <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
+                <Typography style={{ color: "#ffffff" }}>
+                  Group Progress Activity
+                </Typography>
+                <Stack gap={5} direction="horizontal">
+                  <CardContent>
+                    Group Progress will be featured on this dashboard. The total
+                    amount of days completed by a member, total amount of days
+                    missed by a member and the highest member streak will be
+                    recorded.
+                  </CardContent>
+                  <Link
+                    // to={{ pathname: `/groups/${}`}}
+                    state={{
+                      name: name,
+                    }}
+                    style={{ textAlign: "end", textDecoration: "none" }}
+                  >
+                    <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
+                      <Stack gap={3} direction="horizontal">
+                        <MdOutlinePersonOutline />
+                        Personal DashBoard
+                      </Stack>
+                    </Card>
+                  </Link>
+                </Stack>
+              </Card>
+            </div>
           </Row>
         </Col>
       </Row>

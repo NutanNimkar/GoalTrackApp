@@ -100,7 +100,6 @@ const GroupsPageProvider = ({ children }) => {
       .then((response) => {
         const ids = response.data.map((grp) => grp._id);
         setGroupIDS(ids);
-        console.log(groupIDS)
       })
       .catch((error) => console.error("Error fetching Group IDS", error));
   };
