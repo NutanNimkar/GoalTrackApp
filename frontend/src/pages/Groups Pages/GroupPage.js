@@ -4,7 +4,7 @@ import VerticalNavigation from "../../components/VerticalNavigation";
 import { useLocation } from "react-router-dom";
 import MyTaskDetails from "../../components/Groups Components/MyDailyTask";
 import { SharedStateContext } from "../../Context/SharedStateContext";
-import { Card, CardContent } from "@mui/joy";
+import { Card, CardContent, Grid } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import { Link } from "react-router-dom";
 import { MdOutlinePersonOutline } from "react-icons/md";
@@ -21,8 +21,9 @@ function GroupPage() {
           <VerticalNavigation />
         </Col>
         <Col>
-          <Row md={10} className="p-3">
-            <h1 style={{ color: "#ffffff" }}>{name} DashBoard - Group</h1>
+          <Row className="p-3">
+            <h1 style={{ color: "#80AFE8", display: "inline"}}>{name}</h1>{" "}
+            <h1 style={{ color: "#ffffff" , display: "inline"}}>DashBoard - Group</h1>
           </Row>
           <Row>
             <div style={{ paddingLeft: 50 }}>
@@ -122,33 +123,77 @@ function GroupPage() {
           </Row>
           <Row>
             <div style={{ paddingRight: 25, paddingLeft: 25 }}>
-              <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
-                <Typography style={{ color: "#ffffff" }}>
-                  Group Progress Activity
-                </Typography>
-                <Stack gap={5} direction="horizontal">
-                  <CardContent>
-                    Group Progress will be featured on this dashboard. The total
-                    amount of days completed by a member, total amount of days
-                    missed by a member and the highest member streak will be
-                    recorded.
-                  </CardContent>
-                  <Link
-                    // to={{ pathname: `/groups/${}`}}
-                    state={{
-                      name: name,
+              <Stack direction="horizontal" gap={5}>
+                <Col md={7}>
+                  <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
+                    <Typography style={{ color: "#ffffff" }}>
+                      Group Progress Activity
+                    </Typography>
+                    <Stack gap={5} direction="horizontal">
+                      <CardContent>
+                        Group Progress will be featured on this dashboard. The
+                        total amount of days completed by a member, total amount
+                        of days missed by a member and the highest member streak
+                        will be recorded.
+                      </CardContent>
+                      <Link
+                        // to={{ pathname: `/groups/${}`}}
+                        state={{
+                          name: name,
+                        }}
+                        style={{ textAlign: "end", textDecoration: "none" }}
+                      >
+                        <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
+                          <Stack gap={3} direction="horizontal">
+                            <MdOutlinePersonOutline />
+                            Personal Dashboard
+                          </Stack>
+                        </Card>
+                      </Link>
+                    </Stack>
+                  </Card>
+                </Col>
+                <Col md={3}>
+                  <Card
+                    sx={{
+                      bgcolor: "#022D66",
                     }}
-                    style={{ textAlign: "end", textDecoration: "none" }}
                   >
-                    <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
-                      <Stack gap={3} direction="horizontal">
-                        <MdOutlinePersonOutline />
-                        Personal DashBoard
-                      </Stack>
-                    </Card>
-                  </Link>
-                </Stack>
-              </Card>
+                    <Stack gap={3}>
+                      <Card
+                        sx={{
+                          bgcolor: "#12253D",
+                        }}
+                      >
+                        <Typography sx={{ color: "#ffffff" }}>
+                          Most Days Completed
+                        </Typography>
+                      </Card>
+                      <Card
+                        sx={{
+                          bgcolor: "#12253D",
+                        }}
+                      >
+                        <Typography sx={{ color: "#ffffff" }}>
+                          Most Days Missed
+                        </Typography>
+                      </Card>
+                      <Card
+                        sx={{
+                          bgcolor: "#12253D",
+                        }}
+                      >
+                        <Typography sx={{ color: "#ffffff" }}>
+                          Top Member Streak
+                        </Typography>
+                      </Card>
+                    </Stack>
+                  </Card>
+                </Col>
+              </Stack>
+              <Grid>
+                
+              </Grid>
             </div>
           </Row>
         </Col>
