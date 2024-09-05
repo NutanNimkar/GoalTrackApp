@@ -1,10 +1,11 @@
-import { Accordion, Button } from "react-bootstrap";
+import { Accordion, Stack } from "react-bootstrap";
 import React, { useContext } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import AddGroupMemberModal from "./AddGroupMemberModal";
 import { Link } from "react-router-dom";
 import { MdGroups, MdPerson } from "react-icons/md";
+import { Button } from "@mui/joy";
 
 function GroupDropDown({
   groupName,
@@ -23,7 +24,7 @@ function GroupDropDown({
   if (!Array.isArray(memberNames)) {
     memberNames = [];
   }
-
+   
   return (
     <Accordion>
       <Accordion.Item eventKey="1">
@@ -32,83 +33,82 @@ function GroupDropDown({
           <div>
             {memberNames.map((member, index) => (
               <div className="d-grid gap-2" key={index}>
-                <Button key={member} variant="light" size="lg">
+                <Button key={member} variant="contained" size="lg">
                   {member}
                 </Button>
                 <br />
               </div>
             ))}
+            <Stack direction="horizontal" gap={5}>
+              <Link
+                to={{ pathname: `/groups/${groupName}` }}
+                state={{
+                  name: groupName,
+                  punishment: punishment,
+                  description: description,
+                }}
+                style={{ textAlign: "end", textDecoration: "none" }}
+              >
+                <Button
+                  variant="outlined"
+                  size="lg"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MdGroups
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      marginRight: 10,
+                    }}
+                  />
+                  Group Dashboard
+                </Button>{" "}
+              </Link>
 
-            <Link
-              to={{ pathname: `/groups/${groupName}` }}
-              state={{
-                name: groupName,
-                punishment: punishment,
-                description: description,
-              }}
-              style={{ textAlign: "end", textDecoration: "none"}}
-              
-            >
               <Button
-                variant="secondary"
+                variant="outlined"
                 size="lg"
+                onClick={() => handleAddMember(groupName)}
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                 }}
               >
-                <MdGroups
+                <AiOutlinePlusCircle
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    marginLeft: 25,
+                    marginRight: 25,
+                  }}
+                />
+              </Button>
+
+              <Button
+                variant="outlined"
+                size="lg"
+                onClick={() => handleAddMember(groupName)}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <MdPerson
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     marginRight: 10,
                   }}
                 />
-                Group Dashboard
-              </Button>{" "}
-              
-            </Link>
-
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => handleAddMember(groupName)}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <AiOutlinePlusCircle
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  marginLeft: 25,
-                  marginRight: 25,
-                }}
-              />
-            </Button>
-
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => handleAddMember(groupName)}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <MdPerson
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  marginRight: 10,
-                }}
-              />
-              Personal Dashboard
-            </Button>
+                Personal Dashboard
+              </Button>
+            </Stack>
 
             <AddGroupMemberModal
               selectedGroup={selectedGroup}
