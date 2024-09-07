@@ -5,7 +5,7 @@ import GroupDropDown from "../../components/Groups Components/GroupDropDown";
 import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import Tile from "../../components/Tile";
 import CreateGroupModal from "../../components/Groups Components/CreateGroupModal";
-
+import { Card, Typography } from "@mui/joy";
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } =
@@ -19,23 +19,38 @@ const GroupsPage = () => {
         </Col>
         <Col md={5} className="p-4">
           <Row>
-            <h1 style={{ textAlign: "center", color: "#ffffff" }}>Groups</h1>
+            <h1 style={{ color: "#ffffff" }}>Groups</h1>
           </Row>
           <Row>
-            <div className="GroupsDropDown">
-              {Object.keys(groups).map((groupName) => (
-                <div key={groupName}>
-                  <GroupDropDown
-                    groupName={groupName}
-                    memberNames={groups[groupName].members}
-                    groups={groups}
-                    punishment={groups[groupName].punishment}
-                    description={groups[groupName].description}
-                  />
-                  <br />
-                </div>
-              ))}
-            </div>
+            <Card variant="outlined" sx={{
+              bgcolor: "#12253D",
+              display: "flex"
+            }}>
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  paddingBottom: 3,
+                  color: "#ffffff"
+                }}
+                variant="h1"
+              >
+                Group List
+              </Typography>
+              <div className="GroupsDropDown">
+                {Object.keys(groups).map((groupName) => (
+                  <div key={groupName}>
+                    <GroupDropDown
+                      groupName={groupName}
+                      memberNames={groups[groupName].members}
+                      groups={groups}
+                      punishment={groups[groupName].punishment}
+                      description={groups[groupName].description}
+                    />
+                    <br />
+                  </div>
+                ))}
+              </div>
+            </Card>
           </Row>
         </Col>
         <Col className="h-5">
