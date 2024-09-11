@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
 require("dotenv").config();
 
 
@@ -81,23 +82,27 @@ const resetPassword = async (req, res) => {
 
     try {
         const user = await User.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }
+            resetToken: token,
+            resetTokenExpiry: { $gt: Date.now() }
         });
 
         if (!user) {
             return res.status(400).json({ error: 'Password reset token is invalid or has expired' });
         }
 
-        user.password = password;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+
+        user.password = hash;
+    
+        user.resetToken = undefined;
+        user.resetTokenExpiry = undefined;
         await user.save();
 
         res.status(200).json({ message: 'Password successfully updated' });
 
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: error + 'Internal server error' });
     }
 }
 

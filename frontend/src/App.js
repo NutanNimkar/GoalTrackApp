@@ -25,7 +25,7 @@ function App() {
               <Route path="/signup" element={!user ? <UserSignUp /> : <Navigate to="/" />} />
               <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="*" element={<Navigate to="/" />} /> {/* Catch-all route */}
             </Routes>
           </div>

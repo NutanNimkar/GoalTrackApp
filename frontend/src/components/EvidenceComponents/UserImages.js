@@ -33,8 +33,6 @@ const UserImages = ({ userId, images, setImages }) => {
         img.url.split("/").pop()
       );
 
-      console.log("Extracted filenames:", filenames);
-
       const imagePromises = filenames.map((filename) =>
         axiosInstance.get(`/api/users/evidence/${filename}`, {
           responseType: "blob",
@@ -45,7 +43,6 @@ const UserImages = ({ userId, images, setImages }) => {
       const imageUrls = imageResponses.map((res) =>
         URL.createObjectURL(res.data)
       );
-      console.log(imageUrls);
       setImages(imageUrls);
     } catch (err) {
       console.error("Error fetching images:", err);
