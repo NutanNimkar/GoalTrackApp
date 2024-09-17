@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   friendsRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   lastReset: { type: Date },
+  resetToken : {type: String},
+  resetTokenExpiry: {type: Date},
 });
 
 userSchema.statics.login = async function (email, password) {
