@@ -23,6 +23,7 @@
     "mongoose": "^8.3.4",
     "multer-gridfs-storage": "github:meme8383/multer-gridfs-storage#f82252c",
     "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.14",
     "nodemon": "^3.1.4",
     "path": "^0.12.7",
     "validator": "^13.12.0"

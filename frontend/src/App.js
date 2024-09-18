@@ -1,15 +1,14 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { SharedStateProvider } from "./Context/SharedStateContext";
-import { useAuthContext } from "./hooks/useAuthContext";
-import Home from "./pages/Home";
-import TaskDetails from "./pages/TaskDetails";
-import GroupPage from "./pages/Groups Pages/GroupPage";
-
-import GroupsPage from "./pages/Groups Pages/GroupHomePage";
-import { GroupsPageProvider } from "./Context/GroupsPageContext";
-import UserSignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { SharedStateProvider } from './Context/SharedStateContext';
+import { useAuthContext } from './hooks/useAuthContext';
+import Home from './pages/Home';
+import TaskDetails from './pages/TaskDetails';
+import Groups from './pages/Groups';
+import UserSignUp from './pages/SignUp';
+import Login from './pages/Login';
+import ForgotPassword from './components/AuthComponents/ForgotPassword';
+import ResetPassword from './components/AuthComponents/ResetPassword';
 
 function App() {
   const { user } = useAuthContext();
@@ -17,38 +16,20 @@ function App() {
   return (
     <div className="App">
       <SharedStateProvider>
-        <GroupsPageProvider>
-          <BrowserRouter>
-            <div className="pages">
-              <Routes>
-                <Route path="/" element={user ? <Home /> : <Login />} />
-                <Route
-                  path="/task"
-                  element={user ? <TaskDetails /> : <Login />}
-                />
-                <Route
-                  exact
-                  path="/groups"
-                  element={user ? <GroupsPage /> : <Login />}
-                />
-                <Route
-                  path="/signup"
-                  element={!user ? <UserSignUp /> : <Navigate to="/" />}
-                />
-                <Route
-                  path="/login"
-                  element={!user ? <Login /> : <Navigate to="/" />}
-                />
-                {/* <Route path="*" element={<Navigate to="/" />} />{" "} */}
-                {/* Catch-all route */}
-                <Route
-                  path="/groups/:id"
-                  element={user ? <GroupPage /> : <Login />}
-                />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </GroupsPageProvider>
+        <BrowserRouter>
+          <div className="pages">
+            <Routes>
+              <Route path="/" element={user ? <Home /> : <Login />} />
+              <Route path="/task" element={user ? <TaskDetails /> : <Login />} />
+              <Route path="/groups" element={user ? <Groups /> : <Login />} />
+              <Route path="/signup" element={!user ? <UserSignUp /> : <Navigate to="/" />} />
+              <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route path="*" element={<Navigate to="/" />} /> {/* Catch-all route */}
+            </Routes>
+          </div>
+        </BrowserRouter>
       </SharedStateProvider>
     </div>
   );

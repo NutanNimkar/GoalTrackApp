@@ -115,23 +115,24 @@ const SharedStateProvider = ({ children }) => {
       })
       .catch((error) => console.error("Error adding user to group:", error));
   };
-
   const calculateTaskProgress = (userId) => {
     if (!user) return;
-    const userTasks = dailyTasks.filter((task) => task.assignedTo === userId);
+    
+    // Check if dailyTasks exists and filter accordingly
+    const userTasks = dailyTasks?.filter((task) => task.assignedTo === userId) || [];
     const completedTasks = userTasks.filter((task) => task.status === true);
-    if (
-      completedTasks.length === userTasks.length &&
-      completedTasks.length > 0
-    ) {
-      return "Completed";
-    }
-    if (completedTasks.length === 0) {
+  
+    // Ensure userTasks and completedTasks have valid lengths before proceeding
+    if (userTasks.length === 0) {
       return "Not Started";
     }
+  
+    if (completedTasks.length === userTasks.length) {
+      return "Completed";
+    }
+  
     return `${completedTasks.length}/${userTasks.length}`;
   };
-
   return (
     <SharedStateContext.Provider
       value={{

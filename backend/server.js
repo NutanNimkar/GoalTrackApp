@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const tasksRoutes = require("./routes/tasks");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
+const friendRoutes = require("./routes/friends");
 const groupRoutes = require("./routes/groups");
 const { GridFSBucket } = require("mongodb");
 const { initializeGridFSBucket } = require("./config/gridFs");
 const cron = require("node-cron");
 const axios = require("axios");
+const cors = require('cors');
 require("dotenv").config();
 
 const app = express();
@@ -16,6 +18,7 @@ const requireAuth = require("./middleware/requireAuth");
 
 //Middleware
 app.use(express.json());
+app.use(cors());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -23,6 +26,7 @@ app.use((req, res, next) => {
 
 //Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/friends", requireAuth, friendRoutes);
 app.use("/api/tasks", requireAuth, tasksRoutes);
 app.use("/api/users", requireAuth, userRoutes);
 app.use("/api/groups", requireAuth, groupRoutes);
