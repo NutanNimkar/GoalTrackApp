@@ -3,11 +3,11 @@ import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { SharedStateProvider } from './Context/SharedStateContext';
 import { useAuthContext } from './hooks/useAuthContext';
 import Home from './pages/Home';
-import TaskDetails from './pages/TaskDetails';
+import Friends from './pages/Friends';
 import Groups from './pages/Groups';
 import UserSignUp from './pages/SignUp';
 import Login from './pages/Login';
-import { AuthContextProvider } from './Context/AuthContext';
+
 // import Friends from './pages/Friends';
 
 
@@ -23,8 +23,8 @@ function App() {
       <div className="pages">
         <Routes>
           <Route path="/" element= {user ? <Home /> : <Navigate to ="/login"/>} />
-          <Route path="/task" element={user ? <TaskDetails /> : <Navigate to ="/login"/>} />
-          <Route path='/groups' element={user ? <Groups /> : <Navigate to ="/login"/>} />
+          <Route path='/groups' element={ <Groups />} />
+          <Route path='/friends' element={<Friends/>} />
           <Route path="/signup" element={!user ? <UserSignUp/> : <Navigate to="/" />} />
           <Route path="/login" element={ !user ? <Login/> : <Navigate to="/" />} />
           {/* <Route path="/friends" element={<Friends/>} /> */}
