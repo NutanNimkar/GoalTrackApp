@@ -28,7 +28,7 @@ function GroupDropDown({
   return (
     <Accordion>
       <Accordion.Item eventKey="1">
-        <Accordion.Header>Group #1: {groupName}</Accordion.Header>
+        <Accordion.Header style={{position: "sticky", top: 0}}>Group #1: {groupName}</Accordion.Header>
         <Accordion.Body>
           <div>
             {memberNames.map((member, index) => (
