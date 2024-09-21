@@ -19,6 +19,7 @@ const GroupsPageProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       getGroupIDs();
+      fetchGroups();
     }
   }, [user]);
 
@@ -28,7 +29,6 @@ const GroupsPageProvider = ({ children }) => {
     try {
       const response = await axiosInstance.get("/api/groups");
       console.log(response.data);
-      const memberIDToName = await axiosInstance.get("");
       const groupsData = response.data.reduce((acc, group) => {
         acc[group.name] = {
           description: group.description,
@@ -40,6 +40,7 @@ const GroupsPageProvider = ({ children }) => {
       }, {});
       console.log(groupsData);
       setGroups(groupsData);
+      console.log(groups)
     } catch (error) {
       console.error("Error fetching groups", error);
       setError("We were unable to fetch groups at this moment");
