@@ -64,4 +64,4 @@ return (
 )
 }
 
-export default VerticalNavigation
+export default VerticalNavigation;

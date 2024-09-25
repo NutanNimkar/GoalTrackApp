@@ -82,13 +82,13 @@ const acceptFriendRequest = async (req, res) => {
     if (!user || !friend) {
       return res.status(404).json({ err: "User or friend not found" });
     }
-    if (!user.friendRequests.includes(friendId)) {
+    if (!user.friendsRequests.includes(friendId)) {
       return res.status(400).json({ err: "Friend request not sent" });
     }
     user.friends.push(friendId);
     friend.friends.push(id);
 
-    user.friendRequests = user.friendRequests.filter(
+    user.friendsRequests = user.friendsRequests.filter(
       (requestId) => requestId.toString() !== friendId
     );
 
@@ -117,25 +117,30 @@ const sendFriendRequest = async (req, res) => {
     if (!user || !friend) {
       return res.status(404).json({ err: "User or friend not found" });
     }
+
+    // Ensure that friends and friendsRequests arrays exist
+    if (!user.friendsRequests) user.friendsRequests = [];
+    if (!user.friends) user.friends = [];
+    if (!friend.friendsRequests) friend.friendsRequests = [];
+    if (!friend.friends) friend.friends = [];
+
     if (
-      user.friendRequests.includes(friendId) ||
-      friend.friendRequests.includes(user._id) ||
+      user.friendsRequests.includes(friendId) ||
+      friend.friendsRequests.includes(user._id) ||
       user.friends.includes(friendId) ||
       friend.friends.includes(user._id)
     ) {
-      return res
-        .status(400)
-        .json({
-          err: "Friend request already sent or user already in friends list",
-        });
+      return res.status(400).json({
+        err: "Friend request already sent or user already in friends list",
+      });
     }
 
-    friend.friendRequests.push(user._id);
+    friend.friendsRequests.push(user._id);
     await friend.save();
 
     res.status(200).json({ msg: "Friend request sent" });
   } catch (err) {
-    res.status(500).json({ err: "Server error" });
+    res.status(500).json({ err: "Server error", error: err.message });
   }
 };
 
@@ -153,7 +158,8 @@ const getFriendRequest = async (req, res) => {
     if (!user) {
       return res.status(404).json({ err: "User not found" });
     }
-    res.status(200).json(user.friendRequests);
+    console.log(user.friendsRequests);
+    res.status(200).json(user.friendsRequests);
   } catch (err) {
     res.status(500).json({ err: "Server error" });
   }
@@ -206,10 +212,10 @@ const removeFriendRequest = async (req, res) => {
     if (!user || !friend) {
       return res.status(404).json({ err: "User or friend not found" });
     }
-    if (!user.friendRequests.includes(friendId)) {
+    if (!user.friendsRequests.includes(friendId)) {
       return res.status(400).json({ err: "Friend request not sent" });
     }
-    user.friendRequests = user.friendRequests.filter(
+    user.friendsRequests = user.friendsRequests.filter(
       (friendId) => friendId.toString() !== friendId
     );
     await user.save();

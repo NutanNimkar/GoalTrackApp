@@ -22,9 +22,8 @@ export const useLogin =()=>
             )
             const json = await response.json()
             if (!response.ok){
-
-                setisLoading(false)
-                setError(json.error)
+                setError(json.err);
+                setisLoading(false);
             }
             if (response.ok){
 

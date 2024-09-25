@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import createAxiosInstance from '../../axiosInstance';
 import { useAuthContext } from "../../hooks/useAuthContext"
 
 const FriendsPage = ({ UserId }) => {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { user: currentUser } = useAuthContext();
+  const axiosInstance = createAxiosInstance(currentUser?.token);
+  const userId = currentUser?.id;
 
   // Directly extract user ID from the context
-  const userId = "66ea2d2920dbbcc14dbb74ce";
+  // const userId = "66ea2d2920dbbcc14dbb74ce";
 
   useEffect(() => {
     const fetchFriends = async () => {
       setLoading(true);
       setError('');
       try {
-        const response = await axios.get(`/api/friends/${userId}`)
+        const response = await axiosInstance.get(`/api/friends/friends/${userId}`)
         setFriends(response.data);
       } catch (err) {
         setError('Error fetching friends list');
@@ -31,7 +34,7 @@ const FriendsPage = ({ UserId }) => {
       setLoading(true);
       setError('');
       try {
-        await axios.delete(`/api/friends/${userId}`, {
+        await axiosInstance.delete(`/api/friends/${userId}`, {
           friendID: friendId}
         );
         // Remove the friend from the local state
