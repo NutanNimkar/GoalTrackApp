@@ -24,14 +24,34 @@ function GroupDropDown({
   if (!Array.isArray(memberNames)) {
     memberNames = [];
   }
-   
-  return (
-    <Accordion>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header style={{position: "sticky", top: 0}}>Group #1: {groupName}</Accordion.Header>
+
+  const uniqueGroups = {};
+  
+  Object.keys(groups).forEach((groupName) => {
+    if (!uniqueGroups[groupName]) {
+      uniqueGroups[groupName] = groups[groupName];
+    }
+  });
+
+  const sortedGroupNames = Object.keys(uniqueGroups).sort((a, b) => {
+    const aNumber = parseInt(a.replace(/\D/g, ""), 10);
+    const bNumber = parseInt(b.replace(/\D/g, ""), 10);
+    return bNumber - aNumber;
+  });
+  
+  const accordionItems = sortedGroupNames.map((groupName, index) => {
+    const currentGroup = uniqueGroups[groupName]
+    const groupMemberNames = currentGroup?.members || [];
+    return (
+      <Accordion.Item eventKey={index + 1} key={index}>
+        <Accordion.Header
+          style={{ position: "sticky", top: 0, backgroundColor: "#83AFE8" }}
+        >
+          Group #{index + 1}: {groupName}
+        </Accordion.Header>
         <Accordion.Body>
           <div>
-            {memberNames.map((member, index) => (
+            {groupMemberNames.map((member, index) => (
               <div className="d-grid gap-2" key={index}>
                 <Button key={member} variant="contained" size="lg">
                   {member}
@@ -56,6 +76,7 @@ function GroupDropDown({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRadius: 11,
                   }}
                 >
                   <MdGroups
@@ -64,6 +85,7 @@ function GroupDropDown({
                       alignItems: "center",
                       marginRight: 10,
                     }}
+                    size={48}
                   />
                   Group Dashboard
                 </Button>{" "}
@@ -77,6 +99,7 @@ function GroupDropDown({
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  borderRadius: 21,
                 }}
               >
                 <AiOutlinePlusCircle
@@ -86,6 +109,7 @@ function GroupDropDown({
                     marginLeft: 25,
                     marginRight: 25,
                   }}
+                  size={28}
                 />
               </Button>
 
@@ -97,6 +121,7 @@ function GroupDropDown({
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  borderRadius: 11,
                 }}
               >
                 <MdPerson
@@ -105,6 +130,7 @@ function GroupDropDown({
                     alignItems: "center",
                     marginRight: 10,
                   }}
+                  size={48}
                 />
                 Personal Dashboard
               </Button>
@@ -120,6 +146,11 @@ function GroupDropDown({
           </div>
         </Accordion.Body>
       </Accordion.Item>
+    );
+  });
+  return (
+    <Accordion>
+      {accordionItems}
     </Accordion>
   );
 }

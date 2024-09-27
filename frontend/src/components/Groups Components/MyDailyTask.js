@@ -78,7 +78,6 @@ const MyTaskDetails = () => {
     initializeTasks();
   }, [userId]);
 
-  // console.log(dailyTasks);
   return (
     <Container fluid className="vh-20">
       <div className="content-area">
