@@ -8,6 +8,7 @@ import CreateGroupModal from "../../components/Groups Components/CreateGroupModa
 import { Card, CardContent, Typography } from "@mui/joy";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { FaRegHandshake } from "react-icons/fa";
+import Button from "@mui/material/Button";
 
 const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } =
@@ -57,7 +58,7 @@ const GroupsPage = () => {
                   </Card>
                 </CardContent>
               </Card>
-              <Stack gap = {5}>
+              <Stack gap={5}>
                 <Card
                   variant="outlined"
                   sx={{
@@ -74,19 +75,21 @@ const GroupsPage = () => {
                     Create Group
                   </Typography>
                   <CardContent>
-                    <Card
-                      sx={{
-                        alignContent: "center",
-                        bgcolor: "#415F84",
-                        color: "#ffffff",
-                      }}
-                    >
-                      <AiOutlineUsergroupAdd
-                        size={"75"}
-                        style={{ alignSelf: "center" }}
-                      />
-                      Create a new group and invite other users
-                    </Card>
+                    <Button variant="text" onClick={handleAddGroup}>
+                      <Card
+                        sx={{
+                          alignContent: "center",
+                          bgcolor: "#415F84",
+                          color: "#ffffff",
+                        }}
+                      >
+                        <AiOutlineUsergroupAdd
+                          size={"75"}
+                          style={{ alignSelf: "center" }}
+                        />
+                        Create a new group and invite other users
+                      </Card>
+                    </Button>
                   </CardContent>
                 </Card>
                 <Card
@@ -105,19 +108,23 @@ const GroupsPage = () => {
                     Join Group
                   </Typography>
                   <CardContent>
-                    <Card
-                      sx={{
-                        alignContent: "center",
-                        bgcolor: "#415F84",
-                        color: "#ffffff",
-                      }}
+                    <Button
+                      variant="text"
                     >
-                      <FaRegHandshake
-                        size={"75"}
-                        style={{ alignSelf: "center" }}
-                      />
-                      Join an existing group with a group code
-                    </Card>
+                      <Card
+                        sx={{
+                          alignContent: "center",
+                          bgcolor: "#415F84",
+                          color: "#ffffff",
+                        }}
+                      >
+                        <FaRegHandshake
+                          size={"75"}
+                          style={{ alignSelf: "center" }}
+                        />
+                        Join an existing group with a group code
+                      </Card>
+                    </Button>
                   </CardContent>
                 </Card>
               </Stack>
