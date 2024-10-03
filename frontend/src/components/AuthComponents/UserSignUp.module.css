@@ -1,0 +1,166 @@
+.logoIcon {
+    height: 6rem;
+    width: auto;
+    margin: 25px 0 0 0;
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    margin-top: 200px;
+    padding-bottom: 30px;
+    background-color: #383737;
+    width: 600px;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    width: 100%;
+}
+
+.underline {
+    width: 250px;
+    height: 3px;
+    background: #BCC5C8;
+    border-radius: 9px;
+}
+
+.text {
+    font-size: 48px;
+    font-weight: 100;
+    color: #BCC5C8;
+}
+
+.userInput {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #383737;
+    color: #D9D9D9;
+}
+
+.passwordIcon {
+    height: 2rem;
+    width: auto;
+    position: relative;
+    left: 500px;
+    top: 25px;
+    transform: translateY(-50%);
+}
+
+.nameIcon {
+    height: 2rem;
+    width: auto;
+    position: relative;
+    left: 500px;
+    top: 25px;
+    transform: translateY(-60%);
+}
+
+.emailIcon {
+    height: 2rem;
+    width: auto;
+    position: relative;
+    left: 500px;
+    top: 25px;
+    transform: translateY(-60%);
+}
+
+.emailInput {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 50px 80px 0 0;
+}
+
+.passwordInput {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 50px 80px 0 0;
+}
+
+.usernameInput {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 50px 25px 0 0;
+}
+
+.emailInput input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+}
+
+.passwordInput input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+}
+
+.usernameInput input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+}
+
+.userInput input::placeholder {
+    color: #fff;
+}
+
+.existAccount {
+    padding: 0 0 70px 0px;
+    color: #FFFFFF;
+    font-size: 18px;
+    width: 100%;
+    height: 25px;
+    margin: auto;
+    margin: 0 0 0 300px;
+}
+
+.existAccount span {
+    color: #B3E6A9;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+.submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 50px;
+    color: #fff;
+    background-color: #B3E6A9;
+    border-radius: 50px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 50px 0 0 0;
+    gap: 1px;
+}
+
+.submit:hover {
+    background-color: #7ABF6D;
+}

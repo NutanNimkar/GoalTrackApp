@@ -1,36 +1,43 @@
 const express = require("express");
-require("dotenv").config();
-const app = express();
 const mongoose = require("mongoose");
 const tasksRoutes = require("./routes/tasks");
 const userRoutes = require("./routes/user");
-// const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
+const friendRoutes = require("./routes/friends");
 const groupRoutes = require("./routes/groups");
+const { GridFSBucket } = require("mongodb");
+const { initializeGridFSBucket } = require("./config/gridFs");
 const cron = require("node-cron");
 const axios = require("axios");
+const cors = require('cors');
+require("dotenv").config();
 
-//middleware
+const app = express();
+const port = process.env.PORT || 5000;
+const requireAuth = require("./middleware/requireAuth");
+
+//Middleware
 app.use(express.json());
-// app.use(cors());
-
+app.use(cors());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+//Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/friends", requireAuth, friendRoutes);
+app.use("/api/tasks", requireAuth, tasksRoutes);
+app.use("/api/users", requireAuth, userRoutes);
+app.use("/api/groups", requireAuth, groupRoutes);
 
-app.use("/api/tasks", tasksRoutes);
-app.use("/api/users", userRoutes);
-// app.use('/api/auth',authRoutes);
-app.use("/api/groups", groupRoutes);
-
+// Scheduled Task
 cron.schedule("0 0 * * *", async () => {
   try {
-    const users = await User.find({}); // Fetch all users from the database
+    const users = await User.find({});
     users.forEach(async (user) => {
       await axios.put(
-        `http://localhost:5000/api/tasks/reset-status/${user._id}`,
+        `http://localhost:4060/api/tasks/reset-status/${user._id}`,
         {},
         {
           headers: {
@@ -47,8 +54,9 @@ cron.schedule("0 0 * * *", async () => {
 mongoose
   .connect(process.env.MONG_URI)
   .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log(`connected to db and listening on port ${process.env.PORT}`);
+    initializeGridFSBucket();
+    app.listen(port, () => {
+      console.log(`connected to db and listening on port ${port}`);
     });
   })
   .catch((err) => {
