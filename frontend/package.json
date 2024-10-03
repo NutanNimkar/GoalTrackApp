@@ -4,14 +4,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.4",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/inter": "^5.0.20",
+    "@mui/icons-material": "^6.1.1",
+    "@mui/joy": "^5.0.0-beta.48",
+    "@mui/material": "^6.1.1",
+    "@mui/x-charts": "^7.18.0",
+    "@nextui-org/react": "^2.4.6",
     "@table-library/react-table-library": "^4.1.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@toolpad/core": "^0.7.0",
+    "apexcharts": "^3.53.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
+    "react-apexcharts": "^1.4.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
@@ -47,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/node": "^20.14.7"
+    "@types/node": "^20.14.7",
+    "tailwindcss": "^3.4.13"
   }
 }
