@@ -1,20 +1,20 @@
 import React, { useContext } from "react";
 import { Container, Row, Col, Stack } from "react-bootstrap";
-import VerticalNavigation from "../../components/VerticalNavigation";
+import VerticalNavigation from "../../components/VerticalNavigation.js";
 import { useLocation } from "react-router-dom";
-import MyTaskDetails from "../../components/Groups Components/MyDailyTask";
-import { SharedStateContext } from "../../Context/SharedStateContext";
-import { Card, CardContent, Grid } from "@mui/joy";
-import Typography from "@mui/joy/Typography";
+import MyTaskDetails from "../../components/Groups Components/MyDailyTask.js";
+import { SharedStateContext } from "../../Context/SharedStateContext.js";
+import { Card, CardContent, Typography } from "@mui/joy";
 import { Link } from "react-router-dom";
 import { MdOutlinePersonOutline } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import {BarChart} from '@mui/x-charts/BarChart'
-import {dataset, valueFormatter} from '../Groups Pages/weather.ts'
+import {dataset, valueFormatter} from './weather.ts'
 // import ReactApexChart from "react-apexcharts";
 import GeneralDeck from "./components/GeneralCardInfo.js";
+import PersonalDB from "./PersonalDB.js";
 
-function GroupPage() {
+function GroupDBPage() {
   const location = useLocation();
   const { name, punishment, description } = location.state;
   const { handleAddTask } = useContext(SharedStateContext);
@@ -32,12 +32,12 @@ function GroupPage() {
   return (
     <Container fluid className="container-fluid vh-100">
       <Row className="h-100">
-        <Col xs={12} md="auto" className="bg-light p-0">
+        <Col md="auto" className="bg-light p-0">
           <VerticalNavigation />
         </Col>
-        <Col>
+        <Col md={7} className="p-4">
           <Row className="p-3">
-            <h1 style={{ color: "#80AFE8", display: "inline" }}>{name}</h1>{" "}
+            <h1 style={{ color: "#80AFE8", display: "inline" }}>{name}</h1>
             <h1 style={{ color: "#ffffff", display: "inline" }}>
               DashBoard - Group
             </h1>
@@ -59,7 +59,7 @@ function GroupPage() {
                     <Typography style={{ color: "#ffffff" }}>
                       Group Progress Activity
                     </Typography>
-                    <Stack gap={5} direction="horizontal">
+                    <Stack direction="horizontal">
                       <CardContent>
                         Group Progress will be featured on this dashboard. The
                         total amount of days completed by a member, total amount
@@ -67,9 +67,11 @@ function GroupPage() {
                         will be recorded.
                       </CardContent>
                       <Link
-                        // to={{ pathname: `/groups/${}`}}
+                        to={{ pathname: `/groups/${name}/personaldb`}}
                         state={{
                           name: name,
+                          description: description,
+                          punishment: punishment
                         }}
                         style={{ textAlign: "end", textDecoration: "none" }}
                       >
@@ -387,7 +389,6 @@ function GroupPage() {
                   </Card>
                 </Col>
               </Stack>
-              <Grid></Grid>
             </div>
           </Row>
         </Col>
@@ -396,4 +397,4 @@ function GroupPage() {
   );
 }
 
-export default GroupPage;
+export default GroupDBPage;

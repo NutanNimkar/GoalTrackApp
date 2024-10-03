@@ -13,12 +13,10 @@ const GroupsPage = () => {
   const { groups, handleAddGroup, showModal, setShowModal, handleSaveGroup } =
     useContext(GroupsPageContext);
 
-  const numberOfGroups = Object.keys(groups).length;
-  console.log(numberOfGroups);
   return (
     <Container fluid className="container-fluid vh-100">
       <Row className="h-100">
-        <Col xs={12} md="auto" className="bg-light p-0">
+        <Col md="auto" className="bg-light p-0">
           <VerticalNavigation />
         </Col>
         <Col md={7} className="p-4">

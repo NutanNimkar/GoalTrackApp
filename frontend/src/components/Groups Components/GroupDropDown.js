@@ -42,6 +42,9 @@ function GroupDropDown({
   const accordionItems = sortedGroupNames.map((groupName, index) => {
     const currentGroup = uniqueGroups[groupName]
     const groupMemberNames = currentGroup?.members || [];
+    const groupDescription = currentGroup?.description || [];
+    const groupPunishment = currentGroup?.punishment || [];
+    
     return (
       <Accordion.Item eventKey={index + 1} key={index}>
         <Accordion.Header
@@ -61,11 +64,11 @@ function GroupDropDown({
             ))}
             <Stack direction="horizontal" gap={5}>
               <Link
-                to={{ pathname: `/groups/${groupName}` }}
+                to={{ pathname: `/groups/${groupName}/groupdb` }}
                 state={{
                   name: groupName,
-                  punishment: punishment,
-                  description: description,
+                  punishment: groupPunishment,
+                  description: groupDescription,
                 }}
                 style={{ textAlign: "end", textDecoration: "none" }}
               >

@@ -38,62 +38,64 @@ function GeneralDeck({ description, punishment }) {
             bgcolor: "#022D66",
             display: "flex",
             top: -13,
-
             borderRadius: "15px",
           }}
           variant="outlined"
           color="neutral"
         >
           <Stack direction="horizontal" gap={5}>
-            <Typography style={{ color: "#ffffff" }}>{description}</Typography>
-            <Card
-              variant="outlined"
-              sx={{
-                bgcolor: "#12253D",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              <Typography
-                level="title-sm"
-                style={{
-                  display: "flex",
-                  color: "#ffffff",
-                }}
-              >
-                Contract
-              </Typography>
-              <CardContent sx={{ color: "#ffffff" }}>{punishment}</CardContent>
-            </Card>
-            <Card
-              variant="outlined"
-              sx={{
-                bgcolor: "#12253D",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              <Typography
-                level="title-sm"
-                style={{
-                  display: "flex",
-                  color: "#ffffff",
+            <div style={{alignContent: "space-around"}}>
+              <Typography style={{ color: "#ffffff" }}>{description}</Typography>
+              <Card
+                variant="outlined"
+                sx={{
+                  bgcolor: "#12253D",
                   alignItems: "center",
-                }}
-              >
-                Deadline
-              </Typography>
-              <CardContent
-                level="title-lg"
-                style={{
                   display: "flex",
-                  color: "#B6CCE7",
-                  alignItems: "center",
                 }}
               >
-                May 12, 2024
-              </CardContent>
-            </Card>
+                <Typography
+                  level="title-sm"
+                  style={{
+                    display: "flex",
+                    color: "#ffffff",
+                  }}
+                >
+                  Contract
+                </Typography>
+                <CardContent sx={{ color: "#ffffff" }}>{punishment}</CardContent>
+              </Card>
+              <Card
+                variant="outlined"
+                sx={{
+                  bgcolor: "#12253D",
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                <Typography
+                  level="title-sm"
+                  style={{
+                    display: "flex",
+                    color: "#ffffff",
+                    alignItems: "center",
+                  }}
+                >
+                  Deadline
+                </Typography>
+                <CardContent
+                  level="title-lg"
+                  style={{
+                    display: "flex",
+                    color: "#B6CCE7",
+                    alignItems: "center",
+                  }}
+                >
+                  May 12, 2024
+                </CardContent>
+              </Card>
+            </div>
+            
           </Stack>
         </Card>
       </div>
