@@ -25,7 +25,6 @@ const checkAuthorization = (req, userId) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
-
     if (!users || users.length === 0) {
       return res.status(404).json({ msg: "No users found" });
     }
@@ -164,7 +163,6 @@ const getUsersGroups = async (req, res) => {
   }
 };
 
-// Get tasks associated with a user
 const getUsersTasks = async (req, res) => {
   const { id } = req.params;
   if (!checkIdisValid(id, res)) return;
