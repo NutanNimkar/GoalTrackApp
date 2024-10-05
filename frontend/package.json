@@ -10,6 +10,7 @@
     "@mui/icons-material": "^6.1.1",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^6.1.1",
+    "@mui/system": "^6.1.2",
     "@mui/x-charts": "^7.18.0",
     "@nextui-org/react": "^2.4.6",
     "@table-library/react-table-library": "^4.1.7",

@@ -1,13 +1,13 @@
-import React from 'react'
-import UserLogin from '../components/AuthComponents/UserLogin' 
-import "./Login.css"
+import React from "react";
+import UserLogin from "../components/AuthComponents/UserLogin";
+import "./Login.css";
 
-const Login = () =>{
+const Login = () => {
   return (
     <div>
-        <UserLogin/>
+      <UserLogin />
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

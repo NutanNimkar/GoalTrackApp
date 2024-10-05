@@ -26,7 +26,7 @@ function GroupDropDown({
   }
 
   const uniqueGroups = {};
-  
+
   Object.keys(groups).forEach((groupName) => {
     if (!uniqueGroups[groupName]) {
       uniqueGroups[groupName] = groups[groupName];
@@ -38,13 +38,13 @@ function GroupDropDown({
     const bNumber = parseInt(b.replace(/\D/g, ""), 10);
     return bNumber - aNumber;
   });
-  
+
   const accordionItems = sortedGroupNames.map((groupName, index) => {
-    const currentGroup = uniqueGroups[groupName]
+    const currentGroup = uniqueGroups[groupName];
     const groupMemberNames = currentGroup?.members || [];
     const groupDescription = currentGroup?.description || [];
     const groupPunishment = currentGroup?.punishment || [];
-    
+
     return (
       <Accordion.Item eventKey={index + 1} key={index}>
         <Accordion.Header
@@ -62,7 +62,7 @@ function GroupDropDown({
                 <br />
               </div>
             ))}
-            <Stack direction="horizontal" gap={5}>
+            <Stack direction="horizontal" gap={5} style={{justifyContent: "space-evenly"}}>
               <Link
                 to={{ pathname: `/groups/${groupName}/groupdb` }}
                 state={{
@@ -116,27 +116,36 @@ function GroupDropDown({
                 />
               </Button>
 
-              <Button
-                variant="outlined"
-                size="lg"
-                onClick={() => handleAddMember(groupName)}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 11,
+              <Link
+                to={{ pathname: `/groups/${groupName}/personaldb` }}
+                state={{
+                  name: groupName,
+                  punishment: groupPunishment,
+                  description: groupDescription,
                 }}
+                style={{ textAlign: "end", textDecoration: "none" }}
               >
-                <MdPerson
+                <Button
+                  variant="outlined"
+                  size="lg"
                   style={{
-                    display: "inline-flex",
+                    display: "flex",
+                    justifyContent: "center",
                     alignItems: "center",
-                    marginRight: 10,
+                    borderRadius: 11,
                   }}
-                  size={48}
-                />
-                Personal Dashboard
-              </Button>
+                >
+                  <MdPerson
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      marginRight: 10,
+                    }}
+                    size={48}
+                  />
+                  Personal Dashboard
+                </Button>
+              </Link>
             </Stack>
 
             <AddGroupMemberModal
@@ -151,11 +160,7 @@ function GroupDropDown({
       </Accordion.Item>
     );
   });
-  return (
-    <Accordion>
-      {accordionItems}
-    </Accordion>
-  );
+  return <Accordion>{accordionItems}</Accordion>;
 }
 
 export default GroupDropDown;
