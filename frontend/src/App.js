@@ -8,6 +8,8 @@ import TaskDetails from './pages/TaskDetails';
 import Groups from './pages/Groups';
 import UserSignUp from './pages/SignUp';
 import Login from './pages/Login';
+import ForgotPassword from './components/AuthComponents/ForgotPassword';
+import ResetPassword from './components/AuthComponents/ResetPassword';
 
 function App() {
   const { user } = useAuthContext();
@@ -24,6 +26,8 @@ function App() {
               <Route path="/groups" element={user ? <Groups /> : <Login />} />
               <Route path="/signup" element={!user ? <UserSignUp /> : <Navigate to="/" />} />
               <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="/friends" element={user ? <Friends /> : <Login />} />
               <Route path="*" element={<Navigate to="/" />} /> {/* Catch-all route */}
             </Routes>

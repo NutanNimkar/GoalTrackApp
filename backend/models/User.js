@@ -3,17 +3,25 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task", default: [] }],
-  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group", default: [] }],
-  evidenceImages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Image", default: [] }],
-  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
-  friendsRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
+  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
+  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
+  evidenceImages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Image" }],
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  friendsRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  sentFriendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   lastReset: { type: Date },
+  resetToken : {type: String},
+  resetTokenExpiry: {type: Date},
 });
 
+// accept buttion, decline button
+// users delete request button
+//friendrequestSent and friendrequestReceived
+//friendrequests stores friendrequests you receive
+//friendrequestsrecived stores friendrequests you sent
 userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
     throw Error("All fields must be filled");

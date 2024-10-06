@@ -9,6 +9,7 @@ const { GridFSBucket } = require("mongodb");
 const { initializeGridFSBucket } = require("./config/gridFs");
 const cron = require("node-cron");
 const axios = require("axios");
+const cors = require('cors');
 require("dotenv").config();
 
 const app = express();
@@ -17,6 +18,7 @@ const requireAuth = require("./middleware/requireAuth");
 
 //Middleware
 app.use(express.json());
+app.use(cors());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -60,3 +62,5 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+  module.exports = app;
