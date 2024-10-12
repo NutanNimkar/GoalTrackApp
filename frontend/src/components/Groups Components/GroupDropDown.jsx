@@ -1,19 +1,28 @@
-import { Accordion, Stack } from "react-bootstrap";
 import React, { useContext } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import AddGroupMemberModal from "./AddGroupMemberModal";
 import { Link } from "react-router-dom";
 import { MdGroups, MdPerson } from "react-icons/md";
-import { Button } from "@mui/joy";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Stack, Button, Typography } from "@mui/joy";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Fade from "@mui/material/Fade";
+import { CgProfile } from "react-icons/cg";
 
 function GroupDropDown({
-  groupName,
+  // groupName,
   memberNames,
   groups,
-  punishment,
-  description,
+  // punishment,
+  // description,
 }) {
+  const [expandedAccordion, setExpandedAccordion] = React.useState(false);
+
+  const handleExpansion = (panel) => (event, isExpanded) => {
+    setExpandedAccordion(isExpanded ? panel : null);
+  };
+
   const {
     addMember,
     handleAddMember,
@@ -25,6 +34,7 @@ function GroupDropDown({
     memberNames = [];
   }
 
+  // reading how many
   const uniqueGroups = {};
 
   Object.keys(groups).forEach((groupName) => {
@@ -46,23 +56,76 @@ function GroupDropDown({
     const groupPunishment = currentGroup?.punishment || [];
 
     return (
-      <Accordion.Item eventKey={index + 1} key={index}>
-        <Accordion.Header
-          style={{ position: "sticky", top: 0, backgroundColor: "#83AFE8" }}
+      <Accordion
+        eventKey={index + 1}
+        key={index}
+        expanded={expandedAccordion === index}
+        onChange={handleExpansion(index)}
+        TransitionComponent={Fade}
+        TransitionProps={{ timeout: 400 }}
+        sx={{
+          borderRadius: "5px",
+          padding: "5px",
+          marginBottom: 2,
+          backgroundColor: "#1C3B61",
+          ...(expandedAccordion === index
+            ? {
+                "& .MuiAccordion-region": {
+                  height: "auto",
+                },
+                "& .MuiAccordionDetails-root": {
+                  display: "block",
+                },
+              }
+            : {
+                "& .MuiAccordion-region": {
+                  height: 0,
+                },
+                "& .MuiAccordionDetails-root": {
+                  display: "none",
+                },
+                // backgroundColor: "Background.paper",
+              }),
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ArrowDownwardIcon />}
+          sx={{
+            backgroundColor: "#83AFE8",
+            borderRadius: "5px",
+          }}
         >
           Group #{index + 1}: {groupName}
-        </Accordion.Header>
-        <Accordion.Body>
+        </AccordionSummary>
+        <AccordionDetails>
           <div>
-            {groupMemberNames.map((member, index) => (
-              <div className="d-grid gap-2" key={index}>
-                <Button key={member} variant="contained" size="lg">
-                  {member}
+            {groupMemberNames.map((member, ind) => (
+              <div className="d-grid gap-2" key={ind}>
+                <Button
+                  key={member}
+                  variant="contained"
+                  size="lg"
+                  sx={{
+                    backgroundColor: "#415F84",
+                    margin: 2,
+                    padding: 2,
+                  }}
+                >
+                  <Stack direction="horizontal" gap={11}>
+                    <CgProfile
+                      size={30}
+                      style={{ position: "inherit", left: 0 }}
+                    />
+                    {member}
+                  </Stack>
                 </Button>
-                <br />
               </div>
             ))}
-            <Stack direction="horizontal" gap={5} style={{justifyContent: "space-evenly"}}>
+            <Stack
+              direction="horizontal"
+              gap="auto"
+              style={{ justifyContent: "space-evenly" }}
+            >
               <Link
                 to={{ pathname: `/groups/${groupName}/groupdb` }}
                 state={{
@@ -74,12 +137,13 @@ function GroupDropDown({
               >
                 <Button
                   variant="outlined"
-                  size="lg"
+                  size="sm"
                   style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: 11,
+                    backgroundColor: "#022D66",
                   }}
                 >
                   <MdGroups
@@ -87,22 +151,26 @@ function GroupDropDown({
                       display: "inline-flex",
                       alignItems: "center",
                       marginRight: 10,
+                      color: "#74AFDC",
                     }}
                     size={48}
                   />
-                  Group Dashboard
-                </Button>{" "}
+                  <Typography sx={{ color: "#74AFDC" }}>
+                    Group Dashboard
+                  </Typography>
+                </Button>
               </Link>
 
               <Button
                 variant="outlined"
-                size="lg"
+                size="sm"
                 onClick={() => handleAddMember(groupName)}
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  borderRadius: 21,
+                  borderRadius: 30,
+                  backgroundColor: "#022D66",
                 }}
               >
                 <AiOutlinePlusCircle
@@ -111,6 +179,7 @@ function GroupDropDown({
                     alignItems: "center",
                     marginLeft: 25,
                     marginRight: 25,
+                    color: "#FAFBFC",
                   }}
                   size={28}
                 />
@@ -127,23 +196,28 @@ function GroupDropDown({
               >
                 <Button
                   variant="outlined"
-                  size="lg"
+                  size="sm"
                   style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: 11,
+                    backgroundColor: "#022D66",
                   }}
+                  className="text-w"
                 >
                   <MdPerson
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
                       marginRight: 10,
+                      color: "#74AFDC",
                     }}
                     size={48}
                   />
-                  Personal Dashboard
+                  <Typography sx={{ color: "#74AFDC" }}>
+                    Personal Dashboard
+                  </Typography>
                 </Button>
               </Link>
             </Stack>
@@ -156,11 +230,22 @@ function GroupDropDown({
               group={groups}
             />
           </div>
-        </Accordion.Body>
-      </Accordion.Item>
+        </AccordionDetails>
+      </Accordion>
     );
   });
-  return <Accordion>{accordionItems}</Accordion>;
+  return (
+    <div
+      style={{
+        maxHeight: "55vh", 
+        overflowY: "auto", 
+        scrollbarColor: "#415F84 #0A2344",
+        paddingRight: 10
+      }}
+    >
+      {accordionItems}
+    </div>
+  );
 }
 
 export default GroupDropDown;

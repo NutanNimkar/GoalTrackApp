@@ -6,7 +6,7 @@ import { width } from "@mui/system";
 
 function GeneralDeck({ description, punishment }) {
   return (
-    <Container>
+    <div>
       <div style={{ paddingLeft: 50 }}>
         <Card
           sx={{
@@ -33,7 +33,7 @@ function GeneralDeck({ description, punishment }) {
           </div>
         </Card>
       </div>
-      <div style={{ paddingRight: 25, paddingLeft: 25 }}>
+      <div style={{paddingLeft: "25px", paddingRight: "25px"}}>
         <Card
           sx={{
             bgcolor: "#022D66",
@@ -109,7 +109,7 @@ function GeneralDeck({ description, punishment }) {
           </div>
         </Card>
       </div>
-    </Container>
+    </div>
   );
 }
 

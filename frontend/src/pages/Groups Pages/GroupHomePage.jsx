@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import VerticalNavigation from "../../components/VerticalNavigation";
-import { Row, Col, Stack } from "react-bootstrap";
-import { Container, Grid, positions } from "@mui/system";
+import { Row } from "react-bootstrap";
+import { Grid } from "@mui/system";
 import GroupDropDown from "../../components/Groups Components/GroupDropDown";
 import { GroupsPageContext } from "../../Context/GroupsPageContext";
-import Tile from "../../components/Tile";
 import CreateGroupModal from "../../components/Groups Components/CreateGroupModal";
-import { Card, CardContent, Typography } from "@mui/joy";
+import { Card, CardContent, Typography, Stack } from "@mui/joy";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { FaRegHandshake } from "react-icons/fa";
 import Button from "@mui/material/Button";
@@ -19,25 +18,35 @@ const GroupsPage = () => {
     <div>
       <Grid container spacing={2}>
         <Grid
-          size={2}
+          size={{ xs: 4, lg: 3 }}
           className="vh-100"
           style={{ position: "sticky", top: 0 }}
         >
           <VerticalNavigation />
         </Grid>
-        <Grid size={9} spacing={2}>
-          <Grid size={9}>
-            <Row>
+        <Grid size={{ xs: 8, lg: 9 }}>
+          <Grid>
+            <Row
+              style={{
+                paddingBottom: "2%",
+                paddingTop: "1.3%",
+                paddingLeft: "1%",
+              }}
+            >
               <h1 style={{ color: "#83AFE8" }}>Groups</h1>
             </Row>
-            <Row>
-              <Stack direction="horizontal" gap={5}>
+            <Grid>
+              <Stack
+                direction="horizontal"
+                gap={5}
+                style={{ paddingRight: 25, paddingLeft: 25 }}
+              >
                 <Card
                   variant="outlined"
                   sx={{
                     bgcolor: "#12253D",
                     display: "flex",
-                    width: 2 / 3,
+                    width: "65%",
                     borderRadius: 30,
                   }}
                 >
@@ -55,7 +64,9 @@ const GroupsPage = () => {
                     <Card
                       sx={{
                         bgcolor: "#0E1D30",
+                        borderRadius: 30
                       }}
+                      variant="solid"
                     >
                       <div className="GroupsDropDown">
                         <GroupDropDown groups={groups} />
@@ -71,6 +82,7 @@ const GroupsPage = () => {
                       bgcolor: "#12253D",
                       display: "flex",
                       position: "fixed",
+                      borderRadius: 30
                     }}
                   >
                     <Typography
@@ -88,6 +100,7 @@ const GroupsPage = () => {
                             alignContent: "center",
                             bgcolor: "#415F84",
                             color: "#ffffff",
+                            borderRadius: 30
                           }}
                         >
                           <AiOutlineUsergroupAdd
@@ -106,6 +119,7 @@ const GroupsPage = () => {
                       display: "flex",
                       position: "fixed",
                       bottom: 1 / 2,
+                      borderRadius: 30
                     }}
                   >
                     <Typography
@@ -123,6 +137,7 @@ const GroupsPage = () => {
                             alignContent: "center",
                             bgcolor: "#415F84",
                             color: "#ffffff",
+                            borderRadius: 30
                           }}
                         >
                           <FaRegHandshake
@@ -133,7 +148,6 @@ const GroupsPage = () => {
                             sx={{
                               color: "#ffffff",
                               textAlign: "center",
-                              padding: "10px",
                             }}
                           ></Typography>
                           Join an existing group with a group code
@@ -143,7 +157,7 @@ const GroupsPage = () => {
                   </Card>
                 </Stack>
               </Stack>
-            </Row>
+            </Grid>
           </Grid>
           {/* </Col> */}
         </Grid>
