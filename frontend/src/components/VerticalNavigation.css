@@ -1,7 +1,9 @@
+/* VerticalNavigation.css */
+
 .vertical-navbar {
-    background-color: #3B3A3A;
-    width: 275px; /* Adjust width as needed */
-    height: 100%; /* Adjust height as needed */
+    background-color: #022d66;
+    max-width: 350px; /* Adjust width as needed */
+    height: 100%;
     position: fixed;
     left: 0;
     top: 0;
@@ -11,42 +13,39 @@
     
 }
 
-.vertical-navbar.active{
-
-    width: 80px;
+.vertical-navbar.active {
+    max-width: 80px; /* Collapsed width */
     transition: 0.5s all;
-
 }
 
-.Logocontainer.active{
+.Logocontainer {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    background-color: #12253d;
+    font-family: 'Lucida Sans', sans-serif;
+    width: max-content;
+    margin: 0px;
+    padding:15px 20px 15px 10px;
+  
 
-    h1.title {
-        opacity: 0;
-        transition: 0.5s all;
+    h1.Navbar-title {
+        font-size: 31px;
+        color: #41b8d5;
+        padding: 10px 0 0 0;
+        letter-spacing: 2.5px;
+        transition: opacity 0.5s all;
     }
 
-    img{
-
-        margin-left: 175px;
-        transition: 0.5s all;
+    img.Navbar-Logo {
+        width: auto;
+        height: 3.5rem;
+        padding: 0px 20px 0px 0px;
+        cursor: pointer;
+        transition: margin-left 0.5s all;
     }
-   
 }
 
-.contentsContainer.active{
-
-    li{
-
-        padding-right: 5px;
-    }
-   
-   li:hover{
-    background-image: linear-gradient(to left, #767D75, #A9AB98);
-    height: 60%;
-    width: 60%;
-    opacity: 0.7;
-   }
-}
 
 
 .vertical-navbar ul {
@@ -55,82 +54,159 @@
     margin: 0;
 }
 
+.vertical-navbar li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    border-radius: 10px;
+    margin: 20px auto; /* Centering list items */
+    transition: 0.3s;
+    border: 0;
+
+    img {
+        width: auto;
+        height: 1.5rem;
+    }
+}
 
 .vertical-navbar li a {
     display: block;
-    color:#BCC5C8;
-    padding: 15px 20px;
+    color: #BCC5C8;
+    padding: 15px 60px;
     text-decoration: none;
+    width: 100%; /* Ensure full width for clickable area */
 }
 
-
-
-.vertical-navbar {
-
-    .Logocontainer{
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color:  #4B4B4B;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        padding: 10px 0 10px 0;
-
-        h1.title{
-            font-size: 31px;
-            color: #B3E6A9;
-            padding: 10px 0 0 0;
-            letter-spacing: 2.5px;
-        }
-        img.Logo{
-            width:auto;
-            height: 4.5rem;
-            padding: 10px 10px 10px 10px;
-            cursor: pointer;
-        }
-
-    }
-
+.vertical-navbar li:hover {
+    background-color: #12253d;
+    opacity: 0.7;
+    color: #41b8d5;
 }
 
-
-
-.vertical-navbar{
-
-    li{
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: row;
-        width:80%;
-        border-radius: 10px;
-        margin-left: 20px;
-        margin-top: 30px;
-
-        img{
-            padding: 0 10px 0 10px;
-            width: auto;
-            height: 1.5rem;
-        }
-
-    }
-   
-
-
-li:hover
-{
-background-image: linear-gradient(to left, #767D75, #A9AB98);
-height: 80%;
-width: 80%;
-opacity: 0.7;
-
-}
+.vertical-navbar li a:hover {
+    color: #41b8d5;
 }
 
-.LogoutContainer{
+.vertical-navbar.active li:hover {
+    background-color:#022d66;
+    opacity: 0.5;
+}
 
+.Navbar-ListItem-Logout{
     height: 80%;
-    color:#BCC5C8;
+    color: #BCC5C8;
+    cursor: pointer;
+}
 
+.vertical-navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vertical-navbar li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    border-radius: 10px;
+    margin: 20px auto; /* Centering list items */
+    transition: 0.3s;
+    border: 0;
+
+    img {
+        width: auto;
+        height: 1.5rem;
+    }
+}
+
+
+.Navbar-Underline{
+    
+    width:85%;
+    height: 1.5px;
+    background: #BCC5C8;
+    border-radius: 9px;
+   
+}
+
+.Navbar-Underline.active{
+
+    width: 50%;
 
 }
+
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .vertical-navbar {
+        width: 200px; /* Adjust width for smaller screens */
+    }
+
+    .vertical-navbar.active {
+        width: 60px; /* Collapsed width for smaller screens */
+    }
+
+    .Logocontainer img {
+        margin-left: 0; /* Adjust for collapsed state */
+        height: auto;
+    }
+
+    .Logocontainer h1.title {
+        font-size: 20px; /* Adjust title size */
+    }
+
+    .vertical-navbar li {
+        margin: 15px auto; /* Reduce margins for smaller screens */
+    }
+
+    .vertical-navbar li a {
+        padding: 10px 15px; /* Reduce padding */
+    }
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    .vertical-navbar {
+     
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 5rem;
+      
+    }
+  
+    .Logocontainer {
+      display: none;
+    }
+  
+    .vertical-navbar li {
+       
+        width: 50px;
+    }
+
+    .vertical-navbar li a {
+       display: none;
+      }
+    
+    .vertical-navbar li:hover {
+        background-color:#022d66;
+        opacity: 0.5;
+      }
+
+      .Navbar-Underline{
+    
+      display: none;
+       
+    }
+  
+  }
