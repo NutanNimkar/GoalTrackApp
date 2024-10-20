@@ -11,7 +11,6 @@ import UploadEvidenceModal from "../components/EvidenceComponents/UploadEvidence
 import UserImages from "../components/EvidenceComponents/UserImages";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./TaskDetails.css";
-
 const TaskDetails = () => {
   const {
     users,
@@ -32,9 +31,9 @@ const TaskDetails = () => {
   const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
   const [showEvidenceModal, setShowEvidenceModal] = useState(false);
+  const [imageList, setImageList] = useState([]); // Manage image state here
   const { user } = useAuthContext();
   const axiosInstance = createAxiosInstance(user?.token);
-  const [images, setImages] = useState([]);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -67,9 +66,53 @@ const TaskDetails = () => {
       setError("Error resetting task statuses. Please try again later.");
     }
   };
+  
+  //fetching user images
+  const fetchUserImages = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(`/api/users/${userId}/evidence`);
+
+      if (response.data.length === 0) {
+        setImageList([]);
+        return;
+      }
+
+      const imagesDetails = response.data.map((img) => ({
+        fileId: img._id,
+        url: img.url,
+      }));
+
+      // Fetch the actual images (blobs) using the filenames
+      const filenames = imagesDetails.map((img) => img.url.split("/").pop());
+      const imagePromises = filenames.map((filename) =>
+        axiosInstance.get(`/api/users/evidence/${filename}`, {
+          responseType: "blob",
+        })
+      );
+
+      const imageResponses = await Promise.all(imagePromises);
+      const imageBlobs = imageResponses.map((res) =>
+        URL.createObjectURL(res.data)
+      );
+
+      // Update imageList with blob URLs
+      const updatedImages = imagesDetails.map((img, idx) => ({
+        ...img,
+        url: imageBlobs[idx], // Overwrite the original URL with the blob URL
+      }));
+
+      setImageList(updatedImages); // Store the updated images with blob URLs
+    } catch (err) {
+      console.error("Error fetching images:", err);
+    }
+  }, [axiosInstance, userId]);
+
+  const handleUploadSuccess = useCallback(() => {
+    fetchUserImages(); // Call fetchUserImages on successful upload
+  }, [fetchUserImages]);
 
   useEffect(() => {
-    const initializeTasks = async () => {
+    const initializeTasksPage = async () => {
       if (!user) {
         setError("You must be logged in");
         return;
@@ -77,12 +120,13 @@ const TaskDetails = () => {
       try {
         await fetchTasks();
         await resetTaskStatus();
+        await fetchUserImages();
       } catch (e) {
         console.log(e);
       }
     };
 
-    initializeTasks();
+    initializeTasksPage();
   }, [userId]);
 
   const taskColumns = [
@@ -119,36 +163,6 @@ const TaskDetails = () => {
       ),
     },
   ];
-
-  const fetchUserImages = async () => {
-    try {
-      const response = await axiosInstance.get(`/api/users/${userId}/evidence`);
-
-      // Extract filenames from the URLs
-      const filenames = response.data.map((img) => img.url.split("/").pop());
-
-      // Construct the URLs for serving the images
-      const imagePromises = filenames.map((filename) =>
-        axiosInstance.get(`/api/users/evidence/${filename}`, {
-          responseType: "blob", // To handle the response as a blob
-        })
-      );
-      const imageResponses = await Promise.all(imagePromises);
-
-      const imageUrls = imageResponses.map((res) =>
-        URL.createObjectURL(res.data)
-      );
-      setImages(imageUrls);
-    } catch (err) {
-      console.error("Error fetching user images:", err);
-      setImages([]);
-      setError("Could not fetch user images. Please try again later.");
-    }
-  };
-
-  const handleUploadSuccess = useCallback(() => {
-    fetchUserImages();
-  }, [axiosInstance, userId]);
 
   return (
     <Container fluid className="vh-100">
@@ -192,7 +206,11 @@ const TaskDetails = () => {
               Upload Evidence
             </Button>
           </div>
-          <UserImages userId={userId} images={images} setImages={setImages} />
+          <UserImages
+            userId={userId}
+            imageList={imageList}
+            fetchUserImages={fetchUserImages} // Pass fetchUserImages to UserImages
+          />
         </Col>
       </Row>
       <TaskModal
@@ -206,7 +224,7 @@ const TaskDetails = () => {
         show={showEvidenceModal}
         handleClose={() => setShowEvidenceModal(false)}
         userId={userId}
-        onUploadSuccess={handleUploadSuccess}
+        onUploadSuccess={handleUploadSuccess} // Call this after a successful upload
       />
     </Container>
   );
