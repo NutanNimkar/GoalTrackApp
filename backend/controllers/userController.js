@@ -191,16 +191,33 @@ const getUsersTasks = async (req, res) => {
   }
 };
 
-// Get evidence images
 const getEvidenceImages = async (req, res) => {
   try {
     const { id } = req.params;
+    const loggedInUserId = req.user._id;
+
     if (!checkIdisValid(id, res)) return;
 
-    if(!checkAuthorization(req, id)) {
+    if (!checkAuthorization(req, id)) {
       return res.status(403).json({ msg: 'User not authorized' });
     }
-    const images = await Image.find({});
+
+    const user = await User.findById(id).populate("evidenceImages");
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    if (user._id.toString() !== loggedInUserId.toString()) {
+      return res.status(403).json({ msg: 'User not authorized to view these images' });
+    }
+
+    // Return the populated evidenceImages array
+    const images = user.evidenceImages;
+
+    if (!images || images.length === 0) {
+      return res.status(200).json([]);
+    }
     res.status(200).json(images);
   } catch (err) {
     console.error("Error fetching evidence images:", err);
@@ -218,35 +235,32 @@ const ensureGridFSBucket = (req, res, next) => {
   }
 };
 
-// Upload evidence image
 const uploadEvidence = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { description } = req.body;
+    const { id } = req.params; 
+    const { description } = req.body; 
 
-    if (!checkIdisValid(id, res)) return;
+    if (!checkIdisValid(id, res)) return; 
 
-    const user = await User.findById(id);
+    const user = await User.findById(id); 
     if (!user) {
-      return res.status(404).json({ msg: "User not found" });
+      return res.status(404).json({ msg: "User not found" }); 
     }
 
     if (!checkAuthorization(req, user._id)) {
       return res.status(403).json({ msg: 'User not authorized' });
     }
-
     const newImage = new Image({
       url: `/evidenceImages/${req.file.filename}`,
-      description: description,
-      uploadedAt: new Date(),
-      user: req._id,
+      description: description, 
+      uploadedAt: new Date(), 
+      user: req.user._id,
     });
 
-    await newImage.save();
-    console.log("Uploaded evidence image:", newImage.description);
+    await newImage.save(); 
 
     user.evidenceImages.push(newImage._id);
-    await user.save();
+    await user.save(); 
 
     res.status(200).json({
       msg: "Evidence image uploaded successfully",
@@ -258,7 +272,6 @@ const uploadEvidence = async (req, res) => {
   }
 };
 
-// Display an image
 const displayImage = async (req, res) => {
   const { filename } = req.params;
 
@@ -286,6 +299,34 @@ const displayImage = async (req, res) => {
     res.status(500).json({ err: "Internal Server Error" });
   }
 };
+const removeEvidenceImage = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { imageId } = req.params;
+
+    const imageIdsArray = Array.isArray(imageId) ? imageId : [imageId];
+
+    const deleteResult = await Image.deleteMany({ _id: { $in: imageIdsArray } });
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).json({ message: "No images found to delete." });
+    }
+    const userUpdateResult = await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { evidenceImages: { $in: imageIdsArray } },
+      },
+      { new: true }
+    );
+    if (!userUpdateResult) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json({ message: "Images deleted successfully." });
+  } catch (error) {
+    console.error("Error removing evidence image:", error);
+    res.status(500).json({ message: "Error removing evidence image.", error });
+  }
+};
 
 module.exports = {
   getAllUsers,
@@ -299,4 +340,5 @@ module.exports = {
   ensureGridFSBucket,
   displayImage,
   getEvidenceImages,
+  removeEvidenceImage
 };
