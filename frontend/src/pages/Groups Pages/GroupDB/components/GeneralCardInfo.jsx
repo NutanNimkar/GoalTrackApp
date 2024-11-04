@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Stack } from "react-bootstrap";
 import { Card, CardContent } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
-import { width } from "@mui/system";
+import { Grid } from "@mui/system";
 
 function GeneralDeck({ description, punishment }) {
   return (
@@ -13,7 +13,7 @@ function GeneralDeck({ description, punishment }) {
             width: 150,
             bgcolor: "#12253D",
             display: "flex",
-            paddingBottom: 3,
+            paddingBottom: 4,
             alignItems: "center",
             borderRadius: "15px",
           }}
@@ -33,7 +33,7 @@ function GeneralDeck({ description, punishment }) {
           </div>
         </Card>
       </div>
-      <div style={{paddingLeft: "25px", paddingRight: "25px"}}>
+      <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
         <Card
           sx={{
             bgcolor: "#022D66",
@@ -44,14 +44,21 @@ function GeneralDeck({ description, punishment }) {
           variant="outlined"
           color="neutral"
         >
-          <div>
+          <Grid>
             <Stack
               direction="horizontal"
               gap={5}
               style={{ justifyContent: "space-between" }}
             >
-              <Typography style={{ color: "#ffffff", width: "50%", paddingLeft:"10px"}}>
-                The Group Contract is unanimous task to be performed at the end of the global settings session.
+              <Typography
+                style={{
+                  color: "#ffffff",
+                  width: "50%",
+                  paddingLeft: "10px",
+                }}
+              >
+                The Group Contract is unanimous task to be performed at the end
+                of the global settings session.
               </Typography>
               <Card
                 variant="outlined"
@@ -59,11 +66,11 @@ function GeneralDeck({ description, punishment }) {
                   bgcolor: "#12253D",
                   alignItems: "center",
                   display: "flex",
-                  width: 1/3
+                  width: 1 / 3,
                 }}
               >
                 <Typography
-                  level="title-sm"
+                  level="title-lg"
                   style={{
                     display: "flex",
                     color: "#ffffff",
@@ -71,8 +78,10 @@ function GeneralDeck({ description, punishment }) {
                 >
                   Contract
                 </Typography>
-                <CardContent sx={{ color: "#ffffff" }}>
-                  {punishment}
+                <CardContent>
+                  <Typography sx={{ color: "#ffffff" }} level="h3">
+                    {punishment}
+                  </Typography>
                 </CardContent>
               </Card>
               <Card
@@ -81,11 +90,11 @@ function GeneralDeck({ description, punishment }) {
                   bgcolor: "#12253D",
                   alignItems: "center",
                   display: "flex",
-                  width: 1/3
+                  width: 1 / 3,
                 }}
               >
                 <Typography
-                  level="title-sm"
+                  level="title-lg"
                   style={{
                     display: "flex",
                     color: "#ffffff",
@@ -94,19 +103,21 @@ function GeneralDeck({ description, punishment }) {
                 >
                   Deadline
                 </Typography>
-                <CardContent
-                  level="title-lg"
-                  style={{
-                    display: "flex",
-                    color: "#B6CCE7",
-                    alignItems: "center",
-                  }}
-                >
-                  May 12, 2024
+                <CardContent>
+                  <Typography
+                    level="h3"
+                    style={{
+                      display: "flex",
+                      color: "#B6CCE7",
+                      alignItems: "center",
+                    }}
+                  >
+                    May 12, 2024
+                  </Typography>
                 </CardContent>
               </Card>
             </Stack>
-          </div>
+          </Grid>
         </Card>
       </div>
     </div>

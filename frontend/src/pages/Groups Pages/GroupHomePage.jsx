@@ -48,6 +48,7 @@ const GroupsPage = () => {
                     display: "flex",
                     width: "65%",
                     borderRadius: 30,
+                    borderColor: "#12253D"
                   }}
                 >
                   <Typography
@@ -70,7 +71,6 @@ const GroupsPage = () => {
                     >
                       <div className="GroupsDropDown">
                         <GroupDropDown groups={groups} />
-                        <br />
                       </div>
                     </Card>
                   </CardContent>
@@ -79,10 +79,11 @@ const GroupsPage = () => {
                   <Card
                     variant="outlined"
                     sx={{
-                      bgcolor: "#12253D",
+                      bgcolor: "#022D66",
                       display: "flex",
                       position: "fixed",
-                      borderRadius: 30
+                      borderRadius: 30,
+                      borderColor: "#022D66"
                     }}
                   >
                     <Typography
@@ -115,11 +116,12 @@ const GroupsPage = () => {
                   <Card
                     variant="outlined"
                     sx={{
-                      bgcolor: "#12253D",
+                      bgcolor: "#022D66",
                       display: "flex",
                       position: "fixed",
                       bottom: 1 / 2,
-                      borderRadius: 30
+                      borderRadius: 30,
+                      borderColor: "#022D66"
                     }}
                   >
                     <Typography
