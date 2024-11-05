@@ -1,11 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MdOutlinePersonOutline } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import MyTaskDetails from "../../../../components/Groups Components/MyDailyTask.jsx";
+// import MyTaskDetails from "../../../../components/Groups Components/MyDailyTask.jsx";
 // import { SharedStateContext } from "../../../../Context/SharedStateContext.js";
 import { Card, CardContent, Typography, Stack, Button } from "@mui/joy";
-import ProgressCharts from "./ProgressCharts.jsx";
 import UserInfoAndProgress from "./UserInfoAndProgress.jsx";
 
 function GroupProgress({ name, members, description, punishment }) {
@@ -25,7 +23,7 @@ function GroupProgress({ name, members, description, punishment }) {
             Group Progress Activity
           </Typography>
 
-          <CardContent style={{ padding: 15 }}>
+          <CardContent style={{ paddingTop: 15, paddingLeft: 15, paddingRight: 25 }}>
             <Stack direction="horizontal" gap={2}>
               Group Progress will be featured on this dashboard. The total
               amount of days completed by a member, total amount of days missed
@@ -48,6 +46,7 @@ function GroupProgress({ name, members, description, punishment }) {
                     color: "#ffffff",
                     borderColor: "#AEC5E3",
                     borderWidth: 2,
+                    borderRadius: 15
                   }}
                 >
                   <Stack gap={3} direction="horizontal">
@@ -60,17 +59,14 @@ function GroupProgress({ name, members, description, punishment }) {
           </CardContent>
         </div>
 
-        <div
-          style={{
-            maxHeight: "61vh",
-            overflowY: "auto",
-            scrollbarColor: "#415F84 #0A2344",
-            paddingRight: 10,
-          }}
-        >
+        <div>
           <div
             style={{
               paddingBottom: 15,
+              position: "relative",
+              bottom: -40,
+              paddingRight: 27,
+              paddingLeft:2
             }}
           >
             <Stack direction="horizontal" gap={1}>
@@ -79,7 +75,7 @@ function GroupProgress({ name, members, description, punishment }) {
                   width: "240%",
                   bgcolor: "#12253D",
                   alignItems: "center",
-                  borderRadius: "15px",
+                  borderRadius: "20px",
                   borderColor: "#AEC5E3",
                 }}
               >
@@ -94,7 +90,7 @@ function GroupProgress({ name, members, description, punishment }) {
                   display: "flex",
                   paddingBottom: 3,
                   alignItems: "center",
-                  borderRadius: "15px",
+                  borderRadius: "20px",
                   borderColor: "#AEC5E3",
                 }}
               >
@@ -107,7 +103,6 @@ function GroupProgress({ name, members, description, punishment }) {
                   </Typography>
                 </Stack>
               </Card>
-
               <Card
                 sx={{
                   width: "140%",
@@ -115,7 +110,22 @@ function GroupProgress({ name, members, description, punishment }) {
                   display: "flex",
                   paddingBottom: 3,
                   alignItems: "center",
-                  borderRadius: "15px",
+                  borderRadius: "20px",
+                  borderColor: "#AEC5E3",
+                }}
+              >
+                <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  Track Progress
+                </Typography>
+              </Card>
+              <Card
+                sx={{
+                  width: "140%",
+                  bgcolor: "#12253D",
+                  display: "flex",
+                  paddingBottom: 3,
+                  alignItems: "center",
+                  borderRadius: "20px",
                   borderColor: "#AEC5E3",
                 }}
               >
@@ -125,22 +135,30 @@ function GroupProgress({ name, members, description, punishment }) {
               </Card>
             </Stack>
           </div>
-
-          <Card
-            sx={{
-              bgcolor: "#0B3A79",
-              borderRadius: "15px",
-              display: "flex",
-              top: -35,
-              justifyContent: "space-around",
-              borderColor: "#022D66",
-              borderWidth: 2,
-              padding: 1,
+          <div
+            style={{
+              maxHeight: "44vh",
+              overflowY: "auto",
+              scrollbarColor: "#415F84 #0A2344",
+              marginRight: 10,
             }}
-            variant="outlined"
           >
-            <UserInfoAndProgress members={members} />
-          </Card>
+            <Card
+              sx={{
+                bgcolor: "#0B3A79",
+                borderRadius: "20px",
+                display: "flex",
+                justifyContent: "space-around",
+                top: 0,
+                borderColor: "#022D66",
+                borderWidth: 2,
+                padding: 1,
+              }}
+              variant="outlined"
+            >
+              <UserInfoAndProgress members={members} />
+            </Card>
+          </div>
         </div>
       </Card>
     </div>

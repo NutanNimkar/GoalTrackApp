@@ -11,8 +11,9 @@ import {
   plugins,
   scales
 } from "chart.js";
-import { borderRadius, display, width } from "@mui/system";
+import { borderRadius, color, display, width } from "@mui/system";
 import plugin from "tailwindcss/plugin";
+import { alignPropType } from "react-bootstrap/esm/types";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -55,7 +56,11 @@ function ProgressCharts({index}) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        // display: false
+        labels: {
+          color: 'white'
+        },
+        align: 'start',
       },
     }
   };

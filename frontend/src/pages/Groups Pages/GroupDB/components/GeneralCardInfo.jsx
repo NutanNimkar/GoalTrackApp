@@ -15,7 +15,7 @@ function GeneralDeck({ description, punishment }) {
             display: "flex",
             paddingBottom: 4,
             alignItems: "center",
-            borderRadius: "15px",
+            borderRadius: "18px",
           }}
           variant="outlined"
           color="neutral"
@@ -39,7 +39,7 @@ function GeneralDeck({ description, punishment }) {
             bgcolor: "#022D66",
             display: "flex",
             top: -13,
-            borderRadius: "15px",
+            borderRadius: "20px",
           }}
           variant="outlined"
           color="neutral"
@@ -67,6 +67,7 @@ function GeneralDeck({ description, punishment }) {
                   alignItems: "center",
                   display: "flex",
                   width: 1 / 3,
+                  borderRadius: "20px"
                 }}
               >
                 <Typography
@@ -91,6 +92,7 @@ function GeneralDeck({ description, punishment }) {
                   alignItems: "center",
                   display: "flex",
                   width: 1 / 3,
+                  borderRadius: "20px"
                 }}
               >
                 <Typography

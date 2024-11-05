@@ -49,13 +49,14 @@ function GroupDBPage() {
                     sx={{
                       bgcolor: "#022D66",
                     }}
-                    style={{ display:"flex", justifyContent: "flex-end", width:"100%" }}
+                    style={{ display:"flex", justifyContent: "flex-end", width:"100%", borderRadius: "20px" }}
                   >
                     <Stack gap={3}>
                       <Card
                         sx={{
                           bgcolor: "#12253D",
-                          borderWidth: 2
+                          borderWidth: 2,
+                          borderRadius: "20px"
                         }}
                       >
                         <Typography
@@ -89,7 +90,8 @@ function GroupDBPage() {
                       <Card
                         sx={{
                           bgcolor: "#12253D",
-                          borderWidth: 2
+                          borderWidth: 2,
+                          borderRadius: "20px"
                         }}
                       >
                         <Typography
@@ -123,7 +125,8 @@ function GroupDBPage() {
                       <Card
                         sx={{
                           bgcolor: "#12253D",
-                          borderWidth: 2
+                          borderWidth: 2,
+                          borderRadius: "20px"
                         }}
                       >
                         <Typography
