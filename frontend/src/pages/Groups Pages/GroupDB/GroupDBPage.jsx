@@ -49,14 +49,19 @@ function GroupDBPage() {
                     sx={{
                       bgcolor: "#022D66",
                     }}
-                    style={{ display:"flex", justifyContent: "flex-end", width:"100%", borderRadius: "20px" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      width: "100%",
+                      borderRadius: "20px",
+                    }}
                   >
-                    <Stack gap={3}>
+                    <Stack gap={2}>
                       <Card
                         sx={{
                           bgcolor: "#12253D",
                           borderWidth: 2,
-                          borderRadius: "20px"
+                          borderRadius: "20px",
                         }}
                       >
                         <Typography
@@ -74,7 +79,7 @@ function GroupDBPage() {
                         </Typography>
                         <Typography
                           level="h1"
-                          sx={{ color: "#00BF63" }}
+                          sx={{ color: "#12B806" }}
                           style={{ alignSelf: "center" }}
                         >
                           56
@@ -91,7 +96,7 @@ function GroupDBPage() {
                         sx={{
                           bgcolor: "#12253D",
                           borderWidth: 2,
-                          borderRadius: "20px"
+                          borderRadius: "20px",
                         }}
                       >
                         <Typography
@@ -109,7 +114,7 @@ function GroupDBPage() {
                         </Typography>
                         <Typography
                           level="h1"
-                          sx={{ color: "#FF3131" }}
+                          sx={{ color: "#FF0808" }}
                           style={{ alignSelf: "center" }}
                         >
                           6
@@ -126,7 +131,7 @@ function GroupDBPage() {
                         sx={{
                           bgcolor: "#12253D",
                           borderWidth: 2,
-                          borderRadius: "20px"
+                          borderRadius: "20px",
                         }}
                       >
                         <Typography

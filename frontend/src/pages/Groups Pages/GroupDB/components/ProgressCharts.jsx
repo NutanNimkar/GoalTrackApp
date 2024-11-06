@@ -7,36 +7,34 @@ import {
   CategoryScale,
   LinearScale,
   Tooltip,
-  Legend,
-  plugins,
-  scales
+  Legend
 } from "chart.js";
-import { borderRadius, color, display, width } from "@mui/system";
-import plugin from "tailwindcss/plugin";
-import { alignPropType } from "react-bootstrap/esm/types";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-function ProgressCharts({index}) {
-  const data = {
+// Define and export the data and options objects
+export function generateChartData() {
+  return {
     labels: [""],
     datasets: [
       {
         label: `Missed Days`,
-        data: [Math.floor(Math.random() * 31)],
-        backgroundColor: "#FF5757",
+        data:[9],
+        backgroundColor: "#FF0808",
         borderRadius: 30,
       },
       {
         label: `Completed Days`,
-        data: [Math.floor(Math.random() * 31)],
-        backgroundColor: "#00BF63",
+        data:[7],
+        backgroundColor: "#12B806",
         borderRadius: 30,
       },
     ],
   };
+}
 
-  const options = {
+export function generateChartOptions() {
+  return {
     indexAxis: "y",
     scales: {
       x: {
@@ -56,7 +54,6 @@ function ProgressCharts({index}) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        // display: false
         labels: {
           color: 'white'
         },
@@ -64,6 +61,12 @@ function ProgressCharts({index}) {
       },
     }
   };
+}
+
+
+function ProgressCharts({ index }) {
+  const data = generateChartData();
+  const options = generateChartOptions();
 
   return (
     <div style={{ backgroundColor: index % 2 === 0 ? "#022D66" : "#0B3A79", width: "100%", height: "16vh" }}>

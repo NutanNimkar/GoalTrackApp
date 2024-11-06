@@ -23,7 +23,9 @@ function GroupProgress({ name, members, description, punishment }) {
             Group Progress Activity
           </Typography>
 
-          <CardContent style={{ paddingTop: 15, paddingLeft: 15, paddingRight: 25 }}>
+          <CardContent
+            style={{ paddingTop: 15, paddingLeft: 15, paddingRight: 25 }}
+          >
             <Stack direction="horizontal" gap={2}>
               Group Progress will be featured on this dashboard. The total
               amount of days completed by a member, total amount of days missed
@@ -46,7 +48,7 @@ function GroupProgress({ name, members, description, punishment }) {
                     color: "#ffffff",
                     borderColor: "#AEC5E3",
                     borderWidth: 2,
-                    borderRadius: 15
+                    borderRadius: 15,
                   }}
                 >
                   <Stack gap={3} direction="horizontal">
@@ -66,7 +68,7 @@ function GroupProgress({ name, members, description, punishment }) {
               position: "relative",
               bottom: -40,
               paddingRight: 27,
-              paddingLeft:2
+              paddingLeft: 2,
             }}
           >
             <Stack direction="horizontal" gap={1}>
@@ -79,9 +81,16 @@ function GroupProgress({ name, members, description, punishment }) {
                   borderColor: "#AEC5E3",
                 }}
               >
-                <Typography level="title-sm" style={{ color: "#ffffff" }}>
-                  Group Members
-                </Typography>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                  }}
+                >
+                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                    Group Members
+                  </Typography>
+                </div>
               </Card>
               <Card
                 sx={{
@@ -95,12 +104,28 @@ function GroupProgress({ name, members, description, punishment }) {
                 }}
               >
                 <Stack direction="horizontal" gap={4}>
-                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      top: -6,
+                    }}
+                  >
+                    <Typography level="title-sm" style={{ color: "#ffffff" }}>
                     Previous 7 Days
                   </Typography>
-                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  </div>
+                  
+                  <div
+                    style={{
+                      position: "relative",
+                      top: -6,
+                    }}
+                  >
+                    <Typography level="title-sm" style={{ color: "#ffffff" }}>
                     Total Days
                   </Typography>
+                  </div>
+                  
                 </Stack>
               </Card>
               <Card
@@ -114,9 +139,17 @@ function GroupProgress({ name, members, description, punishment }) {
                   borderColor: "#AEC5E3",
                 }}
               >
-                <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                  }}
+                >
+                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
                   Track Progress
                 </Typography>
+                </div>
+                
               </Card>
               <Card
                 sx={{
@@ -129,15 +162,23 @@ function GroupProgress({ name, members, description, punishment }) {
                   borderColor: "#AEC5E3",
                 }}
               >
-                <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                  }}
+                >
+                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
                   Check Progress
                 </Typography>
+                </div>
+                
               </Card>
             </Stack>
           </div>
           <div
             style={{
-              maxHeight: "44vh",
+              maxHeight: "42.5vh",
               overflowY: "auto",
               scrollbarColor: "#415F84 #0A2344",
               marginRight: 10,

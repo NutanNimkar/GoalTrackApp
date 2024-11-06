@@ -23,7 +23,6 @@ function GeneralDeck({ description, punishment }) {
           <div
             style={{
               position: "absolute",
-              paddingBottom: 15,
               top: 10,
             }}
           >

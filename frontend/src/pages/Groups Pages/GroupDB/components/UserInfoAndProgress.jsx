@@ -18,8 +18,8 @@ function UserInfoAndProgress({ members }) {
           }}
           variant="soft"
         >
-          <Grid container spacing={3} style={{ alignItems: "center" }}>
-            <Grid item style={{ width: "25%" }}>
+          <Grid container style={{ alignItems: "center", justifyContent: "space-between" }}>
+            <Grid item style={{ width: "25%", }}>
               <Card
                 size="sm"
                 sx={{
@@ -45,7 +45,6 @@ function UserInfoAndProgress({ members }) {
                       sx={{
                         color: "#ffffff",
                       }}
-                      // style={{ alignSelf: "center" }}
                     >
                       {member}
                     </Typography>
@@ -63,18 +62,18 @@ function UserInfoAndProgress({ members }) {
               </Card>
             </Grid>
 
-            <Grid item style={{ width: "16vw" }}>
+            <Grid container style={{ width: "40%", paddingLeft: "1rem" }}>
               <ProgressCharts index={index} />
             </Grid>
-            <Grid container style={{ width: "7vw" }}>
+            <Grid item style={{ width: "17%", }}>
               <TrackProgressCard />
             </Grid>
             <Grid
-              item
+              container
               style={{
-                width: "15%",
+                width: "17%",
                 alignContent: "center",
-                paddingLeft: "3.75%"
+                paddingLeft: "3.75%",
               }}
             >
               <Button
@@ -82,10 +81,10 @@ function UserInfoAndProgress({ members }) {
                 sx={{
                   bgcolor: "#4F729D",
                   borderRadius: 30,
-                  alignContent: "center",
                   width: "100%",
                   borderWidth: 3
                 }}
+                size="md"
               >
                 <FaRegEye size={25} color="#8CA8CA" />
               </Button>
