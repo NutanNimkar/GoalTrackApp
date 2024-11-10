@@ -6,13 +6,14 @@ import Home from "./pages/Home";
 import TaskDetails from "./pages/TaskDetails";
 // import Groups from './pages/Groups';
 import GroupsPage from "./pages/Groups Pages/GroupHomePage";
-import GroupDBPage from "./pages/Groups Pages/GroupDBPage";
+import GroupDBPage from "./pages/Groups Pages/GroupDB/GroupDBPage";
 import UserSignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import ForgotPassword from "./components/AuthComponents/ForgotPassword";
 import ResetPassword from "./components/AuthComponents/ResetPassword";
 import { GroupsPageProvider } from "./Context/GroupsPageContext";
-import PersonalDB from "./pages/Groups Pages/PersonalDB";
+import PersonalDB from "./pages/Groups Pages/PersonalDB/PersonalDB";
+
 
 function App() {
   const { user } = useAuthContext();
@@ -48,8 +49,14 @@ function App() {
                 />
                 <Route path="*" element={<Navigate to="/" />} />{" "}
                 {/* Catch-all route */}
-                <Route path="/groups/:id/groupdb" element={user ? <GroupDBPage /> : <Login />}/>
-                <Route path="/groups/:id/personaldb" element={user ? <PersonalDB /> :  <Login/>}/>
+                <Route
+                  path="/groups/:id/groupdb"
+                  element={user ? <GroupDBPage /> : <Login />}
+                />
+                <Route
+                  path="/groups/:id/personaldb"
+                  element={user ? <PersonalDB /> : <Login />}
+                />
               </Routes>
             </div>
           </BrowserRouter>

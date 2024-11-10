@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Stack } from "react-bootstrap";
 import { Card, CardContent } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
+import { width } from "@mui/system";
 
 function GeneralDeck({ description, punishment }) {
   return (
@@ -32,7 +33,7 @@ function GeneralDeck({ description, punishment }) {
           </div>
         </Card>
       </div>
-      <div style={{ paddingRight: 25, paddingLeft: 25 }}>
+      <div style={{paddingLeft: "25px", paddingRight: "25px"}}>
         <Card
           sx={{
             bgcolor: "#022D66",
@@ -43,15 +44,22 @@ function GeneralDeck({ description, punishment }) {
           variant="outlined"
           color="neutral"
         >
-          <Stack direction="horizontal" gap={5}>
-            <div style={{alignContent: "space-around"}}>
-              <Typography style={{ color: "#ffffff" }}>{description}</Typography>
+          <div>
+            <Stack
+              direction="horizontal"
+              gap={5}
+              style={{ justifyContent: "space-between" }}
+            >
+              <Typography style={{ color: "#ffffff", width: "50%", paddingLeft:"10px"}}>
+                The Group Contract is unanimous task to be performed at the end of the global settings session.
+              </Typography>
               <Card
                 variant="outlined"
                 sx={{
                   bgcolor: "#12253D",
                   alignItems: "center",
                   display: "flex",
+                  width: 1/3
                 }}
               >
                 <Typography
@@ -63,7 +71,9 @@ function GeneralDeck({ description, punishment }) {
                 >
                   Contract
                 </Typography>
-                <CardContent sx={{ color: "#ffffff" }}>{punishment}</CardContent>
+                <CardContent sx={{ color: "#ffffff" }}>
+                  {punishment}
+                </CardContent>
               </Card>
               <Card
                 variant="outlined"
@@ -71,6 +81,7 @@ function GeneralDeck({ description, punishment }) {
                   bgcolor: "#12253D",
                   alignItems: "center",
                   display: "flex",
+                  width: 1/3
                 }}
               >
                 <Typography
@@ -94,9 +105,8 @@ function GeneralDeck({ description, punishment }) {
                   May 12, 2024
                 </CardContent>
               </Card>
-            </div>
-            
-          </Stack>
+            </Stack>
+          </div>
         </Card>
       </div>
     </div>

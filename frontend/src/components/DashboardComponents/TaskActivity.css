@@ -1,0 +1,48 @@
+/* components/TaskActivity.css */
+
+.task-activity-container {
+  padding: 20px;
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  color: #fff;
+  max-width: 400px;
+}
+
+.task-activity-container h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.task-activity-container p {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  margin: 5px 0 15px;
+}
+
+.group-dashboard {
+  display: flex;
+  align-items: center;
+  color: #4a90e2;
+  font-weight: bold;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.add-task-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.add-task-text {
+  color: #4a90e2;
+  font-weight: bold;
+  font-size: 1rem;
+}

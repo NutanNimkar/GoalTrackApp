@@ -1,0 +1,27 @@
+/* components/TaskCard.css */
+
+.task-card {
+  background-color: #3c3c3c;
+  padding: 15px;
+  border-radius: 5px;
+  color: #fff;
+  margin-bottom: 10px; /* Adds some space between each task card */
+}
+
+.task-card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.task-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.task-actions {
+  display: flex; /* Aligns items horizontally */
+  justify-content: flex-end; /* Aligns icons to the right */
+  gap: 8px; /* Adds space between the icons */
+  margin-top: 10px;
+}
