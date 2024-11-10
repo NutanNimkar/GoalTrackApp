@@ -3,16 +3,41 @@ import { Row } from "react-bootstrap";
 import { Grid } from "@mui/system";
 import VerticalNavigation from "../../../components/VerticalNavigation";
 import { useLocation } from "react-router-dom";
-// import MyTaskDetails from "../../../components/Groups Components/MyDailyTask";
 import { SharedStateContext } from "../../../Context/SharedStateContext";
-import { Card, CardContent, Typography } from "@mui/joy";
-// import { Link } from "react-router-dom";
+import { Card } from "@mui/joy";
 import GeneralDeck from "../GroupDB/components/GeneralCardInfo";
+import TaskActivity from "../../../components/DashboardComponents/TaskActivity";
 
 function PersonalDB() {
   const location = useLocation();
   const { name, punishment, description } = location.state;
-  const { handleAddTask } = useContext(SharedStateContext);
+  console.log(location.state);
+  const { dailyTasks } = useContext(SharedStateContext);
+  console.log(dailyTasks);
+  const task = [{
+    title: "My Task",
+    description: "Task description",
+  },
+  {
+    title: "My Task",
+    description: "Task description",
+  },
+  {
+    title: "My Task",
+    description: "Task description",
+  },
+  {
+    title: "My Task",
+    description: "Task description",
+  },
+  {
+    title: "My Task",
+    description: "Task description",
+  },
+  {
+    title: "My Task",
+    description: "Task description",
+  }];
 
   return (
     <Grid container spacing={2}>
@@ -30,19 +55,7 @@ function PersonalDB() {
           <GeneralDeck description={description} punishment={punishment} />
         </Row>
         <Grid size={5} style={{ paddingRight: 25, paddingLeft: 25 }}>
-          <Card
-            sx={{
-              bgcolor: "#12253D",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-              }}
-            >
-              Task Activity
-            </Typography>
-          </Card>
+          <TaskActivity tasks={task}/>
         </Grid>
         <Grid size={5}>
           <Card
