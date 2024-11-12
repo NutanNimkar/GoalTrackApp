@@ -18,7 +18,7 @@ function PersonalDB() {
 
   return (
     <Grid container spacing={2}>
-      <Grid size={{ xs: 4, lg: 3 }} className="vh-100">
+      <Grid size={{ xs: 4, lg: 3, xl:2 }} className="vh-100">
         <VerticalNavigation />
       </Grid>
       <Grid size={{ xs: 8, lg: 9 }}>

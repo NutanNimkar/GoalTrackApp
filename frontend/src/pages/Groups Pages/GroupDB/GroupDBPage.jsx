@@ -14,9 +14,9 @@ function GroupDBPage() {
   const location = useLocation();
   const { name, punishment, description, members } = location.state;
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       <Grid
-        size={{ xs: 4, lg: 3 }}
+        size={{ xs: 4, xl:2,  lg: 3 }}
         className="vh-100"
         style={{ position: "sticky", top: 0 }}
       >

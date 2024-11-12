@@ -95,7 +95,12 @@ function GroupDropDown({
             borderRadius: "5px",
           }}
         >
-          Group #{index + 1}: {groupName}
+          <Typography
+            level="title-lg"
+            fontFamily="Verdana"
+          >
+            Group #{index + 1}: {groupName}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div>
@@ -239,10 +244,10 @@ function GroupDropDown({
     <div
       // scrollbar styling
       style={{
-        maxHeight: "57vh", 
-        overflowY: "auto", 
+        maxHeight: "57vh",
+        overflowY: "auto",
         scrollbarColor: "#415F84 #0A2344",
-        paddingRight: 10
+        paddingRight: 10,
       }}
     >
       {accordionItems}
