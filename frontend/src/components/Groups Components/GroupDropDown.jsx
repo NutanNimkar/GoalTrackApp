@@ -197,6 +197,7 @@ function GroupDropDown({
                   name: groupName,
                   punishment: groupPunishment,
                   description: groupDescription,
+                  members: groupMemberNames
                 }}
                 style={{ textAlign: "end", textDecoration: "none" }}
               >

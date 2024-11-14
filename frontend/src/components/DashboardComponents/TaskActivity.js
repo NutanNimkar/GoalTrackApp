@@ -15,6 +15,7 @@ const TaskActivity = ({ tasks }) => {
   const location = useLocation();
   console.log("activity", dailyTasks);
   const { name, punishment, description, members } = location.state;
+  console.log(members)
   return (
     <div className="task-activity-container">
       {/* Header */}
@@ -28,6 +29,7 @@ const TaskActivity = ({ tasks }) => {
               name: name,
               description: description,
               punishment: punishment,
+              members: members
             }}
             style={{ textAlign: "end", textDecoration: "none" }}
           >
