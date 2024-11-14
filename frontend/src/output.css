@@ -365,6 +365,7 @@ input:where([type='submit']) {
   /* 2 */
   background-image: none;
   /* 2 */
+  appearance: button;
 }
 
 /*
@@ -410,6 +411,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
   /* 1 */
   outline-offset: -2px;
   /* 2 */
+  appearance: textfield;
 }
 
 /*

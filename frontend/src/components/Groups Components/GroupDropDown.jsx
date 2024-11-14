@@ -95,7 +95,12 @@ function GroupDropDown({
             borderRadius: "5px",
           }}
         >
-          Group #{index + 1}: {groupName}
+          <Typography
+            level="title-lg"
+            fontFamily="Verdana"
+          >
+            Group #{index + 1}: {groupName}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div>
@@ -129,6 +134,7 @@ function GroupDropDown({
               <Link
                 to={{ pathname: `/groups/${groupName}/groupdb` }}
                 state={{
+                  members: groupMemberNames,
                   name: groupName,
                   punishment: groupPunishment,
                   description: groupDescription,
@@ -236,11 +242,12 @@ function GroupDropDown({
   });
   return (
     <div
+      // scrollbar styling
       style={{
-        maxHeight: "55vh", 
-        overflowY: "auto", 
+        maxHeight: "57vh",
+        overflowY: "auto",
         scrollbarColor: "#415F84 #0A2344",
-        paddingRight: 10
+        paddingRight: 10,
       }}
     >
       {accordionItems}
