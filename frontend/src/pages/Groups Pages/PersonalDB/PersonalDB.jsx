@@ -8,6 +8,8 @@ import { Stack, Card } from "@mui/joy";
 import TaskActivity from "../../../components/DashboardComponents/TaskActivity";
 import { Typography } from "@mui/material";
 import UserInfoAndProgress from "../GroupDB/components/UserInfoAndProgress";
+import ProgressCharts from "../GroupDB/components/ProgressCharts";
+import TrackProgressCard from "../GroupDB/components/TrackProgressCard";
 
 function PersonalDB() {
   const location = useLocation();
@@ -73,13 +75,13 @@ function PersonalDB() {
             <div>
               <Stack gap={2}>
                 <Col>
-                  <div style={{ paddingLeft: 50 }}>
+                  <div style={{ paddingLeft: 37 }}>
                     <Card
                       sx={{
                         width: 1 / 3.5,
                         bgcolor: "#12253D",
                         display: "flex",
-                        paddingBottom: 4,
+                        paddingBottom: 5,
                         alignItems: "center",
                         borderRadius: "18px",
                       }}
@@ -106,7 +108,7 @@ function PersonalDB() {
                       sx={{
                         bgcolor: "#022D66",
                         display: "flex",
-                        top: -13,
+                        top: -20,
                         borderRadius: "20px",
                       }}
                       variant="outlined"
@@ -117,7 +119,7 @@ function PersonalDB() {
                           direction="row"
                           sx={{ justifyContent: "space-evenly" }}
                         >
-                          <Grid item width={1 / 3}>
+                          <Grid item width={1 / 3} style={{padding:9}}>
                             <Stack gap={1}>
                               <Card
                                 sx={{
@@ -184,7 +186,7 @@ function PersonalDB() {
                               </Card>
                             </Stack>
                           </Grid>
-                          <Grid item width={1 / 3}>
+                          <Grid item width={1 / 3} style={{padding:9}}>
                             <Stack gap={1}>
                               <Card
                                 sx={{
@@ -282,7 +284,7 @@ function PersonalDB() {
                               </Stack>
                             </Stack>
                           </Grid>
-                          <Grid item width={1 / 3}>
+                          <Grid item width={1 / 3} style={{padding:9}}>
                             <Stack gap={1}>
                               <Card
                                 sx={{
@@ -417,138 +419,184 @@ function PersonalDB() {
                         completion and incompletion of individual tasks on a
                         daily basis.
                       </Typography>
-                      <div
-                        style={{
-                          paddingBottom: 15,
-                          position: "relative",
-                          paddingLeft: 2,
-                        }}
-                      >
-                        <Stack
-                          direction="horizontal"
+                      <div>
+                        <div
                           style={{
-                            display: "flex",
-                            justifyContent: "space-between",
+                            paddingBottom: 15,
+                            position: "relative",
+                            paddingLeft: 2,
+                            paddingRight: 13,
                           }}
                         >
-                          <Card
-                            sx={{
-                              width: "140%",
-                              bgcolor: "#12253D",
-                              alignItems: "center",
-                              borderRadius: "20px",
-                              borderColor: "#AEC5E3",
+                          <Stack
+                            direction="horizontal"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
                             }}
                           >
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: 10,
+                            <Card
+                              sx={{
+                                width: "140%",
+                                bgcolor: "#12253D",
+                                alignItems: "center",
+                                borderRadius: "20px",
+                                borderColor: "#AEC5E3",
                               }}
                             >
-                              <Typography
-                                level="title-sm"
-                                style={{ color: "#ffffff" }}
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: 10,
+                                }}
                               >
-                                Task Name
-                              </Typography>
-                            </div>
-                          </Card>
-                          <Card
-                            sx={{
-                              width: "300%",
-                              bgcolor: "#12253D",
-                              display: "flex",
-                              paddingBottom: 3,
-                              borderRadius: "20px",
-                              borderColor: "#AEC5E3",
-                            }}
-                          >
-                            <Grid
-                              container
-                              direction="row"
-                              style={{
+                                <Typography
+                                  level="title-sm"
+                                  style={{ color: "#ffffff" }}
+                                >
+                                  Task Name
+                                </Typography>
+                              </div>
+                            </Card>
+                            <Card
+                              sx={{
+                                width: "300%",
+                                bgcolor: "#12253D",
                                 display: "flex",
-                                justifyContent: "space-around",
+                                paddingBottom: 3,
+                                borderRadius: "20px",
+                                borderColor: "#AEC5E3",
                               }}
                             >
-                              <Grid item>
-                                <Typography
-                                  level="title-sm"
-                                  style={{
-                                    color: "#ffffff",
-                                    position: "relative",
-                                    top: -6,
-                                  }}
-                                >
-                                  Previous 7 Days
-                                </Typography>
-                              </Grid>
+                              <Grid
+                                container
+                                direction="row"
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-around",
+                                }}
+                              >
+                                <Grid item>
+                                  <Typography
+                                    level="title-sm"
+                                    style={{
+                                      color: "#ffffff",
+                                      position: "relative",
+                                      top: -6,
+                                    }}
+                                  >
+                                    Previous 7 Days
+                                  </Typography>
+                                </Grid>
 
-                              <Grid item>
+                                <Grid item>
+                                  <Typography
+                                    level="title-sm"
+                                    style={{
+                                      color: "#ffffff",
+                                      position: "relative",
+                                      top: -6,
+                                    }}
+                                  >
+                                    Total Days
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                            </Card>
+                            <Card
+                              sx={{
+                                width: "140%",
+                                bgcolor: "#12253D",
+                                display: "flex",
+                                paddingBottom: 3,
+                                alignItems: "center",
+                                borderRadius: "20px",
+                                borderColor: "#AEC5E3",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: 10,
+                                }}
+                              >
                                 <Typography
                                   level="title-sm"
-                                  style={{
-                                    color: "#ffffff",
-                                    position: "relative",
-                                    top: -6,
-                                  }}
+                                  style={{ color: "#ffffff" }}
                                 >
-                                  Total Days
+                                  Track Progress
                                 </Typography>
-                              </Grid>
-                            </Grid>
-                          </Card>
+                              </div>
+                            </Card>
+                          </Stack>
+                        </div>
+                        <div
+                          style={{
+                            maxHeight: "42.5vh",
+                            overflowY: "auto",
+                            scrollbarColor: "#415F84 #0A2344",
+                            marginRight: 10,
+                            position: "relative",
+                            top:-40
+                          }}
+                        >
                           <Card
                             sx={{
-                              width: "140%",
-                              bgcolor: "#12253D",
-                              display: "flex",
-                              paddingBottom: 3,
-                              alignItems: "center",
+                              bgcolor: "#0B3A79",
                               borderRadius: "20px",
-                              borderColor: "#AEC5E3",
+                              display: "flex",
+                              justifyContent: "space-around",
+                              top: 0,
+                              borderColor: "#022D66",
+                              borderWidth: 2,
+                              padding: 1,
                             }}
+                            variant="outlined"
                           >
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: 10,
+                            <Card
+                              sx={{
+                                bgcolor: "#022D66",
+                                width: "100%",
+                                borderRadius: "20px",
                               }}
+                              variant="soft"
                             >
-                              <Typography
-                                level="title-sm"
-                                style={{ color: "#ffffff" }}
+                              <Grid
+                                container
+                                direction="row"
+                                style={{
+                                  alignItems: "center",
+                                  display: "flex",
+                                  justifyContent: "space-around",
+                                }}
                               >
-                                Track Progress
-                              </Typography>
-                            </div>
+                                <Grid item style={{ width: "23%", paddingRight:5 }}>
+                                  <Card
+                                    size="lg"
+                                    sx={{
+                                      width: "auto",
+                                      backgroundColor:
+                                        "rgba(181, 181, 181, 0.45)",
+                                      borderRadius: "20px",
+                                      // paddingTop:5,
+                                      // paddingBottom: 5,
+                                      bgcolor: "#022D66"
+                                    }}
+                                    variant="outlined"
+                                  >
+                                    <Typography variant="body1" color="white" textAlign="center">Jog in the park</Typography>
+                                  </Card>
+                                </Grid>
+                                <Grid item style={{width:"55%"}}>
+                                  <ProgressCharts/>
+                                </Grid>
+                                <Grid item style={{width: "22%"}}>
+                                  <TrackProgressCard/>
+                                </Grid>
+                              </Grid>
+                            </Card>
                           </Card>
-                        </Stack>
-                      </div>
-                      <div
-                        style={{
-                          maxHeight: "42.5vh",
-                          overflowY: "auto",
-                          scrollbarColor: "#415F84 #0A2344",
-                          marginRight: 10,
-                        }}
-                      >
-                        <Card
-                          sx={{
-                            bgcolor: "#0B3A79",
-                            borderRadius: "20px",
-                            display: "flex",
-                            justifyContent: "space-around",
-                            top: 0,
-                            borderColor: "#022D66",
-                            borderWidth: 2,
-                            padding: 1,
-                          }}
-                          variant="outlined"
-                        >
-                          <UserInfoAndProgress members={members} />
-                        </Card>
+                        </div>
                       </div>
                     </Card>
                   </div>

@@ -62,7 +62,7 @@ function UserInfoAndProgress({ members }) {
               </Card>
             </Grid>
 
-            <Grid container style={{ width: "40%", paddingLeft: "1rem" }}>
+            <Grid container style={{ width: "35%", paddingLeft: "1rem" }}>
               <ProgressCharts index={index} />
             </Grid>
             <Grid item style={{ width: "17%", }}>
