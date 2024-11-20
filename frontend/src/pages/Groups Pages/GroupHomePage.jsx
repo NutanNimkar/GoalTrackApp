@@ -122,7 +122,7 @@ const GroupsPage = () => {
                       bgcolor: "#022D66",
                       display: "flex",
                       position: "fixed",
-                      bottom: 1 / 2,
+                      bottom: "10%",
                       borderRadius: 30,
                       borderColor: "#022D66"
                     }}

@@ -5,6 +5,7 @@ import { MdOutlinePersonOutline } from "react-icons/md";
 // import { SharedStateContext } from "../../../../Context/SharedStateContext.js";
 import { Card, CardContent, Typography, Stack, Button } from "@mui/joy";
 import UserInfoAndProgress from "./UserInfoAndProgress.jsx";
+import { Grid } from "@mui/system";
 
 function GroupProgress({ name, members, description, punishment }) {
   return (
@@ -98,35 +99,45 @@ function GroupProgress({ name, members, description, punishment }) {
                   bgcolor: "#12253D",
                   display: "flex",
                   paddingBottom: 3,
-                  alignItems: "center",
+                  justifyContent: "space-between",
                   borderRadius: "20px",
                   borderColor: "#AEC5E3",
                 }}
               >
-                <Stack direction="horizontal" gap={4}>
-                  <div
-                    style={{
-                      position: "relative",
-                      top: -6,
-                    }}
-                  >
-                    <Typography level="title-sm" style={{ color: "#ffffff" }}>
-                    Previous 7 Days
-                  </Typography>
-                  </div>
-                  
-                  <div
-                    style={{
-                      position: "relative",
-                      top: -6,
-                    }}
-                  >
-                    <Typography level="title-sm" style={{ color: "#ffffff" }}>
-                    Total Days
-                  </Typography>
-                  </div>
-                  
-                </Stack>
+                <Grid
+                  container
+                  direction="row"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Grid item>
+                    <Typography
+                      level="title-sm"
+                      style={{
+                        color: "#ffffff",
+                        position: "relative",
+                        top: -6,
+                      }}
+                    >
+                      Previous 7 Days
+                    </Typography>
+                  </Grid>
+
+                  <Grid item>
+                    <Typography
+                      level="title-sm"
+                      style={{
+                        color: "#ffffff",
+                        position: "relative",
+                        top: -6,
+                      }}
+                    >
+                      Total Days
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Card>
               <Card
                 sx={{
@@ -146,10 +157,9 @@ function GroupProgress({ name, members, description, punishment }) {
                   }}
                 >
                   <Typography level="title-sm" style={{ color: "#ffffff" }}>
-                  Track Progress
-                </Typography>
+                    Track Progress
+                  </Typography>
                 </div>
-                
               </Card>
               <Card
                 sx={{
@@ -169,10 +179,9 @@ function GroupProgress({ name, members, description, punishment }) {
                   }}
                 >
                   <Typography level="title-sm" style={{ color: "#ffffff" }}>
-                  Check Progress
-                </Typography>
+                    Check Progress
+                  </Typography>
                 </div>
-                
               </Card>
             </Stack>
           </div>

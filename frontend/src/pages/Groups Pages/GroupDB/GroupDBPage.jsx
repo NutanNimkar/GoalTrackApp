@@ -53,7 +53,7 @@ function GroupDBPage() {
                 </div>
               </Card>
             </div>
-            <div style={{ paddingLeft: "25px", paddingRight: "25px" }}>
+            <div style={{ paddingLeft: "25px", paddingRight: "7px" }}>
               <Card
                 sx={{
                   bgcolor: "#022D66",
@@ -74,7 +74,7 @@ function GroupDBPage() {
                       style={{
                         color: "#ffffff",
                         width: "50%",
-                        paddingLeft: "10px",
+                        padding: "2%",
                       }}
                     >
                       The Group Contract is unanimous task to be performed at
