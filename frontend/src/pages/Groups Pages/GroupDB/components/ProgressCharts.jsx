@@ -18,13 +18,13 @@ export function generateChartData() {
     labels: [""],
     datasets: [
       {
-        label: `Missed Days`,
+        label: `Missed`,
         data:[9],
         backgroundColor: "#FF0808",
         borderRadius: 30,
       },
       {
-        label: `Completed Days`,
+        label: `Completed`,
         data:[7],
         backgroundColor: "#12B806",
         borderRadius: 30,

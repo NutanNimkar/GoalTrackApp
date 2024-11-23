@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Grid } from "@mui/system";
 import VerticalNavigation from "../../../components/VerticalNavigation";
@@ -7,42 +7,112 @@ import { SharedStateContext } from "../../../Context/SharedStateContext";
 import { Stack, Card } from "@mui/joy";
 import TaskActivity from "../../../components/DashboardComponents/TaskActivity";
 import { Typography } from "@mui/material";
-import UserInfoAndProgress from "../GroupDB/components/UserInfoAndProgress";
 import ProgressCharts from "../GroupDB/components/ProgressCharts";
 import TrackProgressCard from "../GroupDB/components/TrackProgressCard";
+import createAxiosInstance from "../../../axiosInstance";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 function PersonalDB() {
   const location = useLocation();
   const { name, punishment, description, members } = location.state;
+  const {users,
+    dailyTasks,
+    setDailyTasks,
+    handleEditTask,
+    deleteTask,
+    showModal,
+    currentTask,
+    toggleTaskStatus,
+    handleSaveTask,
+    setShowModal,
+    handleAddTask,
+    userId,} = useContext(SharedStateContext)
   // console.log(location.state);
-  const { dailyTasks } = useContext(SharedStateContext);
   // console.log(dailyTasks);
-  const task = [
-    {
-      title: "My Task",
-      description: "Task description",
-    },
-    {
-      title: "My Task",
-      description: "Task description",
-    },
-    {
-      title: "My Task",
-      description: "Task description",
-    },
-    {
-      title: "My Task",
-      description: "Task description",
-    },
-    {
-      title: "My Task",
-      description: "Task description",
-    },
-    {
-      title: "My Task",
-      description: "Task description",
-    },
-  ];
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [lastReset, setLastReset] = useState(null);
+  const [showEvidenceModal, setShowEvidenceModal] = useState(false);
+  const { user } = useAuthContext();
+  const axiosInstance = createAxiosInstance(user?.token);
+  const [images, setImages] = useState([]);
+
+  const fetchTasks = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axiosInstance.get(`/api/users/${userId}/tasks`);
+      setDailyTasks(response.data.tasks);
+      setLastReset(response.data.lastReset);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      setError("There are no tasks for this user, please add some.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetTaskStatus = async () => {
+    try {
+      const response = await axiosInstance.put(
+        `/api/tasks/reset-status/${userId}`
+      );
+      if (response.data.tasks.length > 0 && response.status === 200) {
+        setDailyTasks(response.data.tasks);
+        setLastReset(response.data.lastReset);
+      } else {
+        setError(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error resetting task statuses:", error);
+      setError("Error resetting task statuses. Please try again later.");
+    }
+  };
+
+  useEffect(() => {
+    const initializeTasks = async () => {
+      if (!user) {
+        setError("You must be logged in");
+        return;
+      }
+      try {
+        await fetchTasks();
+        await resetTaskStatus();
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    initializeTasks();
+  }, [userId]);
+
+  // const task = [
+  //   {
+  //     title: "My Task",
+  //     description: "Task description",
+  //   },
+  //   {
+  //     title: "My Task",
+  //     description: "Task description",
+  //   },
+  //   {
+  //     title: "My Task",
+  //     description: "Task description",
+  //   },
+  //   {
+  //     title: "My Task",
+  //     description: "Task description",
+  //   },
+  //   {
+  //     title: "My Task",
+  //     description: "Task description",
+  //   },
+  //   {
+  //     title: "My Task",
+  //     description: "Task description",
+  //   },
+  // ];
 
   return (
     <Grid container spacing={1}>
@@ -63,7 +133,7 @@ function PersonalDB() {
         <Row>
           <Col md={4} style={{ paddingLeft: 25 }}>
             <TaskActivity
-              tasks={task}
+              tasks={dailyTasks}
               punishment={punishment}
               description={description}
               members={members}
@@ -419,7 +489,9 @@ function PersonalDB() {
                         completion and incompletion of individual tasks on a
                         daily basis.
                       </Typography>
-                      <div>
+                      <div
+                        style={{ marginTrim: 40}}
+                      >
                         <div
                           style={{
                             paddingBottom: 15,
