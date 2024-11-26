@@ -18,13 +18,13 @@ const GroupsPage = () => {
     <div>
       <Grid container spacing={2}>
         <Grid
-          size={{ xs: 4, lg: 3 }}
+          size={{ xs: 4, lg: 3, xl:2 }}
           className="vh-100"
           style={{ position: "sticky", top: 0 }}
         >
           <VerticalNavigation />
         </Grid>
-        <Grid size={{ xs: 8, lg: 9 }}>
+        <Grid size={{ xs: 8, lg: 9, xl:10 }}>
           <Grid>
             <Row
               style={{
@@ -33,9 +33,9 @@ const GroupsPage = () => {
                 paddingLeft: "1%",
               }}
             >
-              <h1 style={{ color: "#83AFE8" }}>Groups</h1>
+              <Typography sx={{ color: "#83AFE8", fontFamily: "Lucida Sans" }} level="h1">Groups</Typography>
             </Row>
-            <Grid>
+            <Grid> 
               <Stack
                 direction="horizontal"
                 gap={5}
@@ -48,6 +48,7 @@ const GroupsPage = () => {
                     display: "flex",
                     width: "65%",
                     borderRadius: 30,
+                    borderColor: "#12253D"
                   }}
                 >
                   <Typography
@@ -55,8 +56,9 @@ const GroupsPage = () => {
                       textAlign: "center",
                       paddingBottom: 3,
                       color: "#ffffff",
+                      fontFamily: "Lucida Sans"
                     }}
-                    variant="h1"
+                    level="h1"
                   >
                     Group List
                   </Typography>
@@ -70,7 +72,6 @@ const GroupsPage = () => {
                     >
                       <div className="GroupsDropDown">
                         <GroupDropDown groups={groups} />
-                        <br />
                       </div>
                     </Card>
                   </CardContent>
@@ -79,17 +80,20 @@ const GroupsPage = () => {
                   <Card
                     variant="outlined"
                     sx={{
-                      bgcolor: "#12253D",
+                      bgcolor: "#022D66",
                       display: "flex",
                       position: "fixed",
-                      borderRadius: 30
+                      borderRadius: 30,
+                      borderColor: "#022D66"
                     }}
                   >
                     <Typography
                       sx={{
                         color: "#ffffff",
                         textAlign: "center",
+                        fontFamily: "Lucida Sans"
                       }}
+                      level="h3"
                     >
                       Create Group
                     </Typography>
@@ -115,18 +119,21 @@ const GroupsPage = () => {
                   <Card
                     variant="outlined"
                     sx={{
-                      bgcolor: "#12253D",
+                      bgcolor: "#022D66",
                       display: "flex",
                       position: "fixed",
-                      bottom: 1 / 2,
-                      borderRadius: 30
+                      bottom: "10%",
+                      borderRadius: 30,
+                      borderColor: "#022D66"
                     }}
                   >
                     <Typography
                       sx={{
                         color: "#ffffff",
                         textAlign: "center",
+                        fontFamily: "Lucida Sans"
                       }}
+                      level="h3"
                     >
                       Join Group
                     </Typography>
@@ -159,7 +166,6 @@ const GroupsPage = () => {
               </Stack>
             </Grid>
           </Grid>
-          {/* </Col> */}
         </Grid>
         <CreateGroupModal
           show={showModal}

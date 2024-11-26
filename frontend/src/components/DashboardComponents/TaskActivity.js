@@ -1,19 +1,32 @@
 // components/TaskActivity.js
-import React, { useContext } from 'react';
-import './TaskActivity.css';
-import TaskCard from './TaskCard';
-import { IconButton } from '@mui/material';
-import { AddCircle } from '@mui/icons-material';
-import { SharedStateContext } from '../../Context/SharedStateContext';
-import TaskModal from '../TaskModal';
-import { Link, useLocation} from 'react-router-dom';
-import { Stack, Card } from '@mui/joy';
+import React, { useContext } from "react";
+import "./TaskActivity.css";
+import TaskCard from "./TaskCard";
+import { IconButton } from "@mui/material";
+import { AddCircle } from "@mui/icons-material";
+import { SharedStateContext } from "../../Context/SharedStateContext";
+import TaskModal from "../TaskModal";
+import { Link, useLocation } from "react-router-dom";
+import { Stack, Card, Button } from "@mui/joy";
 import { MdOutlinePersonOutline } from "react-icons/md";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 const TaskActivity = ({ tasks }) => {
-  const { handleAddTask, showModal, setShowModal, currentTask, dailyTasks, handleSaveTask } = useContext(SharedStateContext);
+  const {
+    handleAddTask,
+    showModal,
+    setShowModal,
+    currentTask,
+    dailyTasks,
+    handleSaveTask,
+    showDeleteModal,
+    setShowDeleteModal,
+    selectedTask,
+  } = useContext(SharedStateContext);
+
   const location = useLocation();
-  console.log("activity", dailyTasks);
+  // console.log("activity", tasks);
+
   const { name, punishment, description, members } = location.state;
   return (
     <div className="task-activity-container">
@@ -21,22 +34,36 @@ const TaskActivity = ({ tasks }) => {
       <div className="d-flex justify-content-between align-items-center">
         <div>
           <h5>Task Activity</h5>
-          <p>Daily tasks which need to be completed will be displayed here. Add more tasks using the feature below.</p>
+          <p>
+            Daily tasks which need to be completed will be displayed here. Add
+            more tasks using the feature below.
+          </p>
           <Link
             to={{ pathname: `/groups/${name}/groupdb` }}
             state={{
               name: name,
               description: description,
               punishment: punishment,
+              members: members,
             }}
             style={{ textAlign: "end", textDecoration: "none" }}
           >
-            <Card sx={{ bgcolor: "#12253D", color: "#ffffff" }}>
+            <Button
+              size="lg"
+              variant="outlined"
+              sx={{
+                bgcolor: "#022D66",
+                color: "#ffffff",
+                borderColor: "#AEC5E3",
+                borderWidth: 2,
+                borderRadius: 15,
+              }}
+            >
               <Stack gap={3} direction="horizontal">
-                <MdOutlinePersonOutline />
+                <MdOutlinePersonOutline size={50} />
                 Group Dashboard
               </Stack>
-            </Card>
+            </Button>
           </Link>
         </div>
       </div>
@@ -53,9 +80,19 @@ const TaskActivity = ({ tasks }) => {
       </div>
 
       {/* Task List */}
-      <div className="task-list">
-        {tasks.map((task, index) => (
-          <TaskCard key={index} task={task} />
+      <div
+        className="task-list"
+        style={{
+          maxHeight: "42.5vh",
+          overflowY: "auto",
+          scrollbarColor: "#415F84 #0A2344",
+          scrollbarGutter: "unset",
+
+          marginRight: 10,
+        }}
+      >
+        {tasks?.map((task, index) => (
+          <TaskCard key={index} task={task} selectedTask={task} />
         ))}
       </div>
 
@@ -66,6 +103,14 @@ const TaskActivity = ({ tasks }) => {
           handleClose={() => setShowModal(false)}
           task={currentTask}
           handleSave={handleSaveTask}
+        />
+      )}
+
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          show={showDeleteModal}
+          handleClose={() => setShowDeleteModal(false)}
+          task={selectedTask}
         />
       )}
     </div>

@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import createAxiosInstance from "../axiosInstance";
+
 const SharedStateContext = createContext();
 
 const SharedStateProvider = ({ children }) => {
@@ -10,6 +11,8 @@ const SharedStateProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState("");
   const { user } = useAuthContext();
   const userId = user?.id;
   const groupId = "6656350aa68a902e3fdf9675";
@@ -78,6 +81,11 @@ const SharedStateProvider = ({ children }) => {
     setShowModal(true);
   };
 
+  const confirmDeleteModal = (task) => {
+    setSelectedTask(task);
+    setShowDeleteModal(true);
+  }
+
   const deleteTask = (taskId) => {
     if (!user) return;
     axiosInstance
@@ -86,6 +94,7 @@ const SharedStateProvider = ({ children }) => {
         setDailyTasks((prevDailyTasks) =>
           prevDailyTasks.filter((task) => task._id !== taskId)
         );
+        setShowDeleteModal(false);
       })
       .catch((error) => console.error("Error deleting task:", error));
   };
@@ -143,6 +152,9 @@ const SharedStateProvider = ({ children }) => {
         showModal,
         currentTask,
         selectedUserId,
+        showDeleteModal,
+        selectedTask,
+        confirmDeleteModal,
         setSelectedUserId,
         setShowModal,
         setDailyTasks,
@@ -153,6 +165,7 @@ const SharedStateProvider = ({ children }) => {
         toggleTaskStatus,
         addUserToGroup,
         calculateTaskProgress,
+        setShowDeleteModal,
       }}
     >
       {children}

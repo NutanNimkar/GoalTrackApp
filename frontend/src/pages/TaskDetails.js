@@ -36,7 +36,7 @@ const TaskDetails = () => {
   const axiosInstance = createAxiosInstance(user?.token);
   const [images, setImages] = useState([]);
 
-  console.log(dailyTasks);
+  // console.log(dailyTasks);
   const fetchTasks = async () => {
     setLoading(true);
     setError(null);
