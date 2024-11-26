@@ -1,7 +1,9 @@
 .FriendComponents{
-
-
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin: 0px;
+    padding-top: 40px;
 }

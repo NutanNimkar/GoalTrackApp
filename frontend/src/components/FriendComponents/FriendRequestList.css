@@ -1,0 +1,357 @@
+/* FriendRequestList.css */
+
+/* .friend-requests-container {
+  width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #83afe8;
+  border-radius: 25px;
+  background-color: #12253d;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.friend-request-title,
+.sent-request-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.friend-request-loading,
+.sent-request-loading {
+  font-size: 16px;
+  color: #666;
+}
+
+.friend-request-list,
+.sent-request-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.friend-request-list-item,
+.sent-request-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  transition: background-color 0.2s;
+}
+
+.friend-request-list-item:hover,
+.sent-request-list-item:hover {
+  background-color: #f1f1f1;
+}
+
+.friend-request-accept-button,
+.friend-request-decline-button,
+.friend-request-delete-button,
+.sent-request-remove-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.friend-request-accept-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.friend-request-decline-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.friend-request-delete-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.sent-request-remove-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.friend-request-accept-button:hover,
+.friend-request-decline-button:hover,
+.friend-request-delete-button:hover,
+.sent-request-remove-button:hover {
+  opacity: 0.8;
+}
+
+.friend-request-alert,
+.sent-request-alert {
+  color: #888;
+  text-align: center;
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.sent-request-error {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+  color: red;
+}
+
+
+
+.friend-request-tabs.active{
+
+  background-color: #4caf50;
+}
+
+.sent-request-tabs.active{
+
+  background-color: #4caf50;
+}
+
+.friend-request-tabs{
+  display: none;
+}
+
+.sent-request-tabs{
+
+ display: none;
+} */
+
+
+
+/* General Container */
+.friend-requests-container {
+  width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #83afe8;
+  border-radius: 25px;
+  background-color: #12253d;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabs Navigation */
+.friend-requests-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.friend-requests-tab,
+.sent-requests-tab {
+
+  background-color: #022d66;
+  color: white;
+  height: 60px;
+  border: 2px solid #83afe8;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: normal;
+  font-size: 25px;
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 250px;
+  
+  position: relative;
+
+}
+
+.friend-requests-tab-active,
+.sent-requests-tab-active {
+  background-color: #12253d;
+  color: white;
+  border-radius: 20px;
+  border: 2px solid #83afe8;
+  width: 250px;
+  font-size: 25px;
+  position: relative;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  
+ 
+}
+
+.friend-requests-tab:hover,
+.sent-requests-tab:hover {
+  background-color: #0056b3;
+}
+
+.friend-requests-tab-active:hover,
+.sent-requests-tab-active:hover {
+  background-color: #0056b3;
+}
+
+/* Active Tab Content */
+.friend-requests-active,
+.sent-requests-active {
+  display: block;
+}
+
+.friend-requests,
+.sent-requests {
+  display: none;
+}
+
+/* Friend Requests Section */
+.friend-request-title,
+.sent-request-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.friend-request-list,
+.sent-request-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.friend-request-list-item,
+.sent-request-list-item {
+  background-color: #83afe8;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 50px;
+  border: 1px solid #4f729d;
+  display: flex;
+  width: 90%;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.friend-request-list-item:hover,
+.sent-request-list-item:hover {
+  background-color: #f1f1f1;
+}
+
+.friend-request-alert,
+.sent-request-alert {
+  font-style: italic;
+  color: #777;
+}
+
+.friend-request-accept-button,
+.friend-request-decline-button,
+.sent-request-remove-button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.friend-request-accept-button {
+  background-color: #28a745;
+  color: white;
+  border-radius: 100%;
+  height: 30px;
+}
+
+.friend-request-decline-button {
+  background-color: #dc3545;
+  border-radius: 100%;
+  height: 30px;
+}
+
+.sent-request-remove-button {
+  background-color: #007bff;
+  border-radius: 100%;
+  height: 30px;
+}
+
+.friend-request-accept-button:hover,
+.friend-request-decline-button:hover,
+.sent-request-remove-button:hover {
+  opacity: 0.8;
+}
+
+.friend-request-loading,
+.sent-request-loading {
+  font-size: 16px;
+  color: #007bff;
+}
+
+.friend-request-error,
+.sent-request-error {
+  font-size: 16px;
+  color: #dc3545;
+}
+
+/* Loading Spinner (Optional) */
+.friend-request-loading::after,
+.sent-request-loading::after {
+  content: "...";
+  animation: dot-blink 1s infinite step-end;
+
+}
+
+.friend-request-list-container{
+background-color: #4f729d;
+border-color: #022d66;
+height: 150px;
+border-radius: 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-direction: column;
+
+}
+
+.sent-request-list-container{
+  background-color: #4f729d;
+  border-color: #022d66;
+  height: 150px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  
+  
+  }
+
+@keyframes dot-blink {
+  0% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .friend-requests-container {
+    padding: 10px;
+  }
+
+  .friend-requests-tabs {
+    flex-direction: column;
+  }
+
+  .friend-requests-tab,
+  .sent-requests-tab {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .friend-request-list-item,
+  .sent-request-list-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .friend-request-accept-button,
+  .friend-request-decline-button,
+  .sent-request-remove-button {
+    margin-top: 10px;
+  }
+}

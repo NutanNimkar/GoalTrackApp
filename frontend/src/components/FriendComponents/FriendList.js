@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import createAxiosInstance from '../../axiosInstance';
 import { useAuthContext } from "../../hooks/useAuthContext"
+import './FriendList.css';
 
-const FriendsPage = ({ UserId }) => {
+const FriendsList = () => {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -18,7 +19,7 @@ const FriendsPage = ({ UserId }) => {
       setLoading(true);
       setError('');
       try {
-        const response = await axiosInstance.get(`/api/friends/friends/${userId}`)
+        const response = await axiosInstance.get(`/api/friends/${userId}`)
         setFriends(response.data);
       } catch (err) {
         setError('Error fetching friends list');
@@ -34,7 +35,7 @@ const FriendsPage = ({ UserId }) => {
       setLoading(true);
       setError('');
       try {
-        await axiosInstance.delete(`/api/friends/${userId}`, {
+        await axiosInstance.delete(`/api/friend/remove/${userId}`, {
           friendID: friendId}
         );
         // Remove the friend from the local state
@@ -46,26 +47,27 @@ const FriendsPage = ({ UserId }) => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  
 
   return (
-    <div>
-      <h1>Friends List</h1>
+    <div className='friends-list-container'>
+      <h1 className='friends-list-title'>List of Friends</h1>
       {friends.length === 0 ? (
-        <p>No friends found.</p>
+        <p className='friends-list-alert'>No friends found.</p>
       ) : (
-        <ul>
+      <div className='friends-list-listcontainer'>
+       <ul className='friends-list-ul'>
           {friends.map((friend) => (
-            <li key={friend.id}>
+            <li className='friends-list-item' key={friend.id}>
               {friend.name}
-              <button onClick={() => deleteFriend(friend.id)}>Delete</button>
+              <button className='friends-list-delete-button'onClick={() => deleteFriend(friend.id)}>Delete</button>
             </li>
           ))}
         </ul>
+        </div>
       )}
     </div>
   );
 };
 
-export default FriendsPage;
+export default FriendsList;

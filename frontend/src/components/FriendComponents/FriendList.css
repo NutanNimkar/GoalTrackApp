@@ -1,0 +1,80 @@
+/* FriendList.css */
+
+.friends-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 2px solid #83afe8;
+  border-radius: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 1500px;
+  height: 600px;
+  margin: 20px auto;
+  background-color: #022d66;
+
+}
+
+.friends-list-title {
+  position: relative;
+  bottom: 50px;
+  right: 50px;
+  margin-bottom: 20px;
+  color: #fffefe;
+  font-size: 28px;
+  text-align: center;
+}
+
+.friends-list-alert {
+  color: #999; /* Light gray for no friends found message */
+  font-size: 18px;
+  text-align: center;
+}
+
+.friends-list-ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+  width: 100%;
+
+}
+
+.friends-list-listcontainer{
+  background-color: #12253d;
+  border-radius: 25px;
+  width: 600px;
+  height: 500px;
+  z-index: +1;
+
+}
+
+.friends-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee; /* Separator between friends */
+  font-size: 18px;
+}
+
+.friends-list-item:last-child {
+  border-bottom: none; /* Remove border for the last item */
+}
+
+.friends-list-delete-button {
+  background-color: #ff4d4d; /* Red background for delete button */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.friends-list-delete-button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}
+
+.friends-list-delete-button:focus {
+  outline: none; /* Remove default outline */
+}

@@ -8,8 +8,10 @@ const {
   acceptFriendRequest,
   addFriends,
   removeFriend,
-  deleteFriendRequest,
+  // deleteFriendRequest,
+  removeFriendRequest,
   declineFriendRequest,
+  getSentFriendRequest,
 } = require("../controllers/friendsController");
 
 // look up users current friends
@@ -21,7 +23,7 @@ router.post("/add-friends/:id", addFriends);
 // sending friend request
 router.post("/send-req/:id", sendFriendRequest);
 
-// available friend requests
+// available friend requests for reciever
 router.get("/friend-requests/:id", getFriendRequest);
 
 // accepting friend request
@@ -34,7 +36,11 @@ router.delete("/decline-req/:id", declineFriendRequest);
 router.delete("/friend/remove/:id", removeFriend);
 
 //remove a friend from a friend request
-router.delete("/request/remove/:id", deleteFriendRequest);
+router.delete("/request/remove/:id", removeFriendRequest);
+
+// available friend requests for sender
+router.get("/sentfriend-requests/:id", getSentFriendRequest);
+
 
 
 

@@ -170,46 +170,46 @@ const getUserIdByUsernameOrEmail = async (identifier) => {
 };
 
 // Delete a friend request (for the recipient)
-const deleteFriendRequest = async (req, res) => {
-  const { id } = req.params;
-  const { friendIdentifier } = req.body;
+// const deleteFriendRequest = async (req, res) => {
+//   const { id } = req.params;
+//   const { friendIdentifier } = req.body;
 
-  try {
-    if (!checkIdIsValid(id, res)) return;
+//   try {
+//     if (!checkIdIsValid(id, res)) return;
 
-    const friendId = await getUserIdByUsernameOrEmail(friendIdentifier);
+//     const friendId = await getUserIdByUsernameOrEmail(friendIdentifier);
 
-    if (!checkIdIsValid(friendId, res)) return;
+//     if (!checkIdIsValid(friendId, res)) return;
 
-    if (!checkAuthorization(req, id)) {
-      return res.status(403).json({ msg: "User not authorized" });
-    }
+//     if (!checkAuthorization(req, id)) {
+//       return res.status(403).json({ msg: "User not authorized" });
+//     }
 
-    const user = await User.findById(id);
-    const friend = await User.findById(friendId);
+//     const user = await User.findById(id);
+//     const friend = await User.findById(friendId);
 
-    if (!user || !friend) {
-      return res.status(404).json({ err: "User or friend not found" });
-    }
-    if (!user.friendsRequests.includes(friendId)) {
-      return res.status(400).json({ err: "Friend request not sent" });
-    }
+//     if (!user || !friend) {
+//       return res.status(404).json({ err: "User or friend not found" });
+//     }
+//     if (!user.friendsRequests.includes(friendId)) {
+//       return res.status(400).json({ err: "Friend request not sent" });
+//     }
 
-    // Remove the friend request from both users
-    user.friendsRequests = user.friendsRequests.filter(
-      (requestId) => requestId.toString() !== friendId.toString()
-    );
-    friend.sentFriendRequests = friend.sentFriendRequests.filter(
-      (requestId) => requestId.toString() !== id.toString()
-    );
-    await user.save();
-    await friend.save();
+//     // Remove the friend request from both users
+//     user.friendsRequests = user.friendsRequests.filter(
+//       (requestId) => requestId.toString() !== friendId.toString()
+//     );
+//     friend.sentFriendRequests = friend.sentFriendRequests.filter(
+//       (requestId) => requestId.toString() !== id.toString()
+//     );
+//     await user.save();
+//     await friend.save();
 
-    res.status(200).json({ msg: "Friend request deleted" });
-  } catch (err) {
-    return res.status(500).json({ err: "Server error" });
-  }
-};
+//     res.status(200).json({ msg: "Friend request deleted" });
+//   } catch (err) {
+//     return res.status(500).json({ err: "Server error" });
+//   }
+// };
 
 // Send a friend request
 const sendFriendRequest = async (req, res) => {
@@ -330,11 +330,14 @@ const removeFriendRequest = async (req, res) => {
       (requestId) => requestId.toString() !== id
     );
     await user.save();
+    await friend.save();
     res.status(200).json({ msg: "Friend request removed" });
   } catch (err) {
     res.status(500).json({ err: "Server error" });
   }
 };
+
+// List sent friend request (for the receiver)
 const getFriendRequest = async (req, res) => {
   const { id } = req.params;
     if (!checkIdIsValid(id, res)) return;
@@ -353,6 +356,26 @@ const getFriendRequest = async (req, res) => {
       res.status(500).json({ err: "Server error" });
     }
 }
+
+// List sent friend requests (for the sender)
+const getSentFriendRequest = async (req, res) => {
+  const { id } = req.params;
+    if (!checkIdIsValid(id, res)) return;
+
+    if (!checkAuthorization(req, id)) {
+      return res.status(403).json({ msg: "User not authorized" });
+    }
+
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ err: "User not found" });
+      }
+      res.status(200).json(user.sentFriendRequests);
+    } catch (err) {
+      res.status(500).json({ err: "Server error" });
+    }
+}
 module.exports = {
   friendsLookup,
   sendFriendRequest,
@@ -361,6 +384,7 @@ module.exports = {
   getFriendRequest,
   removeFriend,
   removeFriendRequest,
-  deleteFriendRequest,
+  // deleteFriendRequest,
   declineFriendRequest,
+  getSentFriendRequest,
 };
