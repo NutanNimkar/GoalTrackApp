@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { SharedStateProvider } from './Context/SharedStateContext';
 import { useAuthContext } from './hooks/useAuthContext';
 import Home from './pages/Home';
+import Friends from './pages/Friends';
 import TaskDetails from './pages/TaskDetails';
 import Groups from './pages/Groups';
 import UserSignUp from './pages/SignUp';
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <div className="App">
+     
       <SharedStateProvider>
         <BrowserRouter>
           <div className="pages">
@@ -26,11 +28,13 @@ function App() {
               <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route path="/friends" element={user ? <Friends /> : <Login />} />
               <Route path="*" element={<Navigate to="/" />} /> {/* Catch-all route */}
             </Routes>
           </div>
         </BrowserRouter>
       </SharedStateProvider>
+    
     </div>
   );
 }
