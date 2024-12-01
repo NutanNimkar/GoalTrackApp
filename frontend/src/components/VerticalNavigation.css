@@ -29,6 +29,7 @@
 
     width: 80px;
     transition: 0.5s all;
+    overflow-x: hidden;
 
 }
 
@@ -38,7 +39,7 @@
         transition: 0.5s all;
     }
     img {
-        margin-left: 175px;
+        margin-left: 190px;
         transition: 0.5s all;
     }
 }

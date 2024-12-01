@@ -7,7 +7,7 @@ import { AddCircle } from "@mui/icons-material";
 import { SharedStateContext } from "../../Context/SharedStateContext";
 import TaskModal from "../TaskModal";
 import { Link, useLocation } from "react-router-dom";
-import { Stack, Card, Button } from "@mui/joy";
+import { Stack, Button, Typography, Card } from "@mui/joy";
 import { MdOutlinePersonOutline } from "react-icons/md";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
@@ -17,7 +17,6 @@ const TaskActivity = ({ tasks }) => {
     showModal,
     setShowModal,
     currentTask,
-    dailyTasks,
     handleSaveTask,
     showDeleteModal,
     setShowDeleteModal,
@@ -25,19 +24,30 @@ const TaskActivity = ({ tasks }) => {
   } = useContext(SharedStateContext);
 
   const location = useLocation();
-  // console.log("activity", tasks);
 
   const { name, punishment, description, members } = location.state;
   return (
-    <div className="task-activity-container">
+    <Card
+      sx={{
+        bgcolor: "#12253D",
+        borderRadius: "12px",
+        borderColor: "#062B5C",
+        borderWidth: 3
+      }}
+      variant="outlined"
+      color="neutral"
+      className="task-activity-container"
+    >
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center">
         <div>
-          <h5>Task Activity</h5>
-          <p>
+          <Typography style={{ color: "white", fontFamily: "Lucida Sans" }} level="h2">
+            Task Activity
+          </Typography>
+          <Typography variant="caption" sx={{textAlign: "justify", paddingTop: 2, paddingBottom: 2, fontFamily: "Lucida Sans"}}>
             Daily tasks which need to be completed will be displayed here. Add
             more tasks using the feature below.
-          </p>
+          </Typography>
           <Link
             to={{ pathname: `/groups/${name}/groupdb` }}
             state={{
@@ -57,11 +67,16 @@ const TaskActivity = ({ tasks }) => {
                 borderColor: "#AEC5E3",
                 borderWidth: 2,
                 borderRadius: 15,
+                display: "flex",
+                justifySelf: "center",
+                width:"100%"
               }}
             >
               <Stack gap={3} direction="horizontal">
-                <MdOutlinePersonOutline size={50} />
-                Group Dashboard
+                <MdOutlinePersonOutline size={45} />
+                <Typography level="h5" sx={{ alignContent: "center", fontFamily: "Lucida Sans" }}>
+                  Group Dashboard
+                </Typography>
               </Stack>
             </Button>
           </Link>
@@ -83,7 +98,7 @@ const TaskActivity = ({ tasks }) => {
       <div
         className="task-list"
         style={{
-          maxHeight: "42.5vh",
+          maxHeight: "50vh",
           overflowY: "auto",
           scrollbarColor: "#415F84 #0A2344",
           scrollbarGutter: "unset",
@@ -113,7 +128,7 @@ const TaskActivity = ({ tasks }) => {
           task={selectedTask}
         />
       )}
-    </div>
+    </Card>
   );
 };
 

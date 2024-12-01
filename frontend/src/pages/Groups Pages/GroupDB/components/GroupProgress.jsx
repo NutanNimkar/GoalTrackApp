@@ -20,7 +20,14 @@ function GroupProgress({ name, members, description, punishment }) {
         }}
       >
         <div>
-          <Typography style={{ color: "#ffffff", paddingLeft: 10 }} level="h2">
+          <Typography
+            style={{
+              color: "#ffffff",
+              paddingLeft: 10,
+              fontFamily: "Lucida Sans",
+            }}
+            level="h2"
+          >
             Group Progress Activity
           </Typography>
 
@@ -54,7 +61,9 @@ function GroupProgress({ name, members, description, punishment }) {
                 >
                   <Stack gap={3} direction="horizontal">
                     <MdOutlinePersonOutline size={50} />
-                    Personal Dashboard
+                    <Typography sx={{ color: "white", fontFamily: "Lucida Sans" }}>
+                      Personal Dashboard
+                    </Typography>
                   </Stack>
                 </Button>
               </Link>
@@ -88,7 +97,10 @@ function GroupProgress({ name, members, description, punishment }) {
                     top: 10,
                   }}
                 >
-                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  <Typography
+                    level="title-sm"
+                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
+                  >
                     Group Members
                   </Typography>
                 </div>
@@ -119,6 +131,7 @@ function GroupProgress({ name, members, description, punishment }) {
                         color: "#ffffff",
                         position: "relative",
                         top: -6,
+                        fontFamily: "Lucida Sans",
                       }}
                     >
                       Previous 7 Days
@@ -132,6 +145,7 @@ function GroupProgress({ name, members, description, punishment }) {
                         color: "#ffffff",
                         position: "relative",
                         top: -6,
+                        fontFamily: "Lucida Sans",
                       }}
                     >
                       Total Days
@@ -156,7 +170,10 @@ function GroupProgress({ name, members, description, punishment }) {
                     top: 10,
                   }}
                 >
-                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  <Typography
+                    level="title-sm"
+                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
+                  >
                     Track Progress
                   </Typography>
                 </div>
@@ -178,7 +195,10 @@ function GroupProgress({ name, members, description, punishment }) {
                     top: 10,
                   }}
                 >
-                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  <Typography
+                    level="title-sm"
+                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
+                  >
                     Check Progress
                   </Typography>
                 </div>

@@ -5,11 +5,12 @@ import Group from "../Images/users-group-rounded-svgrepo-com.svg";
 import Home from "../Images/home-alt-3-svgrepo-com.svg";
 import Logout from "../Images/log-out-04-svgrepo-com.svg";
 import { useLogOut } from "../hooks/useLogOut";
+import { useNavigation } from '../Context/NavigationContext';
 
 
 const VerticalNavigation = () => {
   const { logout } = useLogOut();
-  const [closeMenu, setCloseMenu] = useState(false);
+  const {closeMenu, setCloseMenu} = useNavigation();
 
   const handleCloseMenu = () => {
     setCloseMenu(!closeMenu);

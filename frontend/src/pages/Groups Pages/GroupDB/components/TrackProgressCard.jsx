@@ -3,7 +3,7 @@ import React from "react";
 // import { SharedStateContext } from "../../../../Context/SharedStateContext.js";
 import { Card, CardContent, Typography, Stack } from "@mui/joy";
 import { generateChartData } from "../components/ProgressCharts";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid2";
 
 function TrackProgressCard() {
   const data = generateChartData();
@@ -22,20 +22,26 @@ function TrackProgressCard() {
         }}
         size="sm"
       >
-        <Grid container style={{justifyContent: "center"}}>
+        <Grid container style={{ justifyContent: "center" }}>
           <Stack
             direction="row"
             gap={2}
             style={{ justifyItems: "space-evenly" }}
           >
             <CardContent>
-              <Typography level="h2" sx={{ color: "#12B806" }}>
+              <Typography
+                level="h2"
+                sx={{ color: "#12B806", fontFamily: "Lucida Sans" }}
+              >
                 {data.datasets[1].data[0]}
               </Typography>
             </CardContent>
 
             <CardContent>
-              <Typography level="h2" sx={{ color: "#FF0808" }}>
+              <Typography
+                level="h2"
+                sx={{ color: "#FF0808", fontFamily: "Lucida Sans" }}
+              >
                 {data.datasets[0].data[0]}
               </Typography>
             </CardContent>

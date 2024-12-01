@@ -6,37 +6,22 @@ import { useLocation } from "react-router-dom";
 import { SharedStateContext } from "../../../Context/SharedStateContext";
 import { Stack, Card } from "@mui/joy";
 import TaskActivity from "../../../components/DashboardComponents/TaskActivity";
-import { Typography } from "@mui/material";
-import ProgressCharts from "../GroupDB/components/ProgressCharts";
-import TrackProgressCard from "../GroupDB/components/TrackProgressCard";
+import { CircularProgress, Typography } from "@mui/material";
 import createAxiosInstance from "../../../axiosInstance";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import TaskTracking from "./TaskTracking";
 
 function PersonalDB() {
   const location = useLocation();
   const { name, punishment, description, members } = location.state;
-  const {users,
-    dailyTasks,
-    setDailyTasks,
-    handleEditTask,
-    deleteTask,
-    showModal,
-    currentTask,
-    toggleTaskStatus,
-    handleSaveTask,
-    setShowModal,
-    handleAddTask,
-    userId,} = useContext(SharedStateContext)
-  // console.log(location.state);
-  // console.log(dailyTasks);
+
+  const { dailyTasks, setDailyTasks, userId } = useContext(SharedStateContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
-  const [showEvidenceModal, setShowEvidenceModal] = useState(false);
   const { user } = useAuthContext();
   const axiosInstance = createAxiosInstance(user?.token);
-  const [images, setImages] = useState([]);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -87,48 +72,33 @@ function PersonalDB() {
     initializeTasks();
   }, [userId]);
 
-  // const task = [
-  //   {
-  //     title: "My Task",
-  //     description: "Task description",
-  //   },
-  //   {
-  //     title: "My Task",
-  //     description: "Task description",
-  //   },
-  //   {
-  //     title: "My Task",
-  //     description: "Task description",
-  //   },
-  //   {
-  //     title: "My Task",
-  //     description: "Task description",
-  //   },
-  //   {
-  //     title: "My Task",
-  //     description: "Task description",
-  //   },
-  //   {
-  //     title: "My Task",
-  //     description: "Task description",
-  //   },
-  // ];
-
   return (
     <Grid container spacing={1}>
       <Grid
-        size={{ xs: 4, lg: 3, xl: 2 }}
+        xs={"100%"}
+        md={"100%"}
+        lg={"100%"}
+        xl={"100%"}
         className="vh-100"
         style={{ position: "sticky", top: 0 }}
       >
         <VerticalNavigation />
       </Grid>
-      <Grid size={{ xs: 8, lg: 9, xl: 10 }}>
+      <Grid size={{ xs: "grow", lg: "grow" }} style={{ overflowX: "hidden" }}>
         <Row className="p-3" style={{ flexWrap: "nowrap" }}>
-          <h1 md="auto" style={{ color: "#80AFE8", width: "auto" }}>
+          <h1
+            md="auto"
+            style={{
+              color: "#80AFE8",
+              width: "auto",
+              fontFamily: "Lucida Sans",
+            }}
+          >
             {name}
           </h1>
-          <h1 className="text-white">Dasboard - Personal</h1>
+          <h1 className="text-white" style={{ fontFamily: "Lucida Sans" }}>
+            Dasboard - Personal
+          </h1>
         </Row>
         <Row>
           <Col md={4} style={{ paddingLeft: 25 }}>
@@ -154,6 +124,7 @@ function PersonalDB() {
                         paddingBottom: 5,
                         alignItems: "center",
                         borderRadius: "18px",
+                        borderWidth: 1.5,
                       }}
                       variant="outlined"
                       color="neutral"
@@ -166,7 +137,10 @@ function PersonalDB() {
                       >
                         <Typography
                           level="title-sm"
-                          style={{ color: "#ffffff" }}
+                          style={{
+                            color: "#ffffff",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           My Progress
                         </Typography>
@@ -180,6 +154,7 @@ function PersonalDB() {
                         display: "flex",
                         top: -20,
                         borderRadius: "20px",
+                        borderWidth: 1.5,
                       }}
                       variant="outlined"
                       color="neutral"
@@ -189,7 +164,7 @@ function PersonalDB() {
                           direction="row"
                           sx={{ justifyContent: "space-evenly" }}
                         >
-                          <Grid item width={1 / 3} style={{padding:9}}>
+                          <Grid item width={1 / 3} style={{ padding: 7 }}>
                             <Stack gap={1}>
                               <Card
                                 sx={{
@@ -206,6 +181,7 @@ function PersonalDB() {
                                     color: "#ffffff",
                                     display: "flex",
                                     justifyContent: "center",
+                                    fontFamily: "Lucida Sans",
                                   }}
                                 >
                                   My Streak
@@ -215,8 +191,15 @@ function PersonalDB() {
                                 variant="caption"
                                 style={{
                                   color: "#ffffff",
-                                  padding: 10,
+                                  padding: 7,
                                   textAlign: "justify",
+                                  fontFamily: "Lucida Sans",
+                                }}
+                                sx={{
+                                  display: {
+                                    xs: "none",
+                                    xl: "block",
+                                  },
                                 }}
                               >
                                 Total consecutive days that user has completed
@@ -227,7 +210,6 @@ function PersonalDB() {
                                   borderColor: "#AEC5E3",
                                   borderWidth: 3,
                                   borderRadius: 20,
-                                  width: "90%",
                                 }}
                               >
                                 <Typography
@@ -236,6 +218,7 @@ function PersonalDB() {
                                     color: "#6AE5E8",
                                     display: "flex",
                                     justifyContent: "center",
+                                    fontFamily: "Lucida Sans",
                                   }}
                                 >
                                   7
@@ -249,6 +232,7 @@ function PersonalDB() {
                                     position: "relative",
                                     top: -14,
                                     marginBottom: -2,
+                                    fontFamily: "Lucida Sans",
                                   }}
                                 >
                                   Days
@@ -256,7 +240,7 @@ function PersonalDB() {
                               </Card>
                             </Stack>
                           </Grid>
-                          <Grid item width={1 / 3} style={{padding:9}}>
+                          <Grid item width={1 / 3} style={{ padding: 7 }}>
                             <Stack gap={1}>
                               <Card
                                 sx={{
@@ -273,6 +257,7 @@ function PersonalDB() {
                                     color: "#ffffff",
                                     display: "flex",
                                     justifyContent: "center",
+                                    fontFamily: "Lucida Sans",
                                   }}
                                 >
                                   Daily Completion
@@ -288,10 +273,20 @@ function PersonalDB() {
                                   }}
                                 >
                                   <Stack direction="column">
-                                    <Typography sx={{ color: "#ffffff" }}>
+                                    <Typography
+                                      sx={{
+                                        color: "#ffffff",
+                                        fontFamily: "Lucida Sans",
+                                      }}
+                                    >
                                       12
                                     </Typography>
-                                    <Typography sx={{ color: "#ffffff" }}>
+                                    <Typography
+                                      sx={{
+                                        color: "#ffffff",
+                                        fontFamily: "Lucida Sans",
+                                      }}
+                                    >
                                       Days
                                     </Typography>
                                   </Stack>
@@ -299,7 +294,17 @@ function PersonalDB() {
                                 <Stack direction="column">
                                   <Typography
                                     variant="subtitle"
-                                    style={{ color: "#ffffff", padding: 10 }}
+                                    style={{
+                                      color: "#ffffff",
+                                      padding: 7,
+                                      fontFamily: "Lucida Sans",
+                                    }}
+                                    sx={{
+                                      display: {
+                                        xs: "none",
+                                        xl: "block",
+                                      },
+                                    }}
                                   >
                                     Total Completed
                                   </Typography>
@@ -309,6 +314,13 @@ function PersonalDB() {
                                       color: "#ffffff",
                                       padding: 10,
                                       textAlign: "justify",
+                                      fontFamily: "Lucida Sans",
+                                    }}
+                                    sx={{
+                                      display: {
+                                        xs: "none",
+                                        xl: "block",
+                                      },
                                     }}
                                   >
                                     Total amount of days that user has completed
@@ -325,10 +337,20 @@ function PersonalDB() {
                                   }}
                                 >
                                   <Stack direction="column">
-                                    <Typography sx={{ color: "#ffffff" }}>
+                                    <Typography
+                                      sx={{
+                                        color: "#ffffff",
+                                        fontFamily: "Lucida Sans",
+                                      }}
+                                    >
                                       12
                                     </Typography>
-                                    <Typography sx={{ color: "#ffffff" }}>
+                                    <Typography
+                                      sx={{
+                                        color: "#ffffff",
+                                        fontFamily: "Lucida Sans",
+                                      }}
+                                    >
                                       Days
                                     </Typography>
                                   </Stack>
@@ -336,7 +358,17 @@ function PersonalDB() {
                                 <Stack direction="column">
                                   <Typography
                                     variant="subtitle"
-                                    style={{ color: "#ffffff", padding: 10 }}
+                                    style={{
+                                      color: "#ffffff",
+                                      padding: 7,
+                                      fontFamily: "Lucida Sans",
+                                    }}
+                                    sx={{
+                                      display: {
+                                        xs: "none",
+                                        xl: "block",
+                                      },
+                                    }}
                                   >
                                     Daily Missed
                                   </Typography>
@@ -344,8 +376,15 @@ function PersonalDB() {
                                     variant="caption"
                                     style={{
                                       color: "#ffffff",
-                                      padding: 10,
+                                      padding: 7,
                                       textAlign: "justify",
+                                      fontFamily: "Lucida Sans",
+                                    }}
+                                    sx={{
+                                      display: {
+                                        xs: "none",
+                                        xl: "block",
+                                      },
                                     }}
                                   >
                                     Total amount of days that user has missed
@@ -354,13 +393,16 @@ function PersonalDB() {
                               </Stack>
                             </Stack>
                           </Grid>
-                          <Grid item width={1 / 3} style={{padding:9}}>
-                            <Stack gap={1}>
+                          <Grid item width={1 / 3} style={{ padding: 7 }}>
+                            <Stack
+                              gap={1}
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
                               <Card
                                 sx={{
                                   bgcolor: "#12253D",
                                   borderRadius: 25,
-                                  width: "auto",
+                                  width: "100%",
                                 }}
                                 size="sm"
                                 variant="plain"
@@ -371,6 +413,7 @@ function PersonalDB() {
                                     color: "#ffffff",
                                     display: "flex",
                                     justifyContent: "center",
+                                    fontFamily: "Lucida Sans",
                                   }}
                                 >
                                   Days Remaining
@@ -382,42 +425,56 @@ function PersonalDB() {
                                   color: "#ffffff",
                                   padding: 10,
                                   textAlign: "justify",
+                                  fontFamily: "Lucida Sans",
                                 }}
-                              >
-                                Total consecutive days that user has completed
-                              </Typography>
-                              <Card
                                 sx={{
-                                  bgcolor: "#12253D",
-                                  borderColor: "#AEC5E3",
-                                  borderWidth: 3,
-                                  borderRadius: 20,
-                                  width: "90%",
+                                  display: {
+                                    xs: "none",
+                                    xl: "block",
+                                  },
                                 }}
                               >
-                                <Typography
-                                  variant="h2"
-                                  sx={{
-                                    color: "#6AE5E8",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                  }}
-                                >
-                                  7
-                                </Typography>
-                                <Typography
-                                  variant="subtitle1"
-                                  sx={{
-                                    color: "#ABC7DA",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    position: "relative",
-                                    top: -14,
-                                    marginBottom: -2,
-                                  }}
-                                >
-                                  Days
-                                </Typography>
+                                Total number of days remaining until deadline
+                              </Typography>
+                              <CircularProgress
+                                variant="determinate"
+                                value={56}
+                                size={140}
+                                thickness={7}
+                                style={{ zIndex: 1 }}
+                              />
+                              <Card
+                                variant="plain"
+                                sx={{
+                                  bgcolor: "#022D66",
+                                  position: "absolute",
+                                  bottom: 70,
+                                }}
+                              >
+                                <Stack>
+                                  <Typography
+                                    variant="h4"
+                                    style={{
+                                      color: "#ffffff",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      fontFamily: "Lucida Sans",
+                                    }}
+                                  >
+                                    56
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    style={{
+                                      color: "#ffffff",
+                                      padding: 10,
+                                      textAlign: "justify",
+                                      fontFamily: "Lucida Sans",
+                                    }}
+                                  >
+                                    Days
+                                  </Typography>
+                                </Stack>
                               </Card>
                             </Stack>
                           </Grid>
@@ -426,10 +483,6 @@ function PersonalDB() {
                     </Card>
                   </div>
                 </Col>
-                <Col md={5} lg={3}></Col>
-                {
-                  // insert Task Tracking Card Here
-                }
               </Stack>
             </div>
 
@@ -448,6 +501,7 @@ function PersonalDB() {
                         paddingBottom: 5,
                         alignItems: "center",
                         borderRadius: "18px",
+                        borderWidth: 1.5,
                       }}
                       variant="outlined"
                       color="neutral"
@@ -458,6 +512,7 @@ function PersonalDB() {
                           color: "#ffffff",
                           position: "absolute",
                           top: 10,
+                          fontFamily: "Lucida Sans",
                         }}
                       >
                         Task Tracking
@@ -471,6 +526,7 @@ function PersonalDB() {
                         display: "flex",
                         top: -20,
                         borderRadius: "30px",
+                        borderWidth: 1.5,
                       }}
                       variant="outlined"
                       color="neutral"
@@ -480,6 +536,7 @@ function PersonalDB() {
                           color: "white",
                           padding: "10px",
                           textAlign: "justify",
+                          fontFamily: "Lucida Sans",
                         }}
                         variant="caption"
                       >
@@ -489,9 +546,7 @@ function PersonalDB() {
                         completion and incompletion of individual tasks on a
                         daily basis.
                       </Typography>
-                      <div
-                        style={{ marginTrim: 40}}
-                      >
+                      <div style={{ marginTrim: 40 }}>
                         <div
                           style={{
                             paddingBottom: 15,
@@ -524,7 +579,10 @@ function PersonalDB() {
                               >
                                 <Typography
                                   level="title-sm"
-                                  style={{ color: "#ffffff" }}
+                                  style={{
+                                    color: "#ffffff",
+                                    fontFamily: "Lucida Sans",
+                                  }}
                                 >
                                   Task Name
                                 </Typography>
@@ -555,6 +613,7 @@ function PersonalDB() {
                                       color: "#ffffff",
                                       position: "relative",
                                       top: -6,
+                                      fontFamily: "Lucida Sans",
                                     }}
                                   >
                                     Previous 7 Days
@@ -568,6 +627,7 @@ function PersonalDB() {
                                       color: "#ffffff",
                                       position: "relative",
                                       top: -6,
+                                      fontFamily: "Lucida Sans",
                                     }}
                                   >
                                     Total Days
@@ -594,7 +654,10 @@ function PersonalDB() {
                               >
                                 <Typography
                                   level="title-sm"
-                                  style={{ color: "#ffffff" }}
+                                  style={{
+                                    color: "#ffffff",
+                                    fontFamily: "Lucida Sans",
+                                  }}
                                 >
                                   Track Progress
                                 </Typography>
@@ -609,7 +672,7 @@ function PersonalDB() {
                             scrollbarColor: "#415F84 #0A2344",
                             marginRight: 10,
                             position: "relative",
-                            top:-40
+                            top: -40,
                           }}
                         >
                           <Card
@@ -625,48 +688,7 @@ function PersonalDB() {
                             }}
                             variant="outlined"
                           >
-                            <Card
-                              sx={{
-                                bgcolor: "#022D66",
-                                width: "100%",
-                                borderRadius: "20px",
-                              }}
-                              variant="soft"
-                            >
-                              <Grid
-                                container
-                                direction="row"
-                                style={{
-                                  alignItems: "center",
-                                  display: "flex",
-                                  justifyContent: "space-around",
-                                }}
-                              >
-                                <Grid item style={{ width: "23%", paddingRight:5 }}>
-                                  <Card
-                                    size="lg"
-                                    sx={{
-                                      width: "auto",
-                                      backgroundColor:
-                                        "rgba(181, 181, 181, 0.45)",
-                                      borderRadius: "20px",
-                                      // paddingTop:5,
-                                      // paddingBottom: 5,
-                                      bgcolor: "#022D66"
-                                    }}
-                                    variant="outlined"
-                                  >
-                                    <Typography variant="body1" color="white" textAlign="center">Jog in the park</Typography>
-                                  </Card>
-                                </Grid>
-                                <Grid item style={{width:"55%"}}>
-                                  <ProgressCharts/>
-                                </Grid>
-                                <Grid item style={{width: "22%"}}>
-                                  <TrackProgressCard/>
-                                </Grid>
-                              </Grid>
-                            </Card>
+                            <TaskTracking tasks={dailyTasks} />
                           </Card>
                         </div>
                       </div>

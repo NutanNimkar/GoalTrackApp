@@ -18,13 +18,17 @@ const GroupsPage = () => {
     <div>
       <Grid container spacing={2}>
         <Grid
-          size={{ xs: 4, lg: 3, xl:2 }}
+          item
+          xs={"100%"}
+          md={"100%"}
+          lg={"100%"}
+          xl={"100%"}
           className="vh-100"
           style={{ position: "sticky", top: 0 }}
         >
           <VerticalNavigation />
         </Grid>
-        <Grid size={{ xs: 8, lg: 9, xl:10 }}>
+        <Grid size={{ xs: "grow", lg: "grow" }} style={{ overflowX: "hidden" }}>
           <Grid>
             <Row
               style={{
@@ -33,9 +37,14 @@ const GroupsPage = () => {
                 paddingLeft: "1%",
               }}
             >
-              <Typography sx={{ color: "#83AFE8", fontFamily: "Lucida Sans" }} level="h1">Groups</Typography>
+              <Typography
+                sx={{ color: "#83AFE8", fontFamily: "Lucida Sans" }}
+                level="h1"
+              >
+                Groups
+              </Typography>
             </Row>
-            <Grid> 
+            <Grid>
               <Stack
                 direction="horizontal"
                 gap={5}
@@ -48,7 +57,7 @@ const GroupsPage = () => {
                     display: "flex",
                     width: "65%",
                     borderRadius: 30,
-                    borderColor: "#12253D"
+                    borderColor: "#12253D",
                   }}
                 >
                   <Typography
@@ -56,7 +65,7 @@ const GroupsPage = () => {
                       textAlign: "center",
                       paddingBottom: 3,
                       color: "#ffffff",
-                      fontFamily: "Lucida Sans"
+                      fontFamily: "Lucida Sans",
                     }}
                     level="h1"
                   >
@@ -66,7 +75,7 @@ const GroupsPage = () => {
                     <Card
                       sx={{
                         bgcolor: "#0E1D30",
-                        borderRadius: 30
+                        borderRadius: 30,
                       }}
                       variant="solid"
                     >
@@ -84,14 +93,14 @@ const GroupsPage = () => {
                       display: "flex",
                       position: "fixed",
                       borderRadius: 30,
-                      borderColor: "#022D66"
+                      borderColor: "#022D66",
                     }}
                   >
                     <Typography
                       sx={{
                         color: "#ffffff",
                         textAlign: "center",
-                        fontFamily: "Lucida Sans"
+                        fontFamily: "Lucida Sans",
                       }}
                       level="h3"
                     >
@@ -104,7 +113,7 @@ const GroupsPage = () => {
                             alignContent: "center",
                             bgcolor: "#415F84",
                             color: "#ffffff",
-                            borderRadius: 30
+                            borderRadius: 30,
                           }}
                         >
                           <AiOutlineUsergroupAdd
@@ -124,14 +133,14 @@ const GroupsPage = () => {
                       position: "fixed",
                       bottom: "10%",
                       borderRadius: 30,
-                      borderColor: "#022D66"
+                      borderColor: "#022D66",
                     }}
                   >
                     <Typography
                       sx={{
                         color: "#ffffff",
                         textAlign: "center",
-                        fontFamily: "Lucida Sans"
+                        fontFamily: "Lucida Sans",
                       }}
                       level="h3"
                     >
@@ -144,7 +153,7 @@ const GroupsPage = () => {
                             alignContent: "center",
                             bgcolor: "#415F84",
                             color: "#ffffff",
-                            borderRadius: 30
+                            borderRadius: 30,
                           }}
                         >
                           <FaRegHandshake

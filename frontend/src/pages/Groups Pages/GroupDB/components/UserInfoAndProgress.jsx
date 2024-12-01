@@ -14,18 +14,21 @@ function UserInfoAndProgress({ members }) {
           sx={{
             bgcolor: index % 2 === 0 ? "#022D66" : "#0B3A79",
             width: "100%",
-            borderRadius: "20px"
+            borderRadius: "20px",
           }}
           variant="soft"
         >
-          <Grid container style={{ alignItems: "center", justifyContent: "space-between" }}>
-            <Grid item style={{ width: "25%", }}>
+          <Grid
+            container
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Grid item style={{ width: "25%" }}>
               <Card
                 size="sm"
                 sx={{
                   width: "auto",
                   backgroundColor: "rgba(181, 181, 181, 0.45)",
-                  borderRadius: "20px"
+                  borderRadius: "20px",
                 }}
                 variant="soft"
               >
@@ -44,6 +47,7 @@ function UserInfoAndProgress({ members }) {
                       level="title-lg"
                       sx={{
                         color: "#ffffff",
+                        fontFamily: "Lucida Sans",
                       }}
                     >
                       {member}
@@ -52,7 +56,10 @@ function UserInfoAndProgress({ members }) {
                       <Typography
                         level="body-sm"
                         sx={{ color: "#ffffff" }}
-                        style={{ alignSelf: "center" }}
+                        style={{
+                          alignSelf: "center",
+                          fontFamily: "Lucida Sans",
+                        }}
                       >
                         Something about me
                       </Typography>
@@ -65,7 +72,7 @@ function UserInfoAndProgress({ members }) {
             <Grid container style={{ width: "35%", paddingLeft: "1rem" }}>
               <ProgressCharts index={index} />
             </Grid>
-            <Grid item style={{ width: "17%", }}>
+            <Grid item style={{ width: "17%" }}>
               <TrackProgressCard />
             </Grid>
             <Grid
@@ -82,7 +89,7 @@ function UserInfoAndProgress({ members }) {
                   bgcolor: "#4F729D",
                   borderRadius: 30,
                   width: "100%",
-                  borderWidth: 3
+                  borderWidth: 3,
                 }}
                 size="md"
               >

@@ -1,26 +1,43 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Row, Col } from "react-bootstrap";
 import VerticalNavigation from "../../../components/VerticalNavigation.js";
 import { useLocation } from "react-router-dom";
-import { Card, Typography, Stack, CardContent } from "@mui/joy";
+import { Card, Typography, Stack, CardContent, Box } from "@mui/joy";
 import { Grid } from "@mui/system";
 import GroupProgress from "./components/GroupProgress.jsx";
+import { useNavigation } from "../../../Context/NavigationContext";
 
 function GroupDBPage() {
   // const { handleAddTask } = useContext(SharedStateContext);
   const location = useLocation();
   const { name, punishment, description, members } = location.state;
+  const { closeMenu } = useNavigation();
+
+  console.log(closeMenu);
   return (
-    <Grid container spacing={1}>
+    <Grid
+      container
+      spacing={1}
+      style={{ display: "flex", overflow: "hidden", alignItems: "stretch" }}
+    >
+      {
+        // Vertical Navigation Container
+      }
       <Grid
-        size={{ xs: 4, xl: 2, lg: 3 }}
+        item
+        xs={"100%"}
+        md={"100%"}
+        lg={"100%"}
+        xl={"100%"}
         className="vh-100"
-        style={{ position: "sticky", top: 0 }}
+        style={{ display:"flex", position: "sticky", top: 0 }}
       >
         <VerticalNavigation />
       </Grid>
-      <Grid size={{ xs: 8, lg: 9 }}>
-        <Grid>
+      <Grid 
+        size={{ xs: "grow", lg:"grow"}}
+      >
+        <Grid item>
           <Row className="p-3" style={{ flexWrap: "nowrap" }}>
             <h1 md="auto" style={{ color: "#80AFE8", width: "auto" }}>
               {name}
@@ -47,7 +64,10 @@ function GroupDBPage() {
                     top: 10,
                   }}
                 >
-                  <Typography level="title-sm" style={{ color: "#ffffff" }}>
+                  <Typography
+                    level="title-sm"
+                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
+                  >
                     Group Contract
                   </Typography>
                 </div>
@@ -75,6 +95,7 @@ function GroupDBPage() {
                         color: "#ffffff",
                         width: "50%",
                         padding: "2%",
+                        fontFamily: "Lucida Sans",
                       }}
                     >
                       The Group Contract is unanimous task to be performed at
@@ -95,12 +116,16 @@ function GroupDBPage() {
                         style={{
                           display: "flex",
                           color: "#ffffff",
+                          fontFamily: "Lucida Sans",
                         }}
                       >
                         Contract
                       </Typography>
                       <CardContent>
-                        <Typography sx={{ color: "#ffffff" }} level="h3">
+                        <Typography
+                          sx={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
+                          level="h3"
+                        >
                           {punishment}
                         </Typography>
                       </CardContent>
@@ -121,6 +146,7 @@ function GroupDBPage() {
                           display: "flex",
                           color: "#ffffff",
                           alignItems: "center",
+                          fontFamily: "Lucida Sans",
                         }}
                       >
                         Deadline
@@ -132,6 +158,7 @@ function GroupDBPage() {
                             display: "flex",
                             color: "#B6CCE7",
                             alignItems: "center",
+                            fontFamily: "Lucida Sans",
                           }}
                         >
                           May 12, 2024
@@ -176,13 +203,19 @@ function GroupDBPage() {
                       >
                         <Typography
                           sx={{ color: "#ffffff" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           Most Days Completed
                         </Typography>
                         <Typography
                           sx={{ color: "#CC8C46" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                           level="title-lg"
                         >
                           Group Member 1
@@ -190,13 +223,19 @@ function GroupDBPage() {
                         <Typography
                           level="h1"
                           sx={{ color: "#12B806" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           56
                         </Typography>
                         <Typography
                           sx={{ color: "#A2C8E9" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                           level="title-lg"
                         >
                           Days
@@ -211,13 +250,19 @@ function GroupDBPage() {
                       >
                         <Typography
                           sx={{ color: "#ffffff" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           Most Days Missed
                         </Typography>
                         <Typography
                           sx={{ color: "#CC8C46" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                           level="title-lg"
                         >
                           Group Member 1
@@ -225,13 +270,19 @@ function GroupDBPage() {
                         <Typography
                           level="h1"
                           sx={{ color: "#FF0808" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           6
                         </Typography>
                         <Typography
                           sx={{ color: "#A2C8E9" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                           level="title-lg"
                         >
                           Days
@@ -246,13 +297,19 @@ function GroupDBPage() {
                       >
                         <Typography
                           sx={{ color: "#ffffff" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           Top Member Streak
                         </Typography>
                         <Typography
                           sx={{ color: "#CC8C46" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                           level="title-lg"
                         >
                           Group Member 1
@@ -260,13 +317,19 @@ function GroupDBPage() {
                         <Typography
                           level="h1"
                           sx={{ color: "#A2C8E9" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                         >
                           56
                         </Typography>
                         <Typography
                           sx={{ color: "#A2C8E9" }}
-                          style={{ alignSelf: "center" }}
+                          style={{
+                            alignSelf: "center",
+                            fontFamily: "Lucida Sans",
+                          }}
                           level="title-lg"
                         >
                           Days

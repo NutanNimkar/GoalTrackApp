@@ -55,7 +55,7 @@ export function generateChartOptions() {
     plugins: {
       legend: {
         labels: {
-          color: 'white'
+          color: 'white',
         },
         align: 'start',
       },
