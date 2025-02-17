@@ -552,7 +552,7 @@ function PersonalDB() {
                             paddingBottom: 15,
                             position: "relative",
                             paddingLeft: 2,
-                            paddingRight: 13,
+                            paddingRight: 10,
                           }}
                         >
                           <Stack
@@ -666,14 +666,7 @@ function PersonalDB() {
                           </Stack>
                         </div>
                         <div
-                          style={{
-                            maxHeight: "42.5vh",
-                            overflowY: "auto",
-                            scrollbarColor: "#415F84 #0A2344",
-                            marginRight: 10,
-                            position: "relative",
-                            top: -40,
-                          }}
+                          
                         >
                           <Card
                             sx={{
@@ -683,10 +676,18 @@ function PersonalDB() {
                               justifyContent: "space-around",
                               top: 0,
                               borderColor: "#022D66",
-                              borderWidth: 2,
+                              borderWidth: 5,
                               padding: 1,
                             }}
                             variant="outlined"
+                            style={{
+                              maxHeight: "42.5vh",
+                              overflowY: "auto",
+                              scrollbarColor: "#415F84 #0A2344",
+                              // marginRight: 10,
+                              position: "relative",
+                              top: -40,
+                            }}
                           >
                             <TaskTracking tasks={dailyTasks} />
                           </Card>

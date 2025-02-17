@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import VerticalNavigation from "../../../components/VerticalNavigation.js";
 import { useLocation } from "react-router-dom";
-import { Card, Typography, Stack, CardContent, Box } from "@mui/joy";
+import { Card, Typography, Stack, CardContent, Button } from "@mui/joy";
 import { Grid } from "@mui/system";
 import GroupProgress from "./components/GroupProgress.jsx";
 import { useNavigation } from "../../../Context/NavigationContext";
+import ContractModal from "../../../components/DashboardComponents/ContractModal.js";
+import { GroupsPageContext } from "../../../Context/GroupsPageContext.js";
 
 function GroupDBPage() {
   // const { handleAddTask } = useContext(SharedStateContext);
   const location = useLocation();
-  const { name, punishment, description, members } = location.state;
+  const { name, punishment, description, members, groupID } = location.state;
   const { closeMenu } = useNavigation();
+  const {showPunishmentModal, setShowPunishmentModal, handleUpdatePunishmentModal} = useContext(GroupsPageContext);
 
-  console.log(closeMenu);
   return (
     <Grid
       container
       spacing={1}
-      style={{ display: "flex", overflow: "hidden", alignItems: "stretch" }}
     >
       {
         // Vertical Navigation Container
@@ -30,19 +31,23 @@ function GroupDBPage() {
         lg={"100%"}
         xl={"100%"}
         className="vh-100"
-        style={{ display:"flex", position: "sticky", top: 0 }}
+        style={{ position: "sticky", top: 0 }}
       >
         <VerticalNavigation />
       </Grid>
-      <Grid 
-        size={{ xs: "grow", lg:"grow"}}
-      >
+      <Grid size={{ xs: "grow", lg: "grow" }} style={{ overflowX: "hidden" }}>
         <Grid item>
-          <Row className="p-3" style={{ flexWrap: "nowrap" }}>
-            <h1 md="auto" style={{ color: "#80AFE8", width: "auto" }}>
+          <Row className="p-4 flex-nowrap">
+            <Typography
+              md="auto"
+              level="h1"
+              style={{ color: "#80AFE8", width: "auto" }}
+            >
               {name}
-            </h1>
-            <h1 className="text-white">DashBoard - Group</h1>
+            </Typography>
+            <Typography level="h1" className="text-white">
+              DashBoard - Group
+            </Typography>
           </Row>
           <Grid size={{ xs: 8, lg: 9 }}>
             <div style={{ paddingLeft: 50 }}>
@@ -111,16 +116,27 @@ function GroupDBPage() {
                         borderRadius: "20px",
                       }}
                     >
-                      <Typography
-                        level="title-lg"
-                        style={{
-                          display: "flex",
-                          color: "#ffffff",
-                          fontFamily: "Lucida Sans",
-                        }}
-                      >
-                        Contract
-                      </Typography>
+                      <Stack direction="horizontal" className="flex justify-between">
+                        <Typography
+                          level="title-lg"
+                          style={{
+                            display: "flex",
+                            color: "#ffffff",
+                            fontFamily: "Lucida Sans",
+                          }}
+                        >
+                          Contract
+                        </Typography>
+                        <Button
+                          className="text-cyan"
+                          size="xs"
+                          variant="plain"
+                          onClick={handleUpdatePunishmentModal}
+                        >
+                          Change Contract
+                        </Button>
+                      </Stack>
+
                       <CardContent>
                         <Typography
                           sx={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
@@ -343,6 +359,13 @@ function GroupDBPage() {
           </Row>
         </Grid>
       </Grid>
+
+      <ContractModal
+        show={showPunishmentModal}
+        handleClose={() => setShowPunishmentModal(false)}
+        punishment={punishment}
+        groupID={groupID}
+      />
     </Grid>
   );
 }
