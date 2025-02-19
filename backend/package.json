@@ -20,7 +20,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
-    "mongoose": "^8.3.4",
+    "mongoose": "^8.10.1",
     "multer-gridfs-storage": "github:meme8383/multer-gridfs-storage#f82252c",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.14",
