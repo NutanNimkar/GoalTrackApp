@@ -37,7 +37,15 @@ function GroupDBPage() {
       </Grid>
       <Grid size={{ xs: "grow", lg: "grow" }} style={{ overflowX: "hidden" }}>
         <Grid item>
-          <Row className="p-4 flex-nowrap">
+          <div className="p-12">
+            <h1 className="font-Archivo text-yellow p-12">
+              {name}
+            </h1>
+            <h1>
+              Dashboard - Group
+            </h1>
+          </div>
+          {/* <Row className="p-4 flex-nowrap">
             <Typography
               md="auto"
               level="h1"
@@ -48,7 +56,7 @@ function GroupDBPage() {
             <Typography level="h1" className="text-white">
               DashBoard - Group
             </Typography>
-          </Row>
+          </Row> */}
           <Grid size={{ xs: 8, lg: 9 }}>
             <div style={{ paddingLeft: 50 }}>
               <Card

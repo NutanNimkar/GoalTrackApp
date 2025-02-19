@@ -14,6 +14,7 @@ import ResetPassword from "./components/AuthComponents/ResetPassword";
 import { GroupsPageProvider } from "./Context/GroupsPageContext";
 import PersonalDB from "./pages/Groups Pages/PersonalDB/PersonalDB";
 import { NavigationProvider } from "./Context/NavigationContext";
+import './index.css'
 
 function App() {
   const { user } = useAuthContext();

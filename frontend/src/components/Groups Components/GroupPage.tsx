@@ -1,5 +1,5 @@
 const GroupPage = () => (
-    <section className="text-[]">
+    <section className="font-Archivo text-white">
         Dashboard
     </section>
 );
