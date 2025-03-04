@@ -347,6 +347,7 @@ flex-direction: column;
   .sent-request-list-item {
     flex-direction: column;
     text-align: center;
+    color: #0056b3;
   }
 
   .friend-request-accept-button,

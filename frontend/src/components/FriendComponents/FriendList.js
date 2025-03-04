@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import createAxiosInstance from '../../axiosInstance';
 import { useAuthContext } from "../../hooks/useAuthContext"
 import './FriendList.css';
+import { useFriendRequests } from './FriendRequestContext';
 
 const FriendsList = () => {
-  const [friends, setFriends] = useState([]);
+  const {friends, setFriends} = useFriendRequests();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { user: currentUser } = useAuthContext();
@@ -30,16 +31,15 @@ const FriendsList = () => {
     fetchFriends();
   }, [userId]);
 
-  const deleteFriend = async (friendId) => {
+  const deleteFriend = async (friendName) => {
     if (window.confirm('Are you sure you want to delete this friend?')) {
       setLoading(true);
       setError('');
       try {
-        await axiosInstance.delete(`/api/friend/remove/${userId}`, {
-          friendID: friendId}
-        );
+        console.log("requesting deletion:", friendName)
+        await axiosInstance.delete(`/api/friends/remove/${userId}/${friendName}`);
         // Remove the friend from the local state
-        setFriends(friends.filter(friend => friend.id !== friendId));
+        setFriends(friends?.filter(friend => friend !== friendName));
       } catch (err) {
         setError('Error deleting friend');
       }
@@ -52,15 +52,15 @@ const FriendsList = () => {
   return (
     <div className='friends-list-container'>
       <h1 className='friends-list-title'>List of Friends</h1>
-      {friends.length === 0 ? (
+      {friends?.length === 0 ? (
         <p className='friends-list-alert'>No friends found.</p>
       ) : (
       <div className='friends-list-listcontainer'>
        <ul className='friends-list-ul'>
-          {friends.map((friend) => (
-            <li className='friends-list-item' key={friend.id}>
-              {friend.name}
-              <button className='friends-list-delete-button'onClick={() => deleteFriend(friend.id)}>Delete</button>
+          {friends?.map((friend) => (
+            <li className='friends-list-item' key={friend}>
+              {friend ? friend : "undefined"}
+              <button className='friends-list-delete-button'onClick={() => deleteFriend(friend)}>Delete</button>
             </li>
           ))}
         </ul>
