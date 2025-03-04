@@ -14,57 +14,67 @@ import ResetPassword from "./components/AuthComponents/ResetPassword";
 import { GroupsPageProvider } from "./Context/GroupsPageContext";
 import PersonalDB from "./pages/Groups Pages/PersonalDB/PersonalDB";
 import { NavigationProvider } from "./Context/NavigationContext";
-import './index.css'
+import "./index.css";
+import { FriendRequestsProvider } from "./components/FriendComponents/FriendRequestContext";
+import FriendPage from "./pages/Friends";
 
 function App() {
   const { user } = useAuthContext();
 
   return (
     <div className="App">
-      <NavigationProvider>
-        <SharedStateProvider>
-          <GroupsPageProvider>
-            <BrowserRouter>
-              <div className="pages">
-                <Routes>
-                  <Route path="/" element={user ? <Home /> : <Login />} />
-                  <Route
-                    path="/task"
-                    element={user ? <TaskDetails /> : <Login />}
-                  />
-                  <Route
-                    path="/groups"
-                    element={user ? <GroupsPage /> : <Login />}
-                  />
-                  <Route
-                    path="/signup"
-                    element={!user ? <UserSignUp /> : <Navigate to="/" />}
-                  />
-                  <Route
-                    path="/login"
-                    element={!user ? <Login /> : <Navigate to="/" />}
-                  />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route
-                    path="/reset-password/:token"
-                    element={<ResetPassword />}
-                  />
-                  <Route path="*" element={<Navigate to="/" />} />{" "}
-                  {/* Catch-all route */}
-                  <Route
-                    path="/groups/:id/groupdb"
-                    element={user ? <GroupDBPage /> : <Login />}
-                  />
-                  <Route
-                    path="/groups/:id/personaldb"
-                    element={user ? <PersonalDB /> : <Login />}
-                  />
-                </Routes>
-              </div>
-            </BrowserRouter>
-          </GroupsPageProvider>
-        </SharedStateProvider>
-      </NavigationProvider>
+      <FriendRequestsProvider>
+        <NavigationProvider>
+          <SharedStateProvider>
+            <GroupsPageProvider>
+              <BrowserRouter>
+                <div className="pages">
+                  <Routes>
+                    <Route path="/" element={user ? <Home /> : <Login />} />
+                    <Route
+                      path="/task"
+                      element={user ? <TaskDetails /> : <Login />}
+                    />
+                    <Route
+                      path="/groups"
+                      element={user ? <GroupsPage /> : <Login />}
+                    />
+                    <Route
+                      path="/signup"
+                      element={!user ? <UserSignUp /> : <Navigate to="/" />}
+                    />
+                    <Route
+                      path="/login"
+                      element={!user ? <Login /> : <Navigate to="/" />}
+                    />
+                    <Route
+                      path="/forgot-password"
+                      element={<ForgotPassword />}
+                    />
+                    <Route
+                      path="/reset-password/:token"
+                      element={<ResetPassword />}
+                    />
+                    <Route path="*" element={<Navigate to="/" />} />{" "}
+                    {/* Catch-all route */}
+                    <Route
+                      path="/groups/:id/groupdb"
+                      element={user ? <GroupDBPage /> : <Login />}
+                    />
+                    <Route
+                      path="/groups/:id/personaldb"
+                      element={user ? <PersonalDB /> : <Login />}
+                    />
+                    <Route path="/friends"
+                    element={user ? <FriendPage/> : <Login/>}
+                    />
+                  </Routes>
+                </div>
+              </BrowserRouter>
+            </GroupsPageProvider>
+          </SharedStateProvider>
+        </NavigationProvider>
+      </FriendRequestsProvider>
     </div>
   );
 }
