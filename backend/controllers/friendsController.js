@@ -1,21 +1,5 @@
 const User = require("../models/User");
-const mongoose = require("mongoose");
-
-// Check if ID is valid
-const checkIdIsValid = (id, res) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "Invalid ID" });
-  }
-  return true;
-};
-
-// Check if user is authorized
-const checkAuthorization = (req, userId) => {
-  if (req.user.id !== userId.toString()) {
-    return false;
-  }
-  return true;
-};
+const { checkIdIsValid, checkAuthorization } = require("../middleware/validators");
 
 // Get all friends the user currently has
 const friendsLookup = async (req, res) => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import createAxiosInstance from "../axiosInstance";
 
@@ -7,6 +7,7 @@ const SharedStateContext = createContext();
 const SharedStateProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [group, setGroup] = useState(null);
+  const [groupId, setGroupId] = useState(null);
   const [dailyTasks, setDailyTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
@@ -15,21 +16,29 @@ const SharedStateProvider = ({ children }) => {
   const [selectedTask, setSelectedTask] = useState("");
   const { user } = useAuthContext();
   const userId = user?.id;
-  const groupId = "6656350aa68a902e3fdf9675";
 
   const axiosInstance = createAxiosInstance(user?.token);
+
   useEffect(() => {
     if (user) {
       fetchGroupAndTasks();
     }
   }, [user]);
 
-  const fetchGroupAndTasks = () => {
+  const fetchGroupAndTasks = async () => {
     if (!user) return;
-    axiosInstance
-      .get(`/api/groups/${groupId}/members`)
-      .then((response) => setGroup(response.data))
-      .catch((error) => console.error("Error fetching group:", error));
+
+    try {
+      const groupsResponse = await axiosInstance.get(`/api/users/${userId}/groups`);
+      const firstGroup = groupsResponse.data?.[0];
+      if (firstGroup) {
+        setGroupId(firstGroup._id);
+        const membersResponse = await axiosInstance.get(`/api/groups/${firstGroup._id}/members`);
+        setGroup(membersResponse.data);
+      }
+    } catch (error) {
+      console.error("Error fetching group:", error);
+    }
 
     axiosInstance
       .get("/api/users")
@@ -38,7 +47,7 @@ const SharedStateProvider = ({ children }) => {
 
     axiosInstance
       .get(`/api/users/${userId}/tasks`)
-      .then((response) => setDailyTasks(response.data.tasks))
+      .then((response) => setDailyTasks(response.data))
       .catch((error) => console.error("Error fetching daily tasks:", error));
   };
 
@@ -52,12 +61,6 @@ const SharedStateProvider = ({ children }) => {
             prevDailyTasks.map((t) => (t._id === task._id ? response.data : t))
           );
           setShowModal(false);
-          axiosInstance
-            .get(`/api/users/${userId}/tasks`)
-            .then((response) => setDailyTasks(response.data.tasks))
-            .catch((error) =>
-              console.error("Error fetching updated tasks:", error)
-            );
         })
         .catch((error) => console.error("Error updating task:", error));
     } else {
@@ -84,7 +87,7 @@ const SharedStateProvider = ({ children }) => {
   const confirmDeleteModal = (task) => {
     setSelectedTask(task);
     setShowDeleteModal(true);
-  }
+  };
 
   const deleteTask = (taskId) => {
     if (!user) return;
@@ -104,7 +107,7 @@ const SharedStateProvider = ({ children }) => {
     const updatedStatus = !task.status;
     axiosInstance
       .put(`/api/tasks/${task._id}/status`, { status: updatedStatus })
-      .then((response) => {
+      .then(() => {
         setDailyTasks((prevDailyTasks) =>
           prevDailyTasks.map((t) =>
             t._id === task._id ? { ...t, status: updatedStatus } : t
@@ -115,7 +118,7 @@ const SharedStateProvider = ({ children }) => {
   };
 
   const addUserToGroup = () => {
-    if (!user) return;
+    if (!user || !groupId) return;
     axiosInstance
       .put(`/api/groups/${groupId}/add-member`, { userId: selectedUserId })
       .then((response) => {
@@ -124,24 +127,16 @@ const SharedStateProvider = ({ children }) => {
       })
       .catch((error) => console.error("Error adding user to group:", error));
   };
+
   const calculateTaskProgress = (userId) => {
     if (!user) return;
-    
-    // Check if dailyTasks exists and filter accordingly
     const userTasks = dailyTasks?.filter((task) => task.assignedTo === userId) || [];
     const completedTasks = userTasks.filter((task) => task.status === true);
-  
-    // Ensure userTasks and completedTasks have valid lengths before proceeding
-    if (userTasks.length === 0) {
-      return "Not Started";
-    }
-  
-    if (completedTasks.length === userTasks.length) {
-      return "Completed";
-    }
-  
+    if (userTasks.length === 0) return "Not Started";
+    if (completedTasks.length === userTasks.length) return "Completed";
     return `${completedTasks.length}/${userTasks.length}`;
   };
+
   return (
     <SharedStateContext.Provider
       value={{

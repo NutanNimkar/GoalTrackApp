@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { SharedStateContext } from "../Context/SharedStateContext";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -33,48 +33,51 @@ const TaskDetails = () => {
   const [lastReset, setLastReset] = useState(null);
   const [showEvidenceModal, setShowEvidenceModal] = useState(false);
   const { user } = useAuthContext();
-  const axiosInstance = createAxiosInstance(user?.token);
   const [images, setImages] = useState([]);
 
-  // console.log(dailyTasks);
-  const fetchTasks = async () => {
+  const axiosInstance = useMemo(
+    () => createAxiosInstance(user?.token),
+    [user?.token]
+  );
+
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await axiosInstance.get(`/api/users/${userId}/tasks`);
-      setDailyTasks(response.data.tasks);
-      setLastReset(response.data.lastReset);
+      setDailyTasks(response.data);
+      setLastReset(response.data.lastReset ?? null);
     } catch (error) {
       console.error("Error fetching tasks:", error);
       setError("There are no tasks for this user, please add some.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [axiosInstance, userId, setDailyTasks]);
 
-  const resetTaskStatus = async () => {
+  const resetTaskStatus = useCallback(async () => {
     try {
       const response = await axiosInstance.put(
         `/api/tasks/reset-status/${userId}`
       );
-      if (response.data.tasks.length > 0 && response.status === 200) {
+      if (response.data.tasks && response.data.tasks.length > 0 && response.status === 200) {
         setDailyTasks(response.data.tasks);
         setLastReset(response.data.lastReset);
-      } else {
+      } else if (response.data.message) {
         setError(response.data.message);
       }
     } catch (error) {
       console.error("Error resetting task statuses:", error);
       setError("Error resetting task statuses. Please try again later.");
     }
-  };
+  }, [axiosInstance, userId, setDailyTasks]);
 
   useEffect(() => {
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
     const initializeTasks = async () => {
-      if (!user) {
-        setError("You must be logged in");
-        return;
-      }
       try {
         await fetchTasks();
         await resetTaskStatus();
@@ -82,9 +85,8 @@ const TaskDetails = () => {
         console.log(e);
       }
     };
-
     initializeTasks();
-  }, [userId]);
+  }, [userId, fetchTasks, resetTaskStatus, user]);
 
   const taskColumns = [
     { label: "#", renderCell: (_, index) => index + 1 },
@@ -121,21 +123,16 @@ const TaskDetails = () => {
     },
   ];
 
-  const fetchUserImages = async () => {
+  const fetchUserImages = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/api/users/${userId}/evidence`);
-
-      // Extract filenames from the URLs
       const filenames = response.data.map((img) => img.url.split("/").pop());
-
-      // Construct the URLs for serving the images
       const imagePromises = filenames.map((filename) =>
         axiosInstance.get(`/api/users/evidence/${filename}`, {
-          responseType: "blob", // To handle the response as a blob
+          responseType: "blob",
         })
       );
       const imageResponses = await Promise.all(imagePromises);
-
       const imageUrls = imageResponses.map((res) =>
         URL.createObjectURL(res.data)
       );
@@ -145,10 +142,6 @@ const TaskDetails = () => {
       setImages([]);
       setError("Could not fetch user images. Please try again later.");
     }
-  };
-
-  const handleUploadSuccess = useCallback(() => {
-    fetchUserImages();
   }, [axiosInstance, userId]);
 
   return (
@@ -207,7 +200,7 @@ const TaskDetails = () => {
         show={showEvidenceModal}
         handleClose={() => setShowEvidenceModal(false)}
         userId={userId}
-        onUploadSuccess={handleUploadSuccess}
+        onUploadSuccess={fetchUserImages}
       />
     </Container>
   );

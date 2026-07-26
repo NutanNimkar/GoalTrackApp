@@ -8,8 +8,9 @@ const groupRoutes = require("./routes/groups");
 const { GridFSBucket } = require("mongodb");
 const { initializeGridFSBucket } = require("./config/gridFs");
 const cron = require("node-cron");
-const axios = require("axios");
 const cors = require('cors');
+const User = require("./models/User");
+const Task = require("./models/Task");
 require("dotenv").config();
 
 const app = express();
@@ -18,7 +19,9 @@ const requireAuth = require("./middleware/requireAuth");
 
 //Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
+}));
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -31,21 +34,19 @@ app.use("/api/tasks", requireAuth, tasksRoutes);
 app.use("/api/users", requireAuth, userRoutes);
 app.use("/api/groups", requireAuth, groupRoutes);
 
-// Scheduled Task
+// Scheduled Task — reset all task statuses daily at midnight
 cron.schedule("0 0 * * *", async () => {
   try {
     const users = await User.find({});
-    users.forEach(async (user) => {
-      await axios.put(
-        `http://localhost:4060/api/tasks/reset-status/${user._id}`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    });
+    await Promise.all(
+      users.map(async (user) => {
+        const now = new Date();
+        if (user.lastReset && now - user.lastReset < 24 * 60 * 60 * 1000) return;
+        await Task.updateMany({ assignedTo: user._id }, { status: false });
+        user.lastReset = now;
+        await user.save();
+      })
+    );
     console.log("Task statuses reset successfully for all users");
   } catch (error) {
     console.error("Error resetting task statuses:", error);

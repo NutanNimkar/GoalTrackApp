@@ -1,30 +1,16 @@
 const User = require("../models/User");
 const Task = require("../models/Task");
 const Group = require("../models/Group");
-const mongoose = require("mongoose");
 const Image = require("../models/Image");
 const { getGridFSBucket } = require("../config/gridFs");
-
-// Check if ID is valid
-const checkIdisValid = (id, res) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "Invalid ID" });
-  }
-  return true;
-};
-
-// Check if user is authorized
-const checkAuthorization = (req, userId) => {
-  if (req.user.id !== userId.toString()) {
-    return false;
-  }
-  return true;
-};
+const { checkIdIsValid, checkAuthorization } = require("../middleware/validators");
 
 // Get all Users
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}).sort({ createdAt: -1 });
+    const users = await User.find({})
+      .select('-password -resetToken -resetTokenExpiry')
+      .sort({ createdAt: -1 });
 
     if (!users || users.length === 0) {
       return res.status(404).json({ msg: "No users found" });
@@ -53,7 +39,7 @@ const getAllUsers = async (req, res) => {
 // Get a single User
 const getUser = async (req, res) => {
   const { id } = req.params;
-  if (!checkIdisValid(id, res)) return;
+  if (!checkIdIsValid(id, res)) return;
 
   try {
     const user = await User.findById(id);
@@ -88,7 +74,7 @@ const createUser = async (req, res) => {
 // Update a User
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  if (!checkIdisValid(id, res)) return;
+  if (!checkIdIsValid(id, res)) return;
 
   try {
     const user = await User.findById(id);
@@ -117,7 +103,7 @@ const updateUser = async (req, res) => {
 // Delete a User
 const deleteUser = async (req, res) => {
   const { id } = req.params;
-  if (!checkIdisValid(id, res)) return;
+  if (!checkIdIsValid(id, res)) return;
 
   try {
     const user = await User.findById(id);
@@ -140,7 +126,7 @@ const deleteUser = async (req, res) => {
 // Get groups associated with a user
 const getUsersGroups = async (req, res) => {
   const { id } = req.params;
-  if (!checkIdisValid(id, res)) return;
+  if (!checkIdIsValid(id, res)) return;
 
   try {
     const user = await User.findById(id);
@@ -153,10 +139,6 @@ const getUsersGroups = async (req, res) => {
     }
 
     const groups = await Group.find({ members: id });
-
-    if (!groups || groups.length === 0) {
-      return res.status(404).json({ msg: "No groups found for the user" });
-    }
     res.status(200).json(groups);
   } catch (err) {
     console.error("Error fetching user groups:", err);
@@ -167,7 +149,7 @@ const getUsersGroups = async (req, res) => {
 // Get tasks associated with a user
 const getUsersTasks = async (req, res) => {
   const { id } = req.params;
-  if (!checkIdisValid(id, res)) return;
+  if (!checkIdIsValid(id, res)) return;
 
   try {
     const user = await User.findById(id);
@@ -180,10 +162,6 @@ const getUsersTasks = async (req, res) => {
     }
 
     const tasks = await Task.find({ assignedTo: id });
-    if (!tasks || tasks.length === 0) {
-      return res.status(404).json({ msg: "No tasks found for the user" });
-    }
-
     res.status(200).json(tasks);
   } catch (err) {
     console.error("Error fetching user tasks:", err);
@@ -195,12 +173,16 @@ const getUsersTasks = async (req, res) => {
 const getEvidenceImages = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!checkIdisValid(id, res)) return;
+    if (!checkIdIsValid(id, res)) return;
 
     if(!checkAuthorization(req, id)) {
       return res.status(403).json({ msg: 'User not authorized' });
     }
-    const images = await Image.find({});
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    const images = await Image.find({ _id: { $in: user.evidenceImages } });
     res.status(200).json(images);
   } catch (err) {
     console.error("Error fetching evidence images:", err);
@@ -224,7 +206,7 @@ const uploadEvidence = async (req, res) => {
     const { id } = req.params;
     const { description } = req.body;
 
-    if (!checkIdisValid(id, res)) return;
+    if (!checkIdIsValid(id, res)) return;
 
     const user = await User.findById(id);
     if (!user) {

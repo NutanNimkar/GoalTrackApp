@@ -21,7 +21,7 @@ const Groups = () => {
     { label: "#", renderCell: (user, index) => index + 1 },
     { label: "User", renderCell: (user) => user.username },
     { label: "Email", renderCell: (user) => user.email },
-    { label: "Group", renderCell: () => group.name },
+    { label: "Group", renderCell: () => group?.name ?? "—" },
     {
       label: "Task Progress",
       renderCell: (user) => calculateTaskProgress(user._id),
@@ -35,7 +35,6 @@ const Groups = () => {
           <VerticalNavigation />
         </Col>
         <Col md={10} className="p-4">
-          {/* <h1 style={{ color: '#ffffff' }}>User Task Tracker</h1> */}
           <Row>
             <Col md={10} className="p-4">
               <div className="group-container">

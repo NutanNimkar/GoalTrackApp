@@ -21,7 +21,7 @@ userSchema.statics.login = async function (email, password) {
     throw Error("All fields must be filled");
   }
   if (!validator.isEmail(email)) {
-    throw Errror("Email is not valid");
+    throw Error("Email is not valid");
   }
   const user = await this.findOne({ email });
   if (!user) {
