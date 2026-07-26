@@ -18,7 +18,6 @@ const GroupsPage = () => {
     <div>
       <Grid container spacing={2}>
         <Grid
-          item
           xs={"100%"}
           md={"100%"}
           lg={"100%"}
@@ -46,7 +45,7 @@ const GroupsPage = () => {
             </Row>
             <Grid>
               <Stack
-                direction="horizontal"
+                direction="row"
                 gap={5}
                 style={{ paddingRight: 25, paddingLeft: 25 }}
               >

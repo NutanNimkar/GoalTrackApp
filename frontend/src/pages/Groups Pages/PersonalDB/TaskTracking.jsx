@@ -4,7 +4,6 @@ import ProgressCharts from "../GroupDB/components/ProgressCharts";
 import TrackProgressCard from "../GroupDB/components/TrackProgressCard";
 
 function TaskTracking({tasks}) {
-    console.log(tasks)
   return (
     <div>
       {tasks?.map((dailyTask, index) => (
@@ -33,9 +32,10 @@ function TaskTracking({tasks}) {
                 sx={{
                   width: "auto",
                   backgroundColor: "rgba(181, 181, 181, 0.45)",
-                  borderRadius: "20px",
+                  borderRadius: "30px",
                   bgcolor: "#022D66",
                   borderColor: "#395CCF",
+                  borderWidth: 2
                 }}
                 variant="outlined"
               >

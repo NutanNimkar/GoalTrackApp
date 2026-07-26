@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { GroupsPageContext } from "../../Context/GroupsPageContext";
 import { SharedStateContext } from "../../Context/SharedStateContext";
 
 function ConfirmDeleteModal({ show, handleClose, task }) {

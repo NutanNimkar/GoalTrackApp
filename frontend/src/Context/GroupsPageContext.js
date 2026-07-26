@@ -11,6 +11,7 @@ const GroupsPageProvider = ({ children }) => {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("");
+  const [showPunishmentModal, setShowPunishmentModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuthContext();
@@ -26,7 +27,7 @@ const GroupsPageProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axiosInstance.get("/api/groups");    
+      const response = await axiosInstance.get("/api/groups");
       const groupsData = response.data.reduce((acc, group) => {
         acc[group.name] = {
           description: group.description,
@@ -90,6 +91,25 @@ const GroupsPageProvider = ({ children }) => {
     setShowMemberModal(true);
   };
 
+  const handleUpdatePunishmentModal = () => {
+    setShowPunishmentModal(true);
+  };
+  const updatePunishment = (groupID, userId) => {
+    axiosInstance.get(`/api/groups/`).then((response) => {
+      const group = response.data.find((grp) => grp._id === groupID);
+      if (!group) {
+        console.log("group found!")
+        // axiosInstance
+        //   .put(`/api/groups/${groupID}/update-punishment`, { userId })
+        //   .then((response) => {
+        //     setShowPunishmentModal(false);
+        //     console.log(response);
+        //     console.log("Group punishment has been updated!!!");
+        //   });
+      }
+    });
+    // console.log(groupID)
+  };
   const getGroupIDs = () => {
     axiosInstance
       .get(`/api/groups`)
@@ -143,6 +163,8 @@ const GroupsPageProvider = ({ children }) => {
         currentGroup,
         showMemberModal,
         selectedGroup,
+        showPunishmentModal,
+        setShowPunishmentModal,
         setGroups,
         setGroupIDS,
         setShowModal,
@@ -152,6 +174,8 @@ const GroupsPageProvider = ({ children }) => {
         handleAddMember,
         setSelectedGroup,
         addMember,
+        handleUpdatePunishmentModal,
+        updatePunishment,
       }}
     >
       {children}

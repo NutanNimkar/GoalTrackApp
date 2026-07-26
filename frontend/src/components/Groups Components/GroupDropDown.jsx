@@ -39,10 +39,13 @@ function GroupDropDown({
 
   Object.keys(groups).forEach((groupName) => {
     if (!uniqueGroups[groupName]) {
-      uniqueGroups[groupName] = groups[groupName];
+      uniqueGroups[groupName] = {
+        ...groups[groupName],
+        _id: groups[groupName]._id,
+      };
     }
   });
-
+  console.log(groups)
   const sortedGroupNames = Object.keys(uniqueGroups).sort((a, b) => {
     const aNumber = parseInt(a.replace(/\D/g, ""), 10);
     const bNumber = parseInt(b.replace(/\D/g, ""), 10);
@@ -54,14 +57,14 @@ function GroupDropDown({
     const groupMemberNames = currentGroup?.members || [];
     const groupDescription = currentGroup?.description || [];
     const groupPunishment = currentGroup?.punishment || [];
+    const groupID = currentGroup?._id; // subject to change
 
     return (
       <Accordion
-        eventKey={index + 1}
+        // eventKey={index + 1}
         key={index}
         expanded={expandedAccordion === index}
         onChange={handleExpansion(index)}
-        TransitionComponent={Fade}
         TransitionProps={{ timeout: 400 }}
         sx={{
           borderRadius: "5px",
@@ -84,7 +87,6 @@ function GroupDropDown({
                 "& .MuiAccordionDetails-root": {
                   display: "none",
                 },
-                // backgroundColor: "Background.paper",
               }),
         }}
       >
@@ -95,10 +97,7 @@ function GroupDropDown({
             borderRadius: "5px",
           }}
         >
-          <Typography
-            level="title-lg"
-            fontFamily="Verdana"
-          >
+          <Typography level="title-lg" fontFamily="Verdana">
             Group #{index + 1}: {groupName}
           </Typography>
         </AccordionSummary>
@@ -116,7 +115,7 @@ function GroupDropDown({
                     padding: 2,
                   }}
                 >
-                  <Stack direction="horizontal" gap={11}>
+                  <Stack direction="row" gap={11}>
                     <CgProfile
                       size={30}
                       style={{ position: "inherit", left: 0 }}
@@ -127,7 +126,7 @@ function GroupDropDown({
               </div>
             ))}
             <Stack
-              direction="horizontal"
+              direction="row"
               gap="auto"
               style={{ justifyContent: "space-evenly" }}
             >
@@ -138,6 +137,7 @@ function GroupDropDown({
                   name: groupName,
                   punishment: groupPunishment,
                   description: groupDescription,
+                  groupID: groupID,
                 }}
                 style={{ textAlign: "end", textDecoration: "none" }}
               >
@@ -197,7 +197,7 @@ function GroupDropDown({
                   name: groupName,
                   punishment: groupPunishment,
                   description: groupDescription,
-                  members: groupMemberNames
+                  members: groupMemberNames,
                 }}
                 style={{ textAlign: "end", textDecoration: "none" }}
               >

@@ -118,6 +118,27 @@ const removeGroupMember = async (req, res) => {
   }
 };
 
+const updatePunishment = async (req, res) => {
+  const { id } = req.params;
+  // const { contract } = req.body;
+
+  if (!checkAuthorization(req, id)) {
+    return res.status(403).json({ msg: "User not authorized" });
+  }
+
+  try {
+    const group = await Group.findOneAndUpdate({ _id: id }, { ...req.body });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ err: "No such contract" });
+    }
+    
+    res.status(200).json(group);
+  } catch (err) {
+    console.error("Error updating contract: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   getAllGroups,
   getGroup,
@@ -127,4 +148,5 @@ module.exports = {
   getGroupMembers,
   addGroupMember,
   removeGroupMember,
+  updatePunishment
 };
