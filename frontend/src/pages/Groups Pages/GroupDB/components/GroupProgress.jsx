@@ -1,238 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { MdOutlinePersonOutline } from "react-icons/md";
-// import MyTaskDetails from "../../../../components/Groups Components/MyDailyTask.jsx";
-// import { SharedStateContext } from "../../../../Context/SharedStateContext.js";
-import { Card, CardContent, Typography, Stack, Button } from "@mui/joy";
-import UserInfoAndProgress from "./UserInfoAndProgress.jsx";
-import { Grid } from "@mui/system";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { HiUser } from 'react-icons/hi2';
+import UserInfoAndProgress from './UserInfoAndProgress';
 
-function GroupProgress({ name, members, description, punishment }) {
-  return (
-    <div>
-      <Card
-        sx={{
-          bgcolor: "#12253D",
-          color: "#ffffff",
-          borderRadius: "15px",
-          borderColor: "#022D66",
-          borderWidth: 2,
-        }}
+const GroupProgress = ({ name, members, description, punishment }) => (
+  <div className="bg-surface border border-border rounded-xl overflow-hidden">
+    <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+      <div>
+        <h2 className="text-sm font-semibold text-text-primary">Group Progress</h2>
+        <p className="text-xs text-text-secondary mt-0.5">Task completion per member</p>
+      </div>
+      <Link
+        to={{ pathname: `/groups/${name}/personaldb` }}
+        state={{ name, members, description, punishment }}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+          border border-border text-text-secondary hover:text-text-primary hover:border-border-strong transition-colors"
       >
-        <div>
-          <Typography
-            style={{
-              color: "#ffffff",
-              paddingLeft: 10,
-              fontFamily: "Lucida Sans",
-            }}
-            level="h2"
-          >
-            Group Progress Activity
-          </Typography>
-
-          <CardContent
-            style={{ paddingTop: 15, paddingLeft: 15, paddingRight: 25 }}
-          >
-            <Stack direction="horizontal" gap={2}>
-              Group Progress will be featured on this dashboard. The total
-              amount of days completed by a member, total amount of days missed
-              by a member and the highest member streak will be recorded.
-              <Link
-                to={{ pathname: `/groups/${name}/personaldb` }}
-                state={{
-                  name: name,
-                  members: members,
-                  description: description,
-                  punishment: punishment,
-                }}
-                style={{ textAlign: "end", textDecoration: "none" }}
-              >
-                <Button
-                  size="lg"
-                  variant="outlined"
-                  sx={{
-                    bgcolor: "#022D66",
-                    color: "#ffffff",
-                    borderColor: "#AEC5E3",
-                    borderWidth: 2,
-                    borderRadius: 15,
-                  }}
-                >
-                  <Stack gap={3} direction="horizontal">
-                    <MdOutlinePersonOutline size={50} />
-                    <Typography sx={{ color: "white", fontFamily: "Lucida Sans" }}>
-                      Personal Dashboard
-                    </Typography>
-                  </Stack>
-                </Button>
-              </Link>
-            </Stack>
-          </CardContent>
-        </div>
-
-        <div>
-          <div
-            style={{
-              paddingBottom: 15,
-              position: "relative",
-              bottom: -40,
-              paddingRight: 27,
-              paddingLeft: 2,
-            }}
-          >
-            <Stack direction="horizontal" gap={1}>
-              <Card
-                sx={{
-                  width: "240%",
-                  bgcolor: "#12253D",
-                  alignItems: "center",
-                  borderRadius: "20px",
-                  borderColor: "#AEC5E3",
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                  }}
-                >
-                  <Typography
-                    level="title-sm"
-                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
-                  >
-                    Group Members
-                  </Typography>
-                </div>
-              </Card>
-              <Card
-                sx={{
-                  width: "300%",
-                  bgcolor: "#12253D",
-                  display: "flex",
-                  paddingBottom: 3,
-                  justifyContent: "space-between",
-                  borderRadius: "20px",
-                  borderColor: "#AEC5E3",
-                }}
-              >
-                <Grid
-                  container
-                  direction="row"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <Grid item>
-                    <Typography
-                      level="title-sm"
-                      style={{
-                        color: "#ffffff",
-                        position: "relative",
-                        top: -6,
-                        fontFamily: "Lucida Sans",
-                      }}
-                    >
-                      Previous 7 Days
-                    </Typography>
-                  </Grid>
-
-                  <Grid item>
-                    <Typography
-                      level="title-sm"
-                      style={{
-                        color: "#ffffff",
-                        position: "relative",
-                        top: -6,
-                        fontFamily: "Lucida Sans",
-                      }}
-                    >
-                      Total Days
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Card>
-              <Card
-                sx={{
-                  width: "140%",
-                  bgcolor: "#12253D",
-                  display: "flex",
-                  paddingBottom: 3,
-                  alignItems: "center",
-                  borderRadius: "20px",
-                  borderColor: "#AEC5E3",
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                  }}
-                >
-                  <Typography
-                    level="title-sm"
-                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
-                  >
-                    Track Progress
-                  </Typography>
-                </div>
-              </Card>
-              <Card
-                sx={{
-                  width: "140%",
-                  bgcolor: "#12253D",
-                  display: "flex",
-                  paddingBottom: 3,
-                  alignItems: "center",
-                  borderRadius: "20px",
-                  borderColor: "#AEC5E3",
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                  }}
-                >
-                  <Typography
-                    level="title-sm"
-                    style={{ color: "#ffffff", fontFamily: "Lucida Sans" }}
-                  >
-                    Check Progress
-                  </Typography>
-                </div>
-              </Card>
-            </Stack>
-          </div>
-          <div
-            style={{
-              maxHeight: "42.5vh",
-              overflowY: "auto",
-              scrollbarColor: "#415F84 #0A2344",
-              marginRight: 10,
-            }}
-          >
-            <Card
-              sx={{
-                bgcolor: "#0B3A79",
-                borderRadius: "20px",
-                display: "flex",
-                justifyContent: "space-around",
-                top: 0,
-                borderColor: "#022D66",
-                borderWidth: 2,
-                padding: 1,
-              }}
-              variant="outlined"
-            >
-              <UserInfoAndProgress members={members} />
-            </Card>
-          </div>
-        </div>
-      </Card>
+        <HiUser className="w-3.5 h-3.5" /> Personal Dashboard
+      </Link>
     </div>
-  );
-}
+    <div className="p-4">
+      {members?.length ? (
+        <UserInfoAndProgress members={members} />
+      ) : (
+        <p className="text-text-secondary text-sm text-center py-4">No members to display.</p>
+      )}
+    </div>
+  </div>
+);
 
 export default GroupProgress;

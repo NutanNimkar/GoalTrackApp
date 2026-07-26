@@ -1,210 +1,141 @@
-import React, { useState, useEffect } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import createAxiosInstance from "../../axiosInstance";
-import "./FriendRequestList.css"; // Make sure to style the new layout here
-import { useFriendRequests } from "./FriendRequestContext";
+import React, { useState, useEffect, useMemo } from 'react';
+import { HiUserCircle, HiCheck, HiXMark, HiTrash } from 'react-icons/hi2';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import createAxiosInstance from '../../axiosInstance';
+import { useFriendRequests } from './FriendRequestContext';
 
-//User recieved friend request components
-const FriendRequestComponent = () => {
-  const [friendRequests, setFriendRequests] = useState([]);
-  const {friends, setFriends} = useFriendRequests();
-  const {sentFriendRequests, setSentFriendRequests} = useFriendRequests();
+const FriendRequestList = () => {
+  const [received, setReceived] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [tab, setTab] = useState(1);
-  const { user: currentUser } = useAuthContext();
-  const userId = currentUser?.id;
-  const axiosInstance = createAxiosInstance(currentUser?.token);
-
-  const switchTab = (index) => {
-    setTab(index);
-  };
+  const [error, setError] = useState('');
+  const [tab, setTab] = useState('received');
+  const { friends, setFriends, sentFriendRequests, setSentFriendRequests } = useFriendRequests();
+  const { user } = useAuthContext();
+  const axiosInstance = useMemo(() => createAxiosInstance(user?.token), [user?.token]);
+  const userId = user?.id;
 
   useEffect(() => {
-    const loadFriendRequests = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await axiosInstance.get(
-          `/api/friends/friend-requests/${userId}`
-        );
-        const friendRequestsList = response.data;
-        setFriendRequests(friendRequestsList);
-      } catch (err) {
-        setError("Error fetching friend requests");
-      }
-      setLoading(false);
-    };
-
-    loadFriendRequests();
+    if (!userId) return;
+    setLoading(true);
+    Promise.all([
+      axiosInstance.get(`/api/friends/friend-requests/${userId}`),
+      axiosInstance.get(`/api/friends/sentfriend-requests/${userId}`),
+    ])
+      .then(([recv, sent]) => {
+        setReceived(recv.data);
+        setSentFriendRequests(sent.data);
+      })
+      .catch(() => setError('Could not load requests.'))
+      .finally(() => setLoading(false));
   }, [userId]);
 
-  console.log(friendRequests ? friendRequests : "undefined");
-
-  const handleAcceptRequest = async (requestId) => {
-    setLoading(true);
-    setError("");
-    // console.log(requestId);
+  const accept = async (name) => {
     try {
-      await axiosInstance.post(`/api/friends/accept-req/${userId}`, {
-        friendIdentifier: requestId,
-      });
-      //   await axiosInstance.post(`/api/friends/add-friends/${userId}`,{
-      //     friendId: requestId
-      // });
-      setFriendRequests(friendRequests.filter((req) => req !== requestId));
-      setFriends([...friends, requestId])
-    } catch (err) {
-      setError("Error accepting friend request");
-    }
-    setLoading(false);
-  };
-  
-
-  const handleDeclineRequest = async (requestId) => {
-    console.log(userId, requestId);
-    setLoading(true);
-    setError("");
-    try {
-      await axiosInstance.delete(
-        `/api/friends/decline-req/${userId}/${requestId}`
-      );
-      setFriendRequests(friendRequests.filter((req) => req !== requestId));
-    } catch (err) {
-      setError("Error declining friend request");
-    }
-    setLoading(false);
+      await axiosInstance.post(`/api/friends/accept-req/${userId}`, { friendIdentifier: name });
+      setReceived(received.filter((r) => r !== name));
+      setFriends([...friends, name]);
+    } catch { setError('Could not accept request.'); }
   };
 
-  //User sent friend requests components
-
-  useEffect(() => {
-    const loadSentFriendRequests = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await axiosInstance.get(
-          `/api/friends/sentfriend-requests/${userId}`
-        );
-        // const sentFriendRequestsList  = response.data; // assigning a new value
-        // console.log(sentFriendRequestsList);
-        console.log(response.data);
-        // const FriendName = await axiosInstance.get(`/api/friends/sentfriend-requests-names/${userId}`);
-
-        // console.log(FriendName.data);
-        setSentFriendRequests(response.data);
-      } catch (err) {
-        setError("Error fetching friend requests");
-      }
-      setLoading(false);
-    };
-
-    loadSentFriendRequests();
-  }, [userId]);
-
-  const handleRemoveRequest = async (friendname) => {
-    setLoading(true);
-    setError("");
+  const decline = async (name) => {
     try {
-      await axiosInstance.delete(
-        `/api/friends/request/remove/${userId}/${friendname}`
-      );
-      setSentFriendRequests(
-        sentFriendRequests.filter((req) => req !== friendname)
-      );
-    } catch (err) {
-      setError("Error deleting friend request");
-    }
-    setLoading(false);
+      await axiosInstance.delete(`/api/friends/decline-req/${userId}/${name}`);
+      setReceived(received.filter((r) => r !== name));
+    } catch { setError('Could not decline request.'); }
   };
+
+  const removeSent = async (name) => {
+    try {
+      await axiosInstance.delete(`/api/friends/request/remove/${userId}/${name}`);
+      setSentFriendRequests(sentFriendRequests.filter((r) => r !== name));
+    } catch { setError('Could not remove request.'); }
+  };
+
+  const TabBtn = ({ id, label, count }) => (
+    <button
+      onClick={() => setTab(id)}
+      className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+        tab === id
+          ? 'bg-accent/10 text-accent border border-accent/20'
+          : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover border border-transparent'
+      }`}
+    >
+      {label}
+      {count > 0 && (
+        <span className={`ml-2 text-xs px-1.5 py-0.5 rounded-full ${tab === id ? 'bg-accent text-bg' : 'bg-surface-hover text-text-secondary'}`}>
+          {count}
+        </span>
+      )}
+    </button>
+  );
 
   return (
-    <div className="friend-requests-container">
-      <div className="friend-requests-tabs">
-        <button
-          className={
-            tab === 1 ? "friend-requests-tab-active" : "friend-requests-tab"
-          }
-          onClick={() => switchTab(1)}
-        >
-          Friend Requests
-        </button>
-
-        <button
-          className={
-            tab === 2 ? "sent-requests-tab-active" : "sent-requests-tab"
-          }
-          onClick={() => switchTab(2)}
-        >
-          Sent Requests
-        </button>
+    <div className="bg-surface border border-border rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-border flex items-center gap-2">
+        <TabBtn id="received" label="Received" count={received.length} />
+        <TabBtn id="sent" label="Sent" count={sentFriendRequests?.length ?? 0} />
       </div>
 
-      <div className={tab === 1 ? "friend-requests-active" : "friend-requests"}>
-        <h2 className="friend-request-title">Friend Requests</h2>
-        {loading ? (
-          <p className="friend-request-loading">Loading...</p>
-        ) : (
-          <ul className="friend-request-list">
-            {Array.isArray(friendRequests) && friendRequests.length > 0 ? (
-              friendRequests.map((request, index) => (
-                <div className="friend-request-list-container">
-                  <li className="friend-request-list-item" key={index}>
-                    {request}
-                    <button
-                      className="friend-request-accept-button"
-                      onClick={() => handleAcceptRequest(request)}
-                      disabled={loading}
-                    ></button>
-                    <button
-                      className="friend-request-decline-button"
-                      onClick={() => handleDeclineRequest(request)}
-                      disabled={loading}
-                    ></button>
-                  </li>
-                </div>
-              ))
-            ) : (
-              <p className="friend-request-alert">No friend requests</p>
-            )}
-          </ul>
-        )}
-      </div>
+      {loading && <p className="px-5 py-6 text-sm text-text-secondary text-center">Loading…</p>}
+      {error && <p className="px-5 py-2 text-xs text-danger">{error}</p>}
 
-      <div className={tab === 2 ? "sent-requests-active" : "sent-requests"}>
-        <h2 className="sent-request-title">Sent Friend Requests</h2>
-        {loading ? (
-          <p className="sent-request-loading">Loading...</p>
-        ) : (
-          <ul className="sent-request-list">
-            {Array.isArray(sentFriendRequests) &&
-            sentFriendRequests.length > 0 ? (
-              sentFriendRequests.map((request, index) => (
-                <div className="sent-request-list-container" key={index}>
-                  <li className="sent-request-list-item" key={index}>
-                    {request}
-                    <button
-                      className="sent-request-remove-button"
-                      onClick={() => handleRemoveRequest(request)}
-                      disabled={loading}
-                    ></button>
-                  </li>
-                </div>
-              ))
-            ) : (
-              <p className="sent-request-alert">No sent friend requests</p>
-            )}
-          </ul>
-        )}
+      {!loading && tab === 'received' && (
+        <>
+          {received.length === 0 ? (
+            <p className="px-5 py-8 text-sm text-text-secondary text-center">No pending requests.</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {received.map((name) => (
+                <li key={name} className="flex items-center gap-3 px-5 py-3 hover:bg-surface-hover transition-colors">
+                  <HiUserCircle className="w-8 h-8 text-text-secondary shrink-0" />
+                  <span className="text-sm text-text-primary flex-1">{name}</span>
+                  <button
+                    onClick={() => accept(name)}
+                    className="p-1.5 rounded text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors"
+                    title="Accept"
+                  >
+                    <HiCheck className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => decline(name)}
+                    className="p-1.5 rounded text-text-secondary hover:text-danger hover:bg-danger/10 transition-colors"
+                    title="Decline"
+                  >
+                    <HiXMark className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
 
-        {error && (
-          <p className="sent-request-error" style={{ color: "red" }}>
-            {error}
-          </p>
-        )}
-      </div>
+      {!loading && tab === 'sent' && (
+        <>
+          {!sentFriendRequests?.length ? (
+            <p className="px-5 py-8 text-sm text-text-secondary text-center">No sent requests.</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {sentFriendRequests.map((name) => (
+                <li key={name} className="flex items-center gap-3 px-5 py-3 hover:bg-surface-hover transition-colors">
+                  <HiUserCircle className="w-8 h-8 text-text-secondary shrink-0" />
+                  <span className="text-sm text-text-primary flex-1">{name}</span>
+                  <span className="text-xs text-text-muted mr-2">Pending</span>
+                  <button
+                    onClick={() => removeSent(name)}
+                    className="p-1.5 rounded text-text-secondary hover:text-danger hover:bg-danger/10 transition-colors"
+                    title="Cancel request"
+                  >
+                    <HiTrash className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
     </div>
   );
 };
 
-export default FriendRequestComponent;
+export default FriendRequestList;

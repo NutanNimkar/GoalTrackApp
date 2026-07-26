@@ -1,70 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { HiUserCircle, HiTrash } from 'react-icons/hi2';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import createAxiosInstance from '../../axiosInstance';
-import { useAuthContext } from "../../hooks/useAuthContext"
-import './FriendList.css';
 import { useFriendRequests } from './FriendRequestContext';
 
 const FriendsList = () => {
-  const {friends, setFriends} = useFriendRequests();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const { user: currentUser } = useAuthContext();
-  const axiosInstance = createAxiosInstance(currentUser?.token);
-  const userId = currentUser?.id;
-
-  // Directly extract user ID from the context
-  // const userId = "66ea2d2920dbbcc14dbb74ce";
+  const { friends, setFriends } = useFriendRequests();
+  const { user } = useAuthContext();
+  const axiosInstance = useMemo(() => createAxiosInstance(user?.token), [user?.token]);
+  const userId = user?.id;
 
   useEffect(() => {
-    const fetchFriends = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const response = await axiosInstance.get(`/api/friends/${userId}`)
-        setFriends(response.data);
-      } catch (err) {
-        setError('Error fetching friends list');
-      }
-      setLoading(false);
-    };
-
-    fetchFriends();
+    if (!userId) return;
+    axiosInstance.get(`/api/friends/${userId}`)
+      .then((r) => setFriends(r.data))
+      .catch(() => {});
   }, [userId]);
 
-  const deleteFriend = async (friendName) => {
-    if (window.confirm('Are you sure you want to delete this friend?')) {
-      setLoading(true);
-      setError('');
-      try {
-        console.log("requesting deletion:", friendName)
-        await axiosInstance.delete(`/api/friends/remove/${userId}/${friendName}`);
-        // Remove the friend from the local state
-        setFriends(friends?.filter(friend => friend !== friendName));
-      } catch (err) {
-        setError('Error deleting friend');
-      }
-      setLoading(false);
+  const removeFriend = async (name) => {
+    if (!window.confirm(`Remove ${name} from friends?`)) return;
+    try {
+      await axiosInstance.delete(`/api/friends/remove/${userId}/${name}`);
+      setFriends(friends.filter((f) => f !== name));
+    } catch {
+      alert('Could not remove friend.');
     }
   };
 
-  
-
   return (
-    <div className='friends-list-container'>
-      <h1 className='friends-list-title'>List of Friends</h1>
-      {friends?.length === 0 ? (
-        <p className='friends-list-alert'>No friends found.</p>
+    <div className="bg-surface border border-border rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-border">
+        <h2 className="text-sm font-semibold text-text-primary">Friends</h2>
+        <p className="text-xs text-text-secondary mt-0.5">{friends?.length ?? 0} connection{friends?.length !== 1 ? 's' : ''}</p>
+      </div>
+
+      {!friends?.length ? (
+        <p className="px-5 py-8 text-sm text-text-secondary text-center">No friends yet — send a request above.</p>
       ) : (
-      <div className='friends-list-listcontainer'>
-       <ul className='friends-list-ul'>
-          {friends?.map((friend) => (
-            <li className='friends-list-item' key={friend}>
-              {friend ? friend : "undefined"}
-              <button className='friends-list-delete-button'onClick={() => deleteFriend(friend)}>Delete</button>
+        <ul className="divide-y divide-border">
+          {friends.map((name) => (
+            <li key={name} className="flex items-center gap-3 px-5 py-3 hover:bg-surface-hover transition-colors">
+              <HiUserCircle className="w-8 h-8 text-text-secondary shrink-0" />
+              <span className="text-sm text-text-primary flex-1">{name}</span>
+              <button
+                onClick={() => removeFriend(name)}
+                className="p-1.5 rounded text-text-secondary hover:text-danger hover:bg-danger/10 transition-colors"
+              >
+                <HiTrash className="w-4 h-4" />
+              </button>
             </li>
           ))}
         </ul>
-        </div>
       )}
     </div>
   );

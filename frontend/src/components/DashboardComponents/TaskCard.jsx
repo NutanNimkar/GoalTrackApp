@@ -1,46 +1,36 @@
-// components/TaskCard.js
-import React, { useContext } from "react";
-import "./TaskCard.css";
-import { IconButton } from "@mui/material";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { SharedStateContext } from "../../Context/SharedStateContext";
-import { Card, Typography } from "@mui/joy";
+import React, { useContext } from 'react';
+import { HiPencil, HiTrash } from 'react-icons/hi2';
+import { SharedStateContext } from '../../Context/SharedStateContext';
 
-const TaskCard = ({ task, selectedTask }) => {
+const TaskCard = ({ task }) => {
   const { handleEditTask, confirmDeleteModal } = useContext(SharedStateContext);
 
   return (
-    <Card
-      variant="soft"
-      sx={{ bgcolor: "#BBD1ED", color: "black" }}
-      className="task-card"
-    >
-      <Typography level="h3" style={{ fontFamily: "Lucida Sans" }}>
-        {task.name}
-      </Typography>
-      <Typography
-        level="body1"
-        sx={{ color: "black", fontFamily: "Lucida Sans" }}
-      >
-        {task.description}
-      </Typography>
-      <div className="task-actions">
-        <IconButton
-          aria-label="edit"
-          color="primary"
-          onClick={() => handleEditTask(task)}
-        >
-          <FaEdit />
-        </IconButton>
-        <IconButton
-          aria-label="delete"
-          style={{ color: "red" }}
-          onClick={() => confirmDeleteModal(selectedTask)}
-        >
-          <FaTrash />
-        </IconButton>
+    <div className="flex items-center gap-3 px-4 py-3 bg-surface-2 border border-border rounded-xl hover:bg-surface-hover transition-colors">
+      <div className={`w-2 h-2 rounded-full shrink-0 ${task.status ? 'bg-accent' : 'bg-text-muted'}`} />
+      <div className="flex-1 min-w-0">
+        <p className={`text-sm font-medium truncate ${task.status ? 'line-through text-text-secondary' : 'text-text-primary'}`}>
+          {task.name}
+        </p>
+        {task.description && (
+          <p className="text-xs text-text-secondary truncate mt-0.5">{task.description}</p>
+        )}
       </div>
-    </Card>
+      <div className="flex items-center gap-1 shrink-0">
+        <button
+          onClick={() => handleEditTask(task)}
+          className="p-1.5 rounded text-text-secondary hover:text-text-primary hover:bg-surface transition-colors"
+        >
+          <HiPencil className="w-3.5 h-3.5" />
+        </button>
+        <button
+          onClick={() => confirmDeleteModal(task)}
+          className="p-1.5 rounded text-text-secondary hover:text-danger hover:bg-danger/10 transition-colors"
+        >
+          <HiTrash className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
   );
 };
 

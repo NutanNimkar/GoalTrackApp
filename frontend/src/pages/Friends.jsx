@@ -1,20 +1,17 @@
-
 import React from 'react';
-import UserSearch from '../components/FriendComponents/FriendSearch';
+import AppShell from '../components/AppShell';
+import FriendSearch from '../components/FriendComponents/FriendSearch';
+import FriendRequestList from '../components/FriendComponents/FriendRequestList';
 import FriendsList from '../components/FriendComponents/FriendList';
-import FriendRequestList from '../components/FriendComponents/FriendRequestList'
-import './Friends.css'
 
-const FriendPage = () => {
- 
-  return (
-    <div className='FriendComponents'>
-      <UserSearch />
+const FriendPage = () => (
+  <AppShell title="Friends">
+    <div className="flex flex-col gap-5 max-w-2xl">
+      <FriendSearch />
       <FriendRequestList />
       <FriendsList />
-     
     </div>
-  );
-}
+  </AppShell>
+);
 
 export default FriendPage;

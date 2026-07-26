@@ -1,74 +1,71 @@
-import React, { useState } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import createAxiosInstance from "../../axiosInstance";
-import "./FriendSearch.css"; // Make sure to style the new layout here
-import { useFriendRequests } from "./FriendRequestContext";
+import React, { useState, useMemo } from 'react';
+import { HiMagnifyingGlass, HiPaperAirplane } from 'react-icons/hi2';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import createAxiosInstance from '../../axiosInstance';
+import { useFriendRequests } from './FriendRequestContext';
 
-const FriendSearchComponent = () => {
-  const [newRequestReceiver, setNewRequestReceiver] = useState("");
+const FriendSearch = () => {
+  const [receiver, setReceiver] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [statusMessage, setStatusMessage] = useState(""); // For status feedback
-  const { user: currentUser } = useAuthContext();
-  const userId = currentUser?.id;
-  const axiosInstance = createAxiosInstance(currentUser?.token);
-  const {sentFriendRequests, setSentFriendRequests} = useFriendRequests();
-  
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const { user } = useAuthContext();
+  const axiosInstance = useMemo(() => createAxiosInstance(user?.token), [user?.token]);
+  const { sentFriendRequests, setSentFriendRequests } = useFriendRequests();
 
-  const handleSendRequest = async () => {
-    if (newRequestReceiver) {
-      setLoading(true);
-      setError("");
-      try {
-        await axiosInstance.post(`/api/friends/send-req/${userId}`, {
-          friendIdentifier: newRequestReceiver,
-        });
-        setNewRequestReceiver("");
-        setStatusMessage("Friend request sent successfully!");
-        setSentFriendRequests([...sentFriendRequests, newRequestReceiver])
-      } catch (err) {
-        setError("Error sending friend request");
-      }
+  const handleSend = async () => {
+    if (!receiver.trim()) return;
+    setLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      await axiosInstance.post(`/api/friends/send-req/${user?.id}`, { friendIdentifier: receiver });
+      setSentFriendRequests([...sentFriendRequests, receiver]);
+      setSuccess(`Request sent to ${receiver}`);
+      setReceiver('');
+    } catch {
+      setError('Could not send request. Check the username and try again.');
+    } finally {
       setLoading(false);
     }
   };
 
+  const onKey = (e) => { if (e.key === 'Enter') handleSend(); };
+
   return (
-    <div className="send-request-container">
-      <div className="send-request-titlecontainer" />
-      <h2 className="send-request-title">Send Friend Request</h2>
-      <p className="send-request-intro">
-        Enter the username of another user to send a friend request to the
-        recipient
-      </p>
-      <div className="send-request-searchbar">
+    <div className="bg-surface border border-border rounded-xl p-5">
+      <div className="flex items-center gap-2 mb-1">
+        <HiMagnifyingGlass className="w-4 h-4 text-text-secondary" />
+        <h2 className="text-sm font-semibold text-text-primary">Add Friend</h2>
+      </div>
+      <p className="text-xs text-text-secondary mb-4">Enter a username to send a friend request.</p>
+
+      <div className="flex gap-2">
         <input
-          className="send-request-input"
           type="text"
-          value={newRequestReceiver}
-          onChange={(e) => setNewRequestReceiver(e.target.value)}
-          placeholder="Enter username"
+          value={receiver}
+          onChange={(e) => setReceiver(e.target.value)}
+          onKeyDown={onKey}
+          placeholder="Username"
+          className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2.5 text-sm
+            text-text-primary placeholder:text-text-muted
+            focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition-colors"
         />
         <button
-          className="send-request-button"
-          onClick={handleSendRequest}
-          disabled={loading}
+          onClick={handleSend}
+          disabled={loading || !receiver.trim()}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium
+            bg-accent hover:bg-accent-dim text-bg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {loading ? "Sending..." : "Send"}
+          <HiPaperAirplane className="w-4 h-4" />
+          {loading ? 'Sending…' : 'Send'}
         </button>
       </div>
-      {statusMessage && (
-        <p className="send-request-successmsg" style={{ color: "green" }}>
-          {statusMessage}
-        </p>
-      )}
-      {error && (
-        <p className="send-request-errormsg" style={{ color: "red" }}>
-          {error}
-        </p>
-      )}
+
+      {success && <p className="mt-2 text-xs text-accent">{success}</p>}
+      {error && <p className="mt-2 text-xs text-danger">{error}</p>}
     </div>
   );
 };
 
-export default FriendSearchComponent;
+export default FriendSearch;
