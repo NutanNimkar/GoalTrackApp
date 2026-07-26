@@ -11,8 +11,9 @@
 }
 
 .vertical-navbar.active {
-    width: 80px; /* Adjusted width when active */
+    width: 80px;
     transition: 0.5s all;
+    overflow-x: hidden;
 }
 
 .Logocontainer {
@@ -92,15 +93,14 @@
     font: inherit;
 }
 
-/* Active state styles for logo container */
 .Logocontainer.active {
     h1.title {
         opacity: 0;
     }
 
     img {
-        margin-left: 175px; /* Adjust for the active state */
-        transition: margin-left 0.5s; /* Smooth transition for margin change */
+        margin-left: 190px;
+        transition: 0.5s all;
     }
 }
 

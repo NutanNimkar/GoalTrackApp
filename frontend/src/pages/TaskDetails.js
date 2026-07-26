@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { SharedStateContext } from "../Context/SharedStateContext";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -31,43 +31,46 @@ const TaskDetails = () => {
   const [error, setError] = useState(null);
   const [lastReset, setLastReset] = useState(null);
   const [showEvidenceModal, setShowEvidenceModal] = useState(false);
-  const [imageList, setImageList] = useState([]); // Manage image state here
+  const [imageList, setImageList] = useState([]);
   const { user } = useAuthContext();
-  const axiosInstance = createAxiosInstance(user?.token);
 
-  const fetchTasks = async () => {
+  const axiosInstance = useMemo(
+    () => createAxiosInstance(user?.token),
+    [user?.token]
+  );
+
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await axiosInstance.get(`/api/users/${userId}/tasks`);
-      setDailyTasks(response.data.tasks);
-      setLastReset(response.data.lastReset);
+      setDailyTasks(response.data);
+      setLastReset(response.data.lastReset ?? null);
     } catch (error) {
       console.error("Error fetching tasks:", error);
       setError("There are no tasks for this user, please add some.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [axiosInstance, userId, setDailyTasks]);
 
-  const resetTaskStatus = async () => {
+  const resetTaskStatus = useCallback(async () => {
     try {
       const response = await axiosInstance.put(
         `/api/tasks/reset-status/${userId}`
       );
-      if (response.data.tasks.length > 0 && response.status === 200) {
+      if (response.data.tasks && response.data.tasks.length > 0 && response.status === 200) {
         setDailyTasks(response.data.tasks);
         setLastReset(response.data.lastReset);
-      } else {
+      } else if (response.data.message) {
         setError(response.data.message);
       }
     } catch (error) {
       console.error("Error resetting task statuses:", error);
       setError("Error resetting task statuses. Please try again later.");
     }
-  };
-  
-  //fetching user images
+  }, [axiosInstance, userId, setDailyTasks]);
+
   const fetchUserImages = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/api/users/${userId}/evidence`);
@@ -82,7 +85,6 @@ const TaskDetails = () => {
         url: img.url,
       }));
 
-      // Fetch the actual images (blobs) using the filenames
       const filenames = imagesDetails.map((img) => img.url.split("/").pop());
       const imagePromises = filenames.map((filename) =>
         axiosInstance.get(`/api/users/evidence/${filename}`, {
@@ -95,28 +97,27 @@ const TaskDetails = () => {
         URL.createObjectURL(res.data)
       );
 
-      // Update imageList with blob URLs
       const updatedImages = imagesDetails.map((img, idx) => ({
         ...img,
-        url: imageBlobs[idx], // Overwrite the original URL with the blob URL
+        url: imageBlobs[idx],
       }));
 
-      setImageList(updatedImages); // Store the updated images with blob URLs
+      setImageList(updatedImages);
     } catch (err) {
       console.error("Error fetching images:", err);
     }
   }, [axiosInstance, userId]);
 
   const handleUploadSuccess = useCallback(() => {
-    fetchUserImages(); // Call fetchUserImages on successful upload
+    fetchUserImages();
   }, [fetchUserImages]);
 
   useEffect(() => {
-    const initializeTasksPage = async () => {
-      if (!user) {
-        setError("You must be logged in");
-        return;
-      }
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+    const initializeTasks = async () => {
       try {
         await fetchTasks();
         await resetTaskStatus();
@@ -126,8 +127,8 @@ const TaskDetails = () => {
       }
     };
 
-    initializeTasksPage();
-  }, [userId]);
+    initializeTasks();
+  }, [userId, fetchTasks, resetTaskStatus, fetchUserImages, user]);
 
   const taskColumns = [
     { label: "#", renderCell: (_, index) => index + 1 },
@@ -209,7 +210,7 @@ const TaskDetails = () => {
           <UserImages
             userId={userId}
             imageList={imageList}
-            fetchUserImages={fetchUserImages} // Pass fetchUserImages to UserImages
+            fetchUserImages={fetchUserImages}
           />
         </Col>
       </Row>
@@ -224,7 +225,7 @@ const TaskDetails = () => {
         show={showEvidenceModal}
         handleClose={() => setShowEvidenceModal(false)}
         userId={userId}
-        onUploadSuccess={handleUploadSuccess} // Call this after a successful upload
+        onUploadSuccess={handleUploadSuccess}
       />
     </Container>
   );

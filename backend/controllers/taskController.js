@@ -1,22 +1,6 @@
 const Tasks = require("../models/Task");
 const User = require("../models/User");
-const mongoose = require("mongoose");
-
-// Check if ID is valid
-const checkIdIsValid = (id, res) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ err: "Invalid ID" });
-  }
-  return true;
-};
-
-// Check if user is authorized
-const checkAuthorization = (req, userId) => {
-  if (req.user.id !== userId.toString()) {
-    return false;
-  }
-  return true;
-};
+const { checkIdIsValid, checkAuthorization } = require("../middleware/validators");
 
 // get all Tasks assigned to the logged-in user
 const getAllTasks = async (req, res) => {

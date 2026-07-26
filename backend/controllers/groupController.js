@@ -1,98 +1,130 @@
-const Group = require('../models/Group');
-const mongoose = require('mongoose');
+const Group = require("../models/Group");
+const { checkIdIsValid, checkAuthorization } = require("../middleware/validators");
 
-//gets all the groups
 const getAllGroups = async (req, res) => {
-    const groups = await Group.find({}).sort({createdAt: -1});//sort by most recent
+  try {
+    const groups = await Group.find({}).sort({ createdAt: -1 });
     res.status(200).json(groups);
-}
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
 
 const getGroupMembers = async (req, res) => {
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({err: 'No such group'})
-    }
-    const members = await Group.findById(id).populate('members');
-    if(!members){
-        return res.status(404).json({msg: 'Group not found'});
-    }
-    res.status(200).json(members);
-}
-// get a single group
-const getGroup = async (req, res) => {
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({err: 'No such group'})
-    }
-    const group = await Group.findById(id);
-    if(!group){
-        return res.status(404).json({msg: 'Group not found'});
+  const { id } = req.params;
+  if (!checkIdIsValid(id, res)) return;
+  try {
+    const group = await Group.findById(id).populate("members");
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
     }
     res.status(200).json(group);
-}
-//create a new group
-const createGroup = async (req, res) => {
-    const {name, description, members, punishment} = req.body;
-    // add doc to db
-    try{
-        const group = await Group.create({name, description, members, punishment});
-        res.status(200).json(group);
-     }catch(err){
-        res.status(400).json({err: err.message});
-     }
-}
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
 
-// update a group
-    const updateGroup = async (req, res) => {
-        const { id } = req.params;
-        const group = await Group.findOneAndUpdate({_id: id},{...req.body});
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(404).json({err: 'No such task'})
-        }
-        if(!task){
-            return res.status(404).json({msg: 'Task not found'});
-        }
+const getGroup = async (req, res) => {
+  const { id } = req.params;
+  if (!checkIdIsValid(id, res)) return;
+  try {
+    const group = await Group.findById(id);
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
     }
-// delete a group
+    res.status(200).json(group);
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
+
+const createGroup = async (req, res) => {
+  const { name, description, members, punishment } = req.body;
+  try {
+    const group = await Group.create({ name, description, members, punishment });
+    res.status(201).json(group);
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
+const updateGroup = async (req, res) => {
+  const { id } = req.params;
+  if (!checkIdIsValid(id, res)) return;
+  try {
+    const group = await Group.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
+    }
+    res.status(200).json(group);
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
+
 const deleteGroup = async (req, res) => {
-    const { id } = req.params;
-    const group = await Group.findByIdAndDelete({_id: id});
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({err: 'No such group'})
+  const { id } = req.params;
+  if (!checkIdIsValid(id, res)) return;
+  try {
+    const group = await Group.findByIdAndDelete(id);
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
     }
-    if(!group){
-        return res.status(404).json({msg: 'Group not found'});
-    }
-    res.status(200).json({id: group._id});
-}
+    res.status(200).json({ id: group._id });
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
 
 const addGroupMember = async (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.body;
+  const { id } = req.params;
+  const { userId } = req.body;
+  if (!checkIdIsValid(id, res)) return;
+  if (!checkIdIsValid(userId, res)) return;
+  try {
     const group = await Group.findById(id);
-    if(!group){
-        return res.status(404).json({msg: 'Group not found'});
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
     }
-    if(group.members.includes(userId)){
-        return res.status(400).json({msg: 'User already in group'});
-    }
-    if(!mongoose.Types.ObjectId.isValid(userId)){
-        return res.status(404).json({err: 'No such user'})
-    }   
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({err: 'No such group'})
+    if (group.members.includes(userId)) {
+      return res.status(400).json({ msg: "User already in group" });
     }
     group.members.push(userId);
     await group.save();
     res.status(200).json(group);
-}
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
+
+const removeGroupMember = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+  if (!checkIdIsValid(id, res)) return;
+  if (!checkIdIsValid(userId, res)) return;
+  try {
+    const group = await Group.findById(id);
+    if (!group) {
+      return res.status(404).json({ msg: "Group not found" });
+    }
+    if (!group.members.some((m) => m.toString() === userId)) {
+      return res.status(400).json({ msg: "User not in group" });
+    }
+    group.members = group.members.filter((m) => m.toString() !== userId);
+    await group.save();
+    res.status(200).json(group);
+  } catch (err) {
+    res.status(500).json({ err: "Internal Server Error" });
+  }
+};
 
 module.exports = {
-    getAllGroups,
-    getGroup,
-    createGroup,
-    updateGroup,
-    deleteGroup,
-    getGroupMembers,
-    addGroupMember
-}
+  getAllGroups,
+  getGroup,
+  createGroup,
+  updateGroup,
+  deleteGroup,
+  getGroupMembers,
+  addGroupMember,
+  removeGroupMember,
+};
