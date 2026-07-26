@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import VerticalNavigation from "../../../components/VerticalNavigation.js";
+import VerticalNavigation from "../../../components/VerticalNavigation";
 import { useLocation } from "react-router-dom";
 import { Card, Typography, Stack, CardContent, Box } from "@mui/joy";
 import { Grid } from "@mui/system";
