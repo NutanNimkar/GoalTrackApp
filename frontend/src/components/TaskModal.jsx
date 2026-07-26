@@ -1,18 +1,15 @@
 import React from 'react';
-import Modal from '../Modal';
-import AddMemberToGroup from './AddGroupMemberForm';
+import Modal from './Modal';
+import TaskForm from './TaskForm';
 
-const AddGroupMemberModal = ({ selectedGroup, show, handleClose, handleSave, group }) => {
-  const onSave = (data) => {
-    const members = data.members ? [data.members] : [];
-    handleSave(members[0]);
-  };
+const TaskModal = ({ show, handleClose, handleSave, task, users }) => {
+  const onSave = (data) => handleSave({ ...task, ...data });
 
   return (
     <Modal
       show={show}
       onClose={handleClose}
-      title={`Add Member${selectedGroup ? ` to ${selectedGroup}` : ''}`}
+      title={task ? 'Edit Task' : 'Add Task'}
       footer={
         <>
           <button
@@ -24,17 +21,17 @@ const AddGroupMemberModal = ({ selectedGroup, show, handleClose, handleSave, gro
           </button>
           <button
             type="submit"
-            form="add-member-form"
+            form="task-form"
             className="px-4 py-2 rounded-lg text-sm font-medium bg-accent hover:bg-accent-dim text-bg transition-colors"
           >
-            Add
+            Save
           </button>
         </>
       }
     >
-      <AddMemberToGroup group={group} onSave={onSave} />
+      <TaskForm task={task} users={users} onSave={onSave} />
     </Modal>
   );
 };
 
-export default AddGroupMemberModal;
+export default TaskModal;

@@ -1,10 +1,17 @@
-.App {
-    width: 100vw;
-    height: 100vh;
-    background: #201E1E;
+* {
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  background-color: #0f0f0f;
+  color: #e5e5e5;
+  font-family: 'Inter', system-ui, sans-serif;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }

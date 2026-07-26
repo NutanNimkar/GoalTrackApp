@@ -1,64 +1,38 @@
-import React from "react";
-import { Grid, Card, Typography } from "@mui/joy";
-import ProgressCharts from "../GroupDB/components/ProgressCharts";
-import TrackProgressCard from "../GroupDB/components/TrackProgressCard";
+import React from 'react';
+import ProgressCharts from '../GroupDB/components/ProgressCharts';
+import TrackProgressCard from '../GroupDB/components/TrackProgressCard';
 
-function TaskTracking({tasks}) {
-    console.log(tasks)
+const TaskTracking = ({ tasks }) => {
+  if (!tasks?.length) {
+    return <p className="text-text-secondary text-sm text-center py-6">No tasks to track yet.</p>;
+  }
+
   return (
-    <div>
-      {tasks?.map((dailyTask, index) => (
-        <Card
-          sx={{
-            backgroundColor: index % 2 === 0 ? "#022D66" : "#0B3A79",
-            width: "100%",
-            borderRadius: "20px",
-            // padding:"10px"
-          }}
-          variant="soft"
+    <div className="flex flex-col gap-2">
+      {tasks.map((task, idx) => (
+        <div
+          key={task._id ?? idx}
+          className={`flex items-center gap-4 rounded-xl p-3 border border-border ${idx % 2 === 0 ? 'bg-surface' : 'bg-surface-2'}`}
         >
-          <Grid
-            container
-            direction="row"
-            style={{
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "space-around",
-            }}
-            spacing={4}
-          >
-            <Grid item style={{ width: "23%", paddingRight: 5 }}>
-              <Card
-                size="lg"
-                sx={{
-                  width: "auto",
-                  backgroundColor: "rgba(181, 181, 181, 0.45)",
-                  borderRadius: "20px",
-                  bgcolor: "#022D66",
-                  borderColor: "#395CCF",
-                }}
-                variant="outlined"
-              >
-                <Typography
-                  variant="body1"
-                  textAlign="center"
-                  style={{ color: "white", fontFamily: "Lucida Sans" }}
-                >
-                  {dailyTask.name}
-                </Typography>
-              </Card>
-            </Grid>
-            <Grid item style={{ width: "55%" }}>
-              <ProgressCharts index={index} />
-            </Grid>
-            <Grid item style={{ width: "22%" }}>
-              <TrackProgressCard />
-            </Grid>
-          </Grid>
-        </Card>
+          {/* Task name */}
+          <div className="w-1/4 shrink-0">
+            <p className="text-sm text-text-primary font-medium truncate">{task.name}</p>
+            <p className={`text-xs mt-0.5 ${task.status ? 'text-accent' : 'text-text-muted'}`}>
+              {task.status ? 'Completed' : 'Pending'}
+            </p>
+          </div>
+          {/* Chart */}
+          <div className="flex-1">
+            <ProgressCharts index={idx} />
+          </div>
+          {/* Score */}
+          <div className="w-1/4 shrink-0">
+            <TrackProgressCard />
+          </div>
+        </div>
       ))}
     </div>
   );
-}
+};
 
 export default TaskTracking;

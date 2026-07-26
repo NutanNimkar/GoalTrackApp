@@ -1,55 +1,24 @@
-import React from "react";
-// import MyTaskDetails from "../../../../components/Groups Components/MyDailyTask.jsx";
-// import { SharedStateContext } from "../../../../Context/SharedStateContext.js";
-import { Card, CardContent, Typography, Stack } from "@mui/joy";
-import { generateChartData } from "../components/ProgressCharts";
-import Grid from "@mui/material/Grid2";
+import React from 'react';
+import { generateChartData } from './ProgressCharts';
 
-function TrackProgressCard() {
+const TrackProgressCard = () => {
   const data = generateChartData();
+  const completed = data.datasets[1].data[0];
+  const missed = data.datasets[0].data[0];
 
   return (
-    <div>
-      <Card
-        sx={{
-          borderRadius: 30,
-          background:
-            "linear-gradient(to right, rgba(11,58,100,1), rgba(18,37,61,0) 50%), linear-gradient(to right, rgba(11,58,121,1), rgba(18,37,61,1) 100%)",
-          border: "2px solid",
-          borderColor: "#4F729D",
-          backdropFilter: "blur(1px)",
-          // padding: "7, 5, 7, 5"
-        }}
-        size="sm"
-      >
-        <Grid container style={{ justifyContent: "center" }}>
-          <Stack
-            direction="row"
-            gap={2}
-            style={{ justifyItems: "space-evenly" }}
-          >
-            <CardContent>
-              <Typography
-                level="h2"
-                sx={{ color: "#12B806", fontFamily: "Lucida Sans" }}
-              >
-                {data.datasets[1].data[0]}
-              </Typography>
-            </CardContent>
-
-            <CardContent>
-              <Typography
-                level="h2"
-                sx={{ color: "#FF0808", fontFamily: "Lucida Sans" }}
-              >
-                {data.datasets[0].data[0]}
-              </Typography>
-            </CardContent>
-          </Stack>
-        </Grid>
-      </Card>
+    <div className="bg-surface-2 border border-border rounded-xl px-4 py-3 flex items-center justify-center gap-6">
+      <div className="text-center">
+        <p className="text-accent text-xl font-bold">{completed}</p>
+        <p className="text-text-secondary text-xs mt-0.5">Done</p>
+      </div>
+      <div className="w-px h-8 bg-border" />
+      <div className="text-center">
+        <p className="text-danger text-xl font-bold">{missed}</p>
+        <p className="text-text-secondary text-xs mt-0.5">Missed</p>
+      </div>
     </div>
   );
-}
+};
 
 export default TrackProgressCard;

@@ -1,259 +1,123 @@
-import React, { useContext } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import { GroupsPageContext } from "../../Context/GroupsPageContext";
-import AddGroupMemberModal from "./AddGroupMemberModal";
-import { Link } from "react-router-dom";
-import { MdGroups, MdPerson } from "react-icons/md";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import { Stack, Button, Typography } from "@mui/joy";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import Fade from "@mui/material/Fade";
-import { CgProfile } from "react-icons/cg";
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { GroupsPageContext } from '../../Context/GroupsPageContext';
+import AddGroupMemberModal from './AddGroupMemberModal';
+import {
+  HiChevronDown,
+  HiUserCircle,
+  HiUserPlus,
+  HiSquares2X2,
+  HiUser,
+} from 'react-icons/hi2';
 
-function GroupDropDown({
-  // groupName,
-  memberNames,
-  groups,
-  // punishment,
-  // description,
-}) {
-  const [expandedAccordion, setExpandedAccordion] = React.useState(false);
+const GroupDropDown = ({ groups }) => {
+  const [expanded, setExpanded] = useState(null);
+  const { addMember, handleAddMember, setShowMemberModal, showMemberModal, selectedGroup } =
+    useContext(GroupsPageContext);
 
-  const handleExpansion = (panel) => (event, isExpanded) => {
-    setExpandedAccordion(isExpanded ? panel : null);
-  };
-
-  const {
-    addMember,
-    handleAddMember,
-    setShowMemberModal,
-    showMemberModal,
-    selectedGroup,
-  } = useContext(GroupsPageContext);
-  if (!Array.isArray(memberNames)) {
-    memberNames = [];
+  if (!groups || Object.keys(groups).length === 0) {
+    return (
+      <p className="text-text-secondary text-sm px-2 py-4 text-center">
+        No groups yet. Create one to get started.
+      </p>
+    );
   }
 
-  // reading how many
-  const uniqueGroups = {};
-
-  Object.keys(groups).forEach((groupName) => {
-    if (!uniqueGroups[groupName]) {
-      uniqueGroups[groupName] = groups[groupName];
-    }
+  const groupNames = Object.keys(groups).sort((a, b) => {
+    const n = (s) => parseInt(s.replace(/\D/g, ''), 10) || 0;
+    return n(b) - n(a);
   });
 
-  const sortedGroupNames = Object.keys(uniqueGroups).sort((a, b) => {
-    const aNumber = parseInt(a.replace(/\D/g, ""), 10);
-    const bNumber = parseInt(b.replace(/\D/g, ""), 10);
-    return bNumber - aNumber;
-  });
-
-  const accordionItems = sortedGroupNames.map((groupName, index) => {
-    const currentGroup = uniqueGroups[groupName];
-    const groupMemberNames = currentGroup?.members || [];
-    const groupDescription = currentGroup?.description || [];
-    const groupPunishment = currentGroup?.punishment || [];
-
-    return (
-      <Accordion
-        eventKey={index + 1}
-        key={index}
-        expanded={expandedAccordion === index}
-        onChange={handleExpansion(index)}
-        TransitionComponent={Fade}
-        TransitionProps={{ timeout: 400 }}
-        sx={{
-          borderRadius: "5px",
-          padding: "5px",
-          marginBottom: 2,
-          backgroundColor: "#1C3B61",
-          ...(expandedAccordion === index
-            ? {
-                "& .MuiAccordion-region": {
-                  height: "auto",
-                },
-                "& .MuiAccordionDetails-root": {
-                  display: "block",
-                },
-              }
-            : {
-                "& .MuiAccordion-region": {
-                  height: 0,
-                },
-                "& .MuiAccordionDetails-root": {
-                  display: "none",
-                },
-                // backgroundColor: "Background.paper",
-              }),
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
-          sx={{
-            backgroundColor: "#83AFE8",
-            borderRadius: "5px",
-          }}
-        >
-          <Typography
-            level="title-lg"
-            fontFamily="Verdana"
-          >
-            Group #{index + 1}: {groupName}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>
-            {groupMemberNames.map((member, ind) => (
-              <div className="d-grid gap-2" key={ind}>
-                <Button
-                  key={member}
-                  variant="contained"
-                  size="lg"
-                  sx={{
-                    backgroundColor: "#415F84",
-                    margin: 2,
-                    padding: 2,
-                  }}
-                >
-                  <Stack direction="horizontal" gap={11}>
-                    <CgProfile
-                      size={30}
-                      style={{ position: "inherit", left: 0 }}
-                    />
-                    {member}
-                  </Stack>
-                </Button>
-              </div>
-            ))}
-            <Stack
-              direction="horizontal"
-              gap="auto"
-              style={{ justifyContent: "space-evenly" }}
-            >
-              <Link
-                to={{ pathname: `/groups/${groupName}/groupdb` }}
-                state={{
-                  members: groupMemberNames,
-                  name: groupName,
-                  punishment: groupPunishment,
-                  description: groupDescription,
-                }}
-                style={{ textAlign: "end", textDecoration: "none" }}
-              >
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 11,
-                    backgroundColor: "#022D66",
-                  }}
-                >
-                  <MdGroups
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      marginRight: 10,
-                      color: "#74AFDC",
-                    }}
-                    size={48}
-                  />
-                  <Typography sx={{ color: "#74AFDC" }}>
-                    Group Dashboard
-                  </Typography>
-                </Button>
-              </Link>
-
-              <Button
-                variant="outlined"
-                size="sm"
-                onClick={() => handleAddMember(groupName)}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 30,
-                  backgroundColor: "#022D66",
-                }}
-              >
-                <AiOutlinePlusCircle
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    marginLeft: 25,
-                    marginRight: 25,
-                    color: "#FAFBFC",
-                  }}
-                  size={28}
-                />
-              </Button>
-
-              <Link
-                to={{ pathname: `/groups/${groupName}/personaldb` }}
-                state={{
-                  name: groupName,
-                  punishment: groupPunishment,
-                  description: groupDescription,
-                  members: groupMemberNames
-                }}
-                style={{ textAlign: "end", textDecoration: "none" }}
-              >
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 11,
-                    backgroundColor: "#022D66",
-                  }}
-                  className="text-w"
-                >
-                  <MdPerson
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      marginRight: 10,
-                      color: "#74AFDC",
-                    }}
-                    size={48}
-                  />
-                  <Typography sx={{ color: "#74AFDC" }}>
-                    Personal Dashboard
-                  </Typography>
-                </Button>
-              </Link>
-            </Stack>
-
-            <AddGroupMemberModal
-              selectedGroup={selectedGroup}
-              show={showMemberModal}
-              handleClose={() => setShowMemberModal(false)}
-              handleSave={(userId) => addMember(selectedGroup, userId)}
-              group={groups}
-            />
-          </div>
-        </AccordionDetails>
-      </Accordion>
-    );
-  });
   return (
-    <div
-      // scrollbar styling
-      style={{
-        maxHeight: "57vh",
-        overflowY: "auto",
-        scrollbarColor: "#415F84 #0A2344",
-        paddingRight: 10,
-      }}
-    >
-      {accordionItems}
+    <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
+      {groupNames.map((name, idx) => {
+        const g = groups[name];
+        const members = g?.members ?? [];
+        const isOpen = expanded === idx;
+
+        return (
+          <div key={name} className="bg-surface-2 border border-border rounded-xl overflow-hidden">
+            {/* Header */}
+            <button
+              onClick={() => setExpanded(isOpen ? null : idx)}
+              className="w-full flex items-center justify-between px-4 py-3 hover:bg-surface-hover transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-text-muted">#{idx + 1}</span>
+                <span className="text-sm font-medium text-text-primary">{name}</span>
+                <span className="text-xs text-text-secondary bg-surface-hover px-2 py-0.5 rounded-full">
+                  {members.length} member{members.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+              <HiChevronDown
+                className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+
+            {/* Body */}
+            {isOpen && (
+              <div className="border-t border-border px-4 py-3">
+                {/* Members */}
+                {members.length > 0 && (
+                  <div className="flex flex-col gap-1.5 mb-4">
+                    {members.map((member) => (
+                      <div key={member} className="flex items-center gap-2 px-3 py-2 bg-surface rounded-lg">
+                        <HiUserCircle className="w-4 h-4 text-text-secondary shrink-0" />
+                        <span className="text-sm text-text-primary">{member}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Meta */}
+                {(g?.description || g?.punishment) && (
+                  <div className="mb-4 flex flex-col gap-1 text-xs text-text-secondary">
+                    {g.description && <span><strong className="text-text-primary">Goal:</strong> {g.description}</span>}
+                    {g.punishment && <span><strong className="text-text-primary">Penalty:</strong> {g.punishment}</span>}
+                  </div>
+                )}
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Link
+                    to={{ pathname: `/groups/${name}/groupdb` }}
+                    state={{ members, name, punishment: g?.punishment, description: g?.description }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                      border border-border text-text-secondary hover:text-text-primary hover:border-border-strong transition-colors"
+                  >
+                    <HiSquares2X2 className="w-3.5 h-3.5" /> Group Dashboard
+                  </Link>
+                  <Link
+                    to={{ pathname: `/groups/${name}/personaldb` }}
+                    state={{ members, name, punishment: g?.punishment, description: g?.description }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                      border border-border text-text-secondary hover:text-text-primary hover:border-border-strong transition-colors"
+                  >
+                    <HiUser className="w-3.5 h-3.5" /> Personal Dashboard
+                  </Link>
+                  <button
+                    onClick={() => handleAddMember(name)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                      bg-accent/10 text-accent hover:bg-accent/20 border border-accent/20 transition-colors"
+                  >
+                    <HiUserPlus className="w-3.5 h-3.5" /> Add Member
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      <AddGroupMemberModal
+        selectedGroup={selectedGroup}
+        show={showMemberModal}
+        handleClose={() => setShowMemberModal(false)}
+        handleSave={(userId) => addMember(selectedGroup, userId)}
+        group={groups}
+      />
     </div>
   );
-}
+};
 
 export default GroupDropDown;
