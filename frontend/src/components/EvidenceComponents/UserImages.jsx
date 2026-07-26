@@ -1,110 +1,126 @@
-import React, { useState } from "react";
-import { Image, Alert, Button, Modal } from "react-bootstrap";
-import createAxiosInstance from "../../axiosInstance";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import React, { useState, useMemo } from 'react';
+import { HiTrash, HiXMark } from 'react-icons/hi2';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import createAxiosInstance from '../../axiosInstance';
+import Modal from '../Modal';
+
 const UserImages = ({ imageList, fetchUserImages, userId }) => {
-  const [selectedFileIds, setSelectedFileIds] = useState([]);
-  const [showModal, setShowModal] = useState(false); 
-  const [enlargeImage, setEnlargeImage] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [enlargeUrl, setEnlargeUrl] = useState(null);
   const { user } = useAuthContext();
-  const axiosInstance = createAxiosInstance(user?.token);
-  
-  // Handle image selection by fileId
-  const handleImageSelect = (fileId) => {
-    if (selectedFileIds.includes(fileId)) {
-      setSelectedFileIds((prev) => prev.filter((id) => id !== fileId));
-    } else {
-      setSelectedFileIds((prev) => [...prev, fileId]);
+  const axiosInstance = useMemo(() => createAxiosInstance(user?.token), [user?.token]);
+
+  const toggle = (id) =>
+    setSelectedIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+
+  const handleDelete = async () => {
+    try {
+      await Promise.all(selectedIds.map((id) => axiosInstance.delete(`/api/users/${userId}/image/${id}`)));
+      setSelectedIds([]);
+      setShowConfirm(false);
+      fetchUserImages();
+    } catch {
+      alert('Failed to delete. Please try again.');
     }
-  };
-  // Show confirmation modal
-  const openConfirmationModal = () => setShowModal(true);
-  const closeConfirmationModal = () => setShowModal(false);
-  // Show enlarged image modal
-  const handleEnlargeImage = (imageUrl) => {
-    setEnlargeImage(imageUrl);
   };
 
-  // Close enlarged image modal
-  const closeEnlargeModal = () => {
-    setEnlargeImage(null);
-  };
-  // Delete selected images by fileId after confirmation
-  const handleDeleteImages = async () => {
-    try {
-      // Delete images
-      await Promise.all(
-        selectedFileIds.map((fileId) =>
-          axiosInstance.delete(`/api/users/${userId}/image/${fileId}`)
-        )
-      );
-      fetchUserImages(); 
-      setSelectedFileIds([]); 
-      closeConfirmationModal();
-    } catch (err) {
-      console.error("Error deleting images:", err);
-      alert("Failed to delete images. Please try again.");
-    }
-  };
+  if (!imageList?.length) {
+    return (
+      <div className="bg-surface border border-border rounded-xl px-5 py-8 text-center">
+        <p className="text-text-secondary text-sm">No evidence images yet. Upload some above.</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h4 style={{ color: "#ffffff" }}>User Images</h4>
-      {imageList.length === 0 && <Alert variant="info">No images found for this user.</Alert>}
-      <div className="d-flex flex-wrap">
-        {imageList && imageList.map((image, idx) => (
-          <div
-            key={image.fileId}
-            className={`m-2 ${selectedFileIds.includes(image.fileId) ? "border border-primary" : ""}`}
-            onClick={() => handleImageSelect(image.fileId)}
-            onDoubleClick={() => handleEnlargeImage(image.url)}
-            style={{ cursor: "pointer" }}
+    <div className="bg-surface border border-border rounded-xl overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+        <h2 className="text-sm font-semibold text-text-primary">Evidence Images</h2>
+        {selectedIds.length > 0 && (
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+              text-danger bg-danger/10 hover:bg-danger/20 border border-danger/20 transition-colors"
           >
-            <Image
-              src={image.url}
-              alt={`User Image ${idx}`}
-              thumbnail
-              width={150}
-              height={150}
-            />
-          </div>
-        ))}
+            <HiTrash className="w-3.5 h-3.5" />
+            Delete {selectedIds.length} selected
+          </button>
+        )}
       </div>
 
-      {selectedFileIds.length > 0 && (
-        <Button variant="danger" className="mt-3" onClick={openConfirmationModal}>
-          Delete Selected Images
-        </Button>
-      )}
+      <div className="p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+        {imageList.map((image, idx) => {
+          const selected = selectedIds.includes(image.fileId);
+          return (
+            <div
+              key={image.fileId}
+              onClick={() => toggle(image.fileId)}
+              onDoubleClick={() => setEnlargeUrl(image.url)}
+              className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer
+                border-2 transition-colors
+                ${selected ? 'border-accent' : 'border-transparent hover:border-border-strong'}
+              `}
+            >
+              <img
+                src={image.url}
+                alt={`Evidence ${idx + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {selected && (
+                <div className="absolute inset-0 bg-accent/20 flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center">
+                    <svg className="w-3 h-3 text-bg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-      <Modal show={showModal} onHide={closeConfirmationModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Delete</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete {selectedFileIds.length} image(s)?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeConfirmationModal}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDeleteImages}>
-            Delete
-          </Button>
-        </Modal.Footer>
+      <p className="px-4 pb-3 text-xs text-text-muted">Click to select · Double-click to enlarge</p>
+
+      {/* Confirm delete */}
+      <Modal
+        show={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        title="Delete Images"
+        size="sm"
+        footer={
+          <>
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="px-4 py-2 rounded-lg text-sm text-text-secondary border border-border hover:border-border-strong transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-danger hover:bg-red-500 text-white transition-colors"
+            >
+              Delete {selectedIds.length}
+            </button>
+          </>
+        }
+      >
+        <p className="text-text-secondary text-sm">
+          Are you sure you want to delete {selectedIds.length} image{selectedIds.length !== 1 ? 's' : ''}? This cannot be undone.
+        </p>
       </Modal>
 
-      <Modal show={!!enlargeImage} onHide={closeEnlargeModal} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Image</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          {enlargeImage && <Image src={enlargeImage} fluid />}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeEnlargeModal}>
-            Close
-          </Button>
-        </Modal.Footer>
+      {/* Enlarge */}
+      <Modal
+        show={!!enlargeUrl}
+        onClose={() => setEnlargeUrl(null)}
+        title="Image"
+        size="lg"
+      >
+        {enlargeUrl && (
+          <img src={enlargeUrl} alt="Enlarged evidence" className="w-full rounded-lg" />
+        )}
       </Modal>
     </div>
   );

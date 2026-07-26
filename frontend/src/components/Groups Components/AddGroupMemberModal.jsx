@@ -1,35 +1,38 @@
-import React from "react";
-import { Modal, Button } from "react-bootstrap";
-import AddMemberToGroup from "./AddGroupMemberForm";
+import React from 'react';
+import Modal from '../Modal';
+import AddMemberToGroup from './AddGroupMemberForm';
 
-const AddGroupMemberModal = ({
-  selectedGroup,
-  show,
-  handleClose,
-  handleSave,
-  group,
-}) => {
+const AddGroupMemberModal = ({ selectedGroup, show, handleClose, handleSave, group }) => {
   const onSave = (data) => {
-    const updateGroup = {
-      ...data,
-      members: data.members ? [data.members] : [],
-    };
-    handleSave(updateGroup.members[0]);
+    const members = data.members ? [data.members] : [];
+    handleSave(members[0]);
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Add Member to {selectedGroup}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={{ overflowY: "auto", maxHeight: "75vh" }}>
-        <AddMemberToGroup group={group} onSave={onSave} />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
+    <Modal
+      show={show}
+      onClose={handleClose}
+      title={`Add Member${selectedGroup ? ` to ${selectedGroup}` : ''}`}
+      footer={
+        <>
+          <button
+            onClick={handleClose}
+            className="px-4 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary
+              border border-border hover:border-border-strong transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            form="add-member-form"
+            className="px-4 py-2 rounded-lg text-sm font-medium bg-accent hover:bg-accent-dim text-bg transition-colors"
+          >
+            Add
+          </button>
+        </>
+      }
+    >
+      <AddMemberToGroup group={group} onSave={onSave} />
     </Modal>
   );
 };
